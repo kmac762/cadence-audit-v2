@@ -1,4 +1,4 @@
-import {PLAYBOOKS} from './playbooks.mjs';
+import {PLAYBOOKS,AI_RELEVANCE} from './playbooks.mjs';
 
 // Refresh recommendation language at presentation time so saved reports from an
 // earlier release receive the current reviewed search framing without changing
@@ -9,6 +9,7 @@ export function presentReport(report){
     if(String(r.id||'').startsWith('browser:'))return r;
     const p=PLAYBOOKS[r.playbook];
     if(!p)return r;
+    const ai=AI_RELEVANCE[r.playbook]||{};
     const observation=String(r.observation||'').trim();
     return {...r,
       title:p.title,
@@ -22,7 +23,12 @@ export function presentReport(report){
       effort:p.effort,
       talk:`${observation}${observation&&!/[.!?]$/.test(observation)?'.':''} ${p.talk}`.trim(),
       source:p.source,
-      searchEffect:p.searchEffect||p.caveat
+      searchEffect:p.searchEffect||p.caveat,
+      aiLevel:ai.level||'',
+      aiWhy:ai.why||'',
+      aiEffect:ai.effect||'',
+      aiSource:ai.source||'',
+      aiTalk:ai.talk||''
     };
   });
   return {...report,recommendations};

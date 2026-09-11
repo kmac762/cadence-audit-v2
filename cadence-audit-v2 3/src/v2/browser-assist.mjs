@@ -1,3 +1,4 @@
+import {AI_RELEVANCE} from './playbooks.mjs';
 const MAX_CAPTURES=10;
 const text=(v,n=500)=>String(v??'').trim().slice(0,n);
 const arr=(v,max=50)=>Array.isArray(v)?v.slice(0,max):[];
@@ -17,7 +18,7 @@ export function validateBrowserCapture(value,reportUrl){
    authorSignals:arr(p.authorSignals,10).map(x=>text(x,200)).filter(Boolean),openGraph:{title:text(p.openGraph?.title,300),description:text(p.openGraph?.description,600)}}};
 }
 const evidence=(captures,label,predicate,formatter)=>captures.filter(predicate).slice(0,10).map(c=>({label,value:formatter(c),url:c.url}));
-function rec({id,playbook,title,theme,observation,why,solution,success,searchEffect,caveat,effort,talk,source,evidence}){return{id:'browser:'+id,playbook,title,theme,scope:'Browser Assist sample',observation,why,solution,success,verify:solution[0],searchEffect,caveat,effort,priority:'Planned review',confidence:'Observed in browser-collected public-page output; server response and crawler access are not verified',talk,source,evidence,review:'unreviewed',originalFinding:{id:'browser-'+id,title,category:'browser-assist',confidence:'confirmed'}};}
+function rec({id,playbook,title,theme,observation,why,solution,success,searchEffect,caveat,effort,talk,source,evidence}){const ai=AI_RELEVANCE[playbook]||{};return{id:'browser:'+id,playbook,title,theme,scope:'Browser Assist sample',observation,why,solution,success,verify:solution[0],searchEffect,aiLevel:ai.level||'',aiWhy:ai.why||'',aiEffect:ai.effect||'',aiSource:ai.source||'',aiTalk:ai.talk||'',caveat,effort,priority:'Planned review',confidence:'Observed in browser-collected public-page output; server response and crawler access are not verified',talk,source,evidence,review:'unreviewed',originalFinding:{id:'browser-'+id,title,category:'browser-assist',confidence:'confirmed'}};}
 export function browserAssistRecommendations(captures=[]){
  const n=captures.length;if(!n)return[];const out=[];
  const noH1=captures.filter(c=>!c.page.headings.h1.length);

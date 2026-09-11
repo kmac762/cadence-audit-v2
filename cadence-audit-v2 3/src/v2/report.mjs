@@ -1,7 +1,7 @@
 import {buildSearchAccess,accessPolicyFindings} from './search-access.mjs';
 import {getRequestPolicy} from './request-policy.mjs';
 import {RELEASE,API_VERSION} from '../../shared/release.mjs';
-import {PLAYBOOKS,playbookKey} from './playbooks.mjs';
+import {PLAYBOOKS,AI_RELEVANCE,playbookKey} from './playbooks.mjs';
 import {addPriorityComposites,selectDiverseFindings} from '../lib/priority.mjs';
 const uniq=a=>[...new Set(a.filter(Boolean))];
 function normalEvidence(f){return(f.evidence||[]).slice(0,30).map(e=>({label:String(e.label||'Observation').slice(0,120),value:String(e.value??'').slice(0,1200),url:validUrl(e.url)||validUrl(e.value)}));}
@@ -61,7 +61,7 @@ export function makeReport(raw,finished=true){
  const all=[...unique.values()];
  const ranked=all.filter(x=>!['social'].includes(x.playbook||playbookKey(x))).map(x=>{const key=x.playbook||playbookKey(x);return {...x,score:['sources','authors'].includes(key)?Math.min(Number(x.score)||0,48):key==='headings'?Math.min(Number(x.score)||0,64):x.score};});
  let top=selectDiverseFindings(ranked,8);const seen=new Set();top=top.filter(x=>{const k=x.playbook||playbookKey(x);if(seen.has(k))return false;seen.add(k);return true;}).slice(0,5);
- const recommendations=top.map(x=>{const key=x.playbook||playbookKey(x),p=PLAYBOOKS[key],evidence=normalEvidence(x);const observed=observation(x,key).replace(/\.\./g,'.');return{id:`${x.scope||'page'}:${x.id}`,playbook:key,title:p.title,theme:p.theme,observation:observed,why:p.why,searchEffect:p.searchEffect||p.caveat,solution:p.steps,success:p.success,verify:p.steps[0],caveat:p.caveat,userNote:p.userNote||'',effort:p.effort,priority:['critical','high'].includes(x.severity)&&['indexing','broken'].includes(key)?'Investigate promptly':'Planned review',confidence:x.confidence==='confirmed'?'Observed in inspected output; interpretation needs review':'Heuristic or sample-based; verify examples',talk:`${observed} ${p.talk}`,source:p.source,evidence,review:'unreviewed',scope:x.scope==='page'?'Entry page':'Inspected sample',originalFinding:{id:x.id,title:x.title,category:x.category,confidence:x.confidence}};});
+ const recommendations=top.map(x=>{const key=x.playbook||playbookKey(x),p=PLAYBOOKS[key],ai=AI_RELEVANCE[key]||{},evidence=normalEvidence(x);const observed=observation(x,key).replace(/\.\./g,'.');return{id:`${x.scope||'page'}:${x.id}`,playbook:key,title:p.title,theme:p.theme,observation:observed,why:p.why,searchEffect:p.searchEffect||p.caveat,aiLevel:ai.level||'',aiWhy:ai.why||'',aiEffect:ai.effect||'',aiSource:ai.source||'',aiTalk:ai.talk||'',solution:p.steps,success:p.success,verify:p.steps[0],caveat:p.caveat,userNote:p.userNote||'',effort:p.effort,priority:['critical','high'].includes(x.severity)&&['indexing','broken'].includes(key)?'Investigate promptly':'Planned review',confidence:x.confidence==='confirmed'?'Observed in inspected output; interpretation needs review':'Heuristic or sample-based; verify examples',talk:`${observed} ${p.talk}`,source:p.source,evidence,review:'unreviewed',scope:x.scope==='page'?'Entry page':'Inspected sample',originalFinding:{id:x.id,title:x.title,category:x.category,confidence:x.confidence}};});
  const usable=site.enabled?(site.pages||[]).filter(p=>p.usable).length:(f.access?.pageContentUsable?1:0);
  const anyUsable=usable>0||!!f.contentAnalysis?.usable;
  const requestPolicy=f.requestPolicy||getRequestPolicy().summary();
