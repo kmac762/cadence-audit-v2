@@ -1,0 +1,78 @@
+{
+  "mode": "self-contained preview with set_content (local navigation unavailable)",
+  "checks": [
+    {
+      "check": "Complete report contains 24 agent/control entries",
+      "passed": true
+    },
+    {
+      "check": "Quick access cards show six search crawlers",
+      "passed": true
+    },
+    {
+      "check": "Actual provider access is not presented as verified",
+      "passed": true
+    },
+    {
+      "check": "Demo remains clearly labeled synthetic",
+      "passed": true
+    },
+    {
+      "check": "Original logo uses white transparent presentation",
+      "passed": true
+    },
+    {
+      "check": "Search filter shows exactly nine search entries",
+      "passed": true
+    },
+    {
+      "check": "Search restricted/unknown filter includes two restrictions and Amazon fallback",
+      "passed": true
+    },
+    {
+      "check": "Expanded entry displays all 14 checked URLs",
+      "passed": true
+    },
+    {
+      "check": "Expanded entry includes matching rule and retrieval evidence",
+      "passed": true
+    },
+    {
+      "check": "Training filter is separate and has four entries",
+      "passed": true
+    },
+    {
+      "check": "User-requested filter has six entries",
+      "passed": true
+    },
+    {
+      "check": "User-triggered caveat remains next to declared Disallow",
+      "passed": true
+    },
+    {
+      "check": "Review gate blocks unverified selection",
+      "passed": true
+    },
+    {
+      "check": "Brief contains selected recommendation, remedy and access qualification",
+      "passed": true
+    },
+    {
+      "check": "No document horizontal overflow at 360px",
+      "passed": true
+    },
+    {
+      "check": "No document horizontal overflow at 390px",
+      "passed": true
+    },
+    {
+      "check": "No document horizontal overflow at 768px",
+      "passed": true
+    },
+    {
+      "check": "No JavaScript exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

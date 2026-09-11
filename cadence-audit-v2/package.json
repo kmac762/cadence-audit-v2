@@ -1,0 +1,15 @@
+{
+  "name": "cadence-audit-v2",
+  "version": "2.0.0-rc.3",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.16"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "node scripts/check-release.mjs",
+    "build": "node scripts/create-example.mjs && node scripts/build-preview.mjs && node scripts/build-manifest.mjs"
+  }
+}
