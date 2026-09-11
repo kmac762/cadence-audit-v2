@@ -7,7 +7,7 @@ Do not move the existing audit subdomain. This is a NEW test service with its ow
 Render-provided address. The existing production 502 still needs its service logs
 and resource metrics inspected; this release does not diagnose that incident.
 
-This is release **2.0.0-rc.8**, the complete Search & AI Access candidate. Use this
+This is release **2.0.0-rc.9**, the complete Search & AI Access candidate. Use this
 archive instead of an earlier V2 archive. The folder remains cadence-audit-v2.
 An existing V2 staging repository can receive the complete updated folder in one
 commit; check that the new files are present. Do not mix individual V1 hotfixes into V2.
@@ -92,7 +92,7 @@ a brief interruption; in-flight scans will be marked interrupted after restart.
 
 ## 5. Initial checks on the NEW Render address
 
-Wait for Live. Open /api/health and confirm release 2.0.0-rc.8 and schemaVersion 2.
+Wait for Live. Open /api/health and confirm release 2.0.0-rc.9 and schemaVersion 2.
 Open the base address. It should show V2 and no password login. Confirm the new
 navy interface with the white transparent logo and that the example report works.
 

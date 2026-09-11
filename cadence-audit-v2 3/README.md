@@ -1,6 +1,6 @@
 # Cadence Search Audit Workspace V2
 
-**2.0.0-rc.8 | Separate staging candidate, not a production replacement**
+**2.0.0-rc.9 | Separate staging candidate, not a production replacement**
 
 The change is not another visual patch. This package contains one matched server,
 scanner adapter, recommendation library, browser interface and release manifest.
@@ -11,6 +11,15 @@ Open **START-HERE.html** for the browser-only installation steps. Open
 **docs/V2-preview.html** for an interactive, offline, synthetic example. The preview
 cannot crawl a website; it shows the sales wording and review workflow without a
 server or an API key.
+
+## rc.9: Broken links and page paths
+
+- Adds a bounded **Broken links & page paths** panel across internal destinations found in the inspected sample.
+- Separates confirmed 4xx/5xx errors, redirects/chains, redirect loops, soft-404 review cues, and unverified blocked requests.
+- Access-denied responses (401/403/407/429/challenges) are **not** classified as broken.
+- Broken paths can become a search-first sales recommendation with a plain-language client explanation.
+- Browser Assist now checks up to 12 same-origin internal destinations from each deliberately captured public page using the user's browser. Those checks are clearly labeled browser evidence and do not verify Googlebot or AI-crawler access.
+- This remains a bounded prospect audit, not a complete-site broken-link crawler.
 
 ## New: Search & AI Access
 

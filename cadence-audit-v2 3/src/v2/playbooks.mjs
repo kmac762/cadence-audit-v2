@@ -66,9 +66,9 @@ export const PLAYBOOKS={
     "searchEffect": "Supported: explicit crawlable routes and contextual anchor text to priority URLs. Not established: sitewide orphaning, lost link equity or ranking loss from this limited sample."
   },
   "broken": {
-    "title": "Repair the broken routes identified in the link sample",
+    "title": "Fix broken links and pages",
     "theme": "Technical",
-    "why": "Search connection: crawl paths and access to indexable content. When Google itself encounters persistent error responses it cannot process the intended destination normally. This tool's failed request must first be verified, because our scanner may be blocked while Google is allowed.",
+    "why": "Search connection: internal links help search engines discover and revisit important pages. When a real internal destination returns an error, the intended page cannot be reached through that path. Scanner blocks are kept separate and are never called broken links without a real error response.",
     "steps": [
       "Open each source and destination and repeat the request to rule out a temporary block or outage.",
       "Correct the source link, restore the intended page, or implement a relevant redirect when the old page has genuinely moved.",
@@ -77,7 +77,7 @@ export const PLAYBOOKS={
     "success": "The reviewed links reach the intended usable page without an unnecessary chain or confirmed error response.",
     "caveat": "An error observed from the audit server is not proof that every visitor or search crawler sees the same response.",
     "effort": "Link/content/server change; depends on why the destination fails.",
-    "talk": "We would verify whether the destination is genuinely unavailable, rather than just refusing our scanner. Then we would restore the page or correct the link and recheck the crawl path. Only verified errors should drive a search recommendation.",
+    "talk": "Some links lead to pages that no longer work. We’d fix the link, restore the page, or redirect it to the right replacement so search engines and AI systems do not hit avoidable dead ends.",
     "source": "https://developers.google.com/search/docs/crawling-indexing/http-network-errors",
     "searchEffect": "Supported after verification: removing an error or unnecessary hop from a real internal crawl path. Not established: that Google saw the same error or that this caused a ranking loss."
   },
@@ -283,7 +283,7 @@ const CLIENT_EXPLANATIONS={
   titles:"The page title helps search engines and searchers understand what a result is about before the click. We’d make each important page specific and easy to distinguish so it has a clearer search identity.",
   metadata:"The description is the page’s short sales message in search. We’d make it clear, specific and relevant so the result does a better job of explaining why someone should click.",
   links:"Internal links help search engines find important pages and understand how the site’s topics connect. We’d make sure useful content naturally points to the services and pages the business most wants discovered.",
-  broken:"If an important link leads to an error, search engines may not reach the intended page through that path. We’d repair the route so the right content is consistently accessible.",
+  broken:"Some links lead to pages that no longer work. We’d fix the link, restore the page, or redirect it to the right replacement so search engines and AI systems do not hit avoidable dead ends.",
   indexing:"If a page is meant to show up in search, its technical settings should all support that goal. We’d remove any accidental instructions that tell search engines not to crawl, index or prefer that page.",
   access:"This means our scanner could not reach the page reliably. It does not automatically mean Google or AI search tools are blocked, so we’d treat it as a coverage limitation until real crawler access is verified.",
   ai:"AI search tools use different crawlers and policies for search access, user requests and model training. We’d make sure the site allows the discovery access the business wants without changing training preferences unnecessarily.",

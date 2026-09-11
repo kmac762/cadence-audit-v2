@@ -7,17 +7,19 @@ import {generateFindings} from '../lib/rules.mjs';
 import {assessHttpAccess} from '../lib/access.mjs';
 import {createSiteSnapshot,disabledSiteSnapshot} from '../lib/site-snapshot.mjs';
 import {classifyUrlType} from '../lib/page-type.mjs';
-import {buildOnPageQa,validateInternalLinks} from '../lib/on-page-qa.mjs';
+import {buildOnPageQa} from '../lib/on-page-qa.mjs';
 import {context} from './context.mjs';
 import {getRequestPolicy} from './request-policy.mjs';
 import {makeReport} from './report.mjs';
 import {accessSampleUrls} from './search-access.mjs';
+import {inspectSiteHealth,siteHealthFindings} from './site-health.mjs';
 
 export async function runScan(input,options={},hooks={}) {
   const url=normalizeHttpUrl(input).href;
   const progress=p=>hooks.progress?.(p);
   const facts={requestedUrl:url,finalUrl:url,scannedAt:new Date().toISOString(),pageType:classifyUrlType(url),responseStatus:null,responseHeaders:{},redirectChain:[],raw:null,access:{pageContentUsable:false},contentAnalysis:{usable:false,html:null,source:null},rendered:{enabled:options.render!==false,succeeded:false,pending:true},robots:{agents:{},sitemaps:[]},robotsByOrigin:{},siteSnapshot:disabledSiteSnapshot(),scanWarnings:[],scanComplete:false};
   let qa=null;let phase='access';
+  facts.siteHealth={enabled:false};
   const loadPolicy=async target=>{
     const origin=new URL(target).origin;
     if(!facts.robotsByOrigin[origin])facts.robotsByOrigin[origin]=await analyzeRobots(target);
@@ -59,10 +61,13 @@ export async function runScan(input,options={},hooks={}) {
       checkpoint();
     }
     phase='bot-policy';progress({stage:phase,message:'Evaluating search, user-request and training policies across the URL sample'});await completePolicies();
-    phase='links';progress({stage:phase,message:'Checking a bounded set of entry-page internal link targets'});
-    const links=await validateInternalLinks(facts,{limit:options.mode==='page'?10:20});
-    const linkGaps=links.results.filter(r=>!r.status||r.accessRestricted);
-    if(linkGaps.length)warning('Link-target checks',`${linkGaps.length} link-target checks were skipped, denied or inconclusive. They are not confirmed broken links.`);
+    phase='site-health';progress({stage:phase,message:'Checking a bounded sample of internal destinations for errors and redirects'});
+    facts.siteHealth=await inspectSiteHealth(facts,{mode:options.mode,maxTargets:options.mode==='page'?15:32});
+    const healthGaps=(facts.siteHealth.results||[]).filter(r=>['unverified','unknown'].includes(r.kind));
+    if(healthGaps.length>=Math.max(3,Math.ceil((facts.siteHealth.results||[]).length*.2)))warning('Site health',`${healthGaps.length} internal destination check${healthGaps.length===1?' was':'s were'} blocked, skipped or inconclusive. They are shown as unverified, not broken.`);
+    const entryKey=new URL(facts.finalUrl).href.replace(/\/+$/,'');
+    const entryResults=(facts.siteHealth.results||[]).filter(r=>(r.sources||[]).some(src=>String(src).replace(/\/+$/,'')===entryKey)).slice(0,20);
+    const links={enabled:!!facts.contentAnalysis?.usable,limit:20,sourceUrl:facts.finalUrl,checked:entryResults.length,results:entryResults};
     facts.requestPolicy=getRequestPolicy().summary();
     if(facts.requestPolicy.pausedOrigins.length)warning('Scanner access','Further requests were stopped after repeated denials or a target rate limit. Do not infer search-crawler blocking or missing content from uninspected pages.');
     qa=buildOnPageQa(facts,links);
@@ -70,7 +75,7 @@ export async function runScan(input,options={},hooks={}) {
     progress({stage:'recommendations',message:'Connecting observations to solutions and verification steps'});
     let pageFindings=[];
     try {pageFindings=generateFindings(facts).map(f=>({scope:'page',...f}));}catch(error){warning('Finding rules','Some page-level rules could not be evaluated.');}
-    const findings=[...pageFindings,...(facts.siteSnapshot.findings||[]),...(qa.findings||[])];
+    const findings=[...pageFindings,...(facts.siteSnapshot.findings||[]),...(qa.findings||[]),...siteHealthFindings(facts.siteHealth)];
     const report=makeReport({facts,onPageQa:qa,findings},true);
     hooks.checkpoint?.(report);return report;
   }catch(error){
