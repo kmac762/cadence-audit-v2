@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<title>Cadence Search | Sales Audit Workspace V2</title>
+<link rel="icon" href="/assets/favicon.svg?v=2.0.0-rc.5" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/brand.css?v=2.0.0-rc.5">
+<link rel="stylesheet" href="/assets/styles.css?v=2.0.0-rc.5">
+<script type="module" src="/assets/app.js?v=2.0.0-rc.5"></script>
+</head>
+<body>
+<header class="masthead"><a href="/" class="wordmark brand-lockup" aria-label="Cadence Search home"><img class="brand-logo" src="/assets/brand-logo.svg?v=2.0.0-rc.5" width="1352" height="382" alt="Cadence Search"></a><div class="masthead-right"><span class="release-tag">V2 <span id="release">TEST RELEASE</span></span><button class="quiet" id="history-toggle">Recent scans</button></div></header>
+<main>
+<div class="test-notice">Separate test workspace. Do not replace the production app until real scans and the sales brief have been checked.</div>
+<section class="intro"><div><p class="eyebrow">SEARCH INTELLIGENCE. PRACTICAL SOLUTIONS.</p><h1>Better audits.<br><span>Clearer solutions.</span></h1><p class="intro-text">Find the opportunity. Explain why it matters. Show the client a practical path forward.</p></div><div class="intro-aside"><span class="tiny-label">THE WORKFLOW</span><p><b>01</b> Inspect a bounded sample</p><p><b>02</b> Verify the evidence</p><p><b>03</b> Build a solution-led brief</p></div></section>
+<section class="scan-card" aria-labelledby="scan-title"><div class="section-top"><div><p class="eyebrow">START HERE</p><h2 id="scan-title">What should we audit?</h2></div><span class="tag">Search + AI discovery + On-page</span></div>
+<form id="scan-form"><label for="url">Website or page URL</label><div class="url-row"><input id="url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="https://your-prospect.com" required maxlength="2048"><button type="submit" id="run" class="primary">Start audit <span aria-hidden="true">&rarr;</span></button></div><div class="scan-options"><label class="option-label">Scope<select id="mode"><option value="snapshot">Page + site sample</option><option value="page">Entry page only</option></select></label><label class="option-label">Sample size<select id="size"><option value="12">Quick: 12 / 24 pages</option><option value="18" selected>Balanced: 18 / 36 pages</option><option value="24">Broader: 24 / 48 pages</option></select></label><label class="render-option"><input type="checkbox" id="render" checked> Compare entry page in a browser</label></div><p class="hint">First count: HTML inspection sample. Second count: a larger link-mapping sample. Only the entry page is browser-rendered.</p></form>
+<div class="scan-footer"><button type="button" id="demo" class="text-button">Explore an example report</button><span>No AI key required. No AI-generated findings.</span></div><div id="notice" role="status" aria-live="polite"></div>
+<section id="progress" hidden aria-live="polite"><div class="section-top"><div><p class="eyebrow">SCAN IN PROGRESS</p><h3 id="stage">Preparing the worker</h3></div><button id="cancel" class="quiet">Cancel scan</button></div><div class="progress-track"><span></span></div><p id="progress-detail" class="hint"></p><p class="hint" id="job-reference"></p></section>
+</section>
+<aside id="history" hidden><div class="section-top"><h2>Recent scans in this browser</h2><button id="history-close" class="quiet">Close</button></div><p class="hint">Recent records are kept for up to 24 hours, with a 20-record service limit. Availability across restarts requires a persistent disk. Another browser cannot list this session's scans.</p><div id="history-list"></div></aside>
+<section id="report" hidden></section>
+<section class="privacy-note"><strong>No password is configured.</strong> Anyone who knows this address can initiate a scan. Noindex does not make the service private. Anonymous browser sessions separate scan records; rate limits limit use, not access.</section>
+</main>
+<footer><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 / search-focused candidate rc.5</span></footer>
+<dialog id="brief-dialog"><div class="section-top"><div><p class="eyebrow">RECORDING PREP</p><h2>Your sales brief</h2></div><button class="quiet" id="brief-close">Close</button></div><p class="hint">Selected recommendations are included only after you confirm reviewing the examples. Unreviewed suggestions are labeled.</p><textarea id="brief-text" readonly aria-label="Recording brief"></textarea><div class="dialog-actions"><button id="copy-brief" class="primary">Copy brief</button><span id="copy-status" role="status"></span></div></dialog>
+<noscript>This workspace requires JavaScript. Enable it to start or inspect a scan.</noscript>
+</body></html>
