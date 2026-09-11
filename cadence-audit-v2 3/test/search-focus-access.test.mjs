@@ -51,6 +51,7 @@ test('Search-first presentation refreshes saved recommendation copy without chan
  assert.equal(r.observation,'H1 missing on 14 pages.');
  assert.deepEqual(r.evidence,old.recommendations[0].evidence);
  assert.match(r.why,/Search visibility connection/);
- assert.match(r.talk,/supposed to rank for/);
+ assert.match(r.talk,/main topic obvious/i);
+ assert.doesNotMatch(r.talk,/14 pages|sampled|inspected HTML/i);
  assert.match(r.userNote,/Secondary benefit/);
 });

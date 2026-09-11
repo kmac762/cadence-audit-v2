@@ -274,6 +274,31 @@ export const PLAYBOOKS={
     "searchEffect": "First identify the actual affected search mechanism and confirm intent. Repetition makes implementation worth investigating; it does not prove commercial impact."
   }
 };
+
+// Plain-language client explanations. Evidence and sample counts stay in the
+// observation/evidence sections; these lines explain the meaning without
+// making the salesperson repeat scanner language.
+const CLIENT_EXPLANATIONS={
+  headings:"Each page should make its main topic obvious. We’d make sure the primary service or subject is clearly stated in the main heading so search engines have a cleaner understanding of what the page is about.",
+  titles:"The page title helps search engines and searchers understand what a result is about before the click. We’d make each important page specific and easy to distinguish so it has a clearer search identity.",
+  metadata:"The description is the page’s short sales message in search. We’d make it clear, specific and relevant so the result does a better job of explaining why someone should click.",
+  links:"Internal links help search engines find important pages and understand how the site’s topics connect. We’d make sure useful content naturally points to the services and pages the business most wants discovered.",
+  broken:"If an important link leads to an error, search engines may not reach the intended page through that path. We’d repair the route so the right content is consistently accessible.",
+  indexing:"If a page is meant to show up in search, its technical settings should all support that goal. We’d remove any accidental instructions that tell search engines not to crawl, index or prefer that page.",
+  access:"This means our scanner could not reach the page reliably. It does not automatically mean Google or AI search tools are blocked, so we’d treat it as a coverage limitation until real crawler access is verified.",
+  ai:"AI search tools use different crawlers and policies for search access, user requests and model training. We’d make sure the site allows the discovery access the business wants without changing training preferences unnecessarily.",
+  rendering:"Search engines need to be able to process the content that matters. We’d check whether important text or links depend too heavily on JavaScript and simplify that delivery only if it creates a real visibility risk.",
+  schema:"Structured data gives machines a clearer label for what a page represents. We’d use it where it accurately describes the business, service, product or author and where it supports a real search feature.",
+  sources:"For factual or research-heavy content, strong sources make important claims easier to verify. We’d strengthen the evidence behind the content where it matters, not add links just to check an SEO box.",
+  authors:"Clear authorship connects expert content to a real person and their expertise. We’d make that relationship easy to understand when it strengthens trust in the subject.",
+  images:"Search engines use image descriptions and surrounding content to understand meaningful visuals. We’d improve that context for images that actually support the page’s topic, product or service.",
+  international:"Search engines need clear signals about which language or regional page belongs to which audience. We’d make those relationships consistent so the right version is easier to surface.",
+  social:"This mainly affects how a page looks when it is shared, not whether it ranks. We’d improve it when social sharing matters, but it would not be a primary search recommendation.",
+  content:"Search visibility improves when a page clearly answers the questions people are actually searching for. We’d strengthen missing or unclear information so the page is more useful and more relevant without adding filler.",
+  template:"When the same issue appears across many pages, the most efficient fix is usually at the template or CMS level. We’d correct the source once and then verify the affected page types."
+};
+for(const [key,talk] of Object.entries(CLIENT_EXPLANATIONS))if(PLAYBOOKS[key])PLAYBOOKS[key].talk=talk;
+
 export const AI_RELEVANCE={
   headings:{level:'Supporting',why:'Google says its generative AI search features build on core Search systems and that standard SEO remains relevant. Clear page organization and descriptive headings can make the main topic and supporting sections easier to interpret, but there is no documented H1-specific AI citation factor.',effect:'Supported: stronger topic clarity in content that may be retrieved for AI-assisted search, especially in Google AI experiences that use the Search index. Not established: that adding an H1 earns an AI citation or improves visibility in ChatGPT, Claude or Perplexity.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'For AI-assisted discovery, this supports clearer topic and section interpretation, but we would not sell an H1 by itself as an AI citation tactic.'},
   titles:{level:'Supporting',why:'Google AI features draw from the Search index, so clear page identification and strong title signals remain part of the same foundation. Other AI search systems may also use page titles during retrieval, but provider-specific weighting is not documented.',effect:'Supported: clearer page identity within the same search foundation used by Google generative AI features. Not established: a direct title-to-citation effect in any AI answer engine.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'For AI search, this is supporting page-identification context rather than a direct citation lever.'},
@@ -293,6 +318,29 @@ export const AI_RELEVANCE={
   content:{level:'Strong supporting relevance',why:'Google now explicitly recommends unique, useful, non-commodity content for generative AI search and notes that AI features may use query fan-out to retrieve supporting pages across related subtopics. This makes depth, originality and clear topical coverage relevant to both classic and AI-assisted discovery.',effect:'Supported: alignment with documented Google generative AI guidance around unique, useful content and broader query coverage. Not established: guaranteed inclusion, a specific AI citation, or provider-wide behavior outside Google.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'This has strong AI-search relevance when the content is genuinely unique and useful: Google specifically emphasizes non-commodity content and broader subtopic retrieval in generative AI search.'},
   template:{level:'Depends on the underlying issue',why:'AI relevance follows the actual repeated problem. Indexing and crawler-access issues can be directly important; titles, headings, content and schema are generally supporting signals. A recurring template pattern is not itself an AI ranking factor.',effect:'Supported only after the repeated issue is identified and tied to a documented search or AI mechanism. Not established: AI visibility impact from repetition alone.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'The AI angle depends on the actual repeated issue. Access and indexing can be direct; content, headings and schema are usually supporting context rather than standalone AI ranking factors.'}
 };
+
+
+const CLIENT_AI_EXPLANATIONS={
+  headings:"For AI search, clearer headings can make the page’s topic and sections easier to interpret. They support understanding, but they are not a direct AI citation trigger.",
+  titles:"For AI-assisted search, a clear title helps identify what the page is about. It supports discovery, but it does not directly earn citations.",
+  metadata:"The AI connection here is small. Meta descriptions are mainly about traditional search-result messaging.",
+  links:"For AI search, strong internal links can make important pages easier to discover and connect to related topics. They support retrieval, but they do not guarantee a citation.",
+  broken:"If an AI search system truly receives the same error, it may not be able to use that page. We’d verify provider access before making that claim.",
+  indexing:"For Google’s AI search features, a page generally needs to be eligible for Google Search first. An accidental indexing block can therefore limit AI-search eligibility too.",
+  access:"Our scanner being blocked does not prove AI search is blocked. We’d need provider-specific policy or verified crawler evidence before saying that.",
+  ai:"This is a direct AI-access check. We’re making sure the search crawlers the business wants can reach public content while keeping training controls separate.",
+  rendering:"AI search systems still need usable page content. If important information only appears after complex rendering, we’d verify that it can still be retrieved reliably.",
+  schema:"Structured data can make entities and page meaning clearer to machines. It can support AI understanding, but it is not an AI-ranking shortcut.",
+  sources:"For AI discovery, clear sourcing can make factual content easier to verify and trust. Adding citations alone does not guarantee that an AI system will cite the page.",
+  authors:"Clear authorship can make expertise and responsibility easier to understand. It supports trust context, but it is not a direct AI-ranking signal.",
+  images:"Useful images can create additional discovery opportunities, including in AI-assisted search. Good image context helps, but alt text alone does not create AI visibility.",
+  international:"AI-assisted search still needs the correct language or regional page. Clear localization helps the right version enter the same search foundation.",
+  social:"There is very little AI-search impact here. Open Graph is mainly about social sharing.",
+  content:"This is one of the stronger AI-search opportunities. Original, useful content with clear topical depth gives AI-assisted search more valuable material to retrieve and reference.",
+  template:"The AI impact depends on the underlying issue. Access and indexing can be direct; headings, content and schema are usually supporting context."
+};
+for(const [key,talk] of Object.entries(CLIENT_AI_EXPLANATIONS))if(AI_RELEVANCE[key])AI_RELEVANCE[key].talk=talk;
+
 
 export function playbookKey(f){const s=[f.id,f.category,f.title].join(' ').toLowerCase();
  if(/automated-access|http-status|access-block/.test(s))return 'access';

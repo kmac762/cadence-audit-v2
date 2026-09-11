@@ -1,6 +1,6 @@
 # Cadence Search Audit Workspace V2
 
-**2.0.0-rc.6 | Separate staging candidate, not a production replacement**
+**2.0.0-rc.8 | Separate staging candidate, not a production replacement**
 
 The change is not another visual patch. This package contains one matched server,
 scanner adapter, recommendation library, browser interface and release manifest.
@@ -128,3 +128,8 @@ See docs/RC4-CHANGES.md and UPDATE-RC4.html. Defaults remain six scan starts per
 ## rc.5 Browser Assist
 
 For prospect sites that block the hosted scanner, rc.5 adds an optional Chrome Browser Assist workflow. Open a public page, click the extension, save the capture, and import it into the matching completed V2 audit. Browser evidence is rendered-page evidence only and does not verify initial HTML, firewall behavior, robots enforcement, or real search/AI crawler access. See `docs/RC5-CHANGES.md` and `browser-assist-extension/README.html`.
+
+
+## rc.8 plain-language client explanations
+
+rc.8 keeps the rc.7 search + AI relevance model, Browser Assist, crawler-policy checks, 403 handling, rate limits, branding, and scan behavior unchanged. It separates evidence from the client-facing explanation: sample counts and scanner details stay under **What we observed**, while **Simple client explanation** describes the meaning in plain language. Saved recommendations and Browser Assist recommendations refresh to the current explanation when opened. See `docs/RC8-CHANGES.md`.
