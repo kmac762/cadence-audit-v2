@@ -1,6 +1,6 @@
 {
   "name": "cadence-audit-v2",
-  "version": "2.0.0-rc.10",
+  "version": "2.0.0-rc.12",
   "type": "module",
   "private": true,
   "engines": {

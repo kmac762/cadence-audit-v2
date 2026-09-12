@@ -33,3 +33,20 @@ test('Similar article titles surface consolidation review cue',()=>{
  const f=analyzeContentFreshness(facts,{now:new Date('2026-09-12T00:00:00Z')});
  assert.equal(f.counts.consolidationCandidates,1);
 });
+
+
+test('Dedicated freshness pages are included even when the balanced sample has no article',()=>{
+ const article={usable:true,pageType:'article',requestedUrl:'https://example.com/post',finalUrl:'https://example.com/post',title:'Search Guide 2022',structuredDataDatePublishedValues:['2022-01-01'],structuredDataDateModifiedValues:[],titleYearReferences:[2022],metaDescriptionYearReferences:[],primaryYearReferences:[2021,2022,2023],sourceLinkYearReferences:[]};
+ const facts={siteSnapshot:{enabled:true,pages:[{usable:true,pageType:'home',finalUrl:'https://example.com/'}],relationshipPages:[],freshnessPages:[article],freshnessCoverage:{candidatesDiscovered:12,selected:8,attempted:8,usable:1},relationshipGraph:{sourceMetrics:[]}}};
+ const f=analyzeContentFreshness(facts,{now:new Date('2026-09-12T00:00:00Z')});
+ assert.equal(f.articlesReviewed,1);
+ assert.equal(f.coverage.candidatesDiscovered,12);
+ assert.equal(f.coverage.usable,1);
+});
+
+
+test('Client UI does not hide the Content Freshness module when an older saved report lacks freshness data', async()=>{
+ const source=await (await import('node:fs/promises')).readFile(new URL('../public/app.js',import.meta.url),'utf8');
+ assert.match(source,/This saved or partial scan does not contain content-freshness data/);
+ assert.doesNotMatch(source,/if\(!f\)return''/);
+});

@@ -7,10 +7,11 @@ const logoData='data:image/svg+xml;base64,'+(await fs.readFile(path.join(root,'p
 const iconData='data:image/svg+xml;base64,'+(await fs.readFile(path.join(root,'public/favicon.svg'))).toString('base64');
 html=html.replace(/src="\/assets\/brand-logo\.svg[^"]*"/, 'src="'+logoData+'"');
 html=html.replace(/<link rel="icon"[^>]*>/, '<link rel="icon" href="'+iconData+'" type="image/svg+xml">');
+html=html.replace(/src="\/assets\/favicon\.svg[^"]*"/g, 'src="'+iconData+'"');
 for(const name of ['brand','styles'])html=html.replace(new RegExp('<link rel="stylesheet" href="/assets/'+name+'\\.css[^>]*>'),'<style>\n'+await fs.readFile(path.join(root,'public',name+'.css'),'utf8')+'\n</style>');
 html=html.replace(/<script type="module" src="[^"]+"><\/script>/,'');
 const parts=[];for(const name of ['shared/release.mjs','shared/brief.mjs','public/demo.mjs','public/access-view.mjs','public/app.js'])parts.push((await fs.readFile(path.join(root,name),'utf8')).replace(/^import .*;\n/gm,'').replace(/^export /gm,''));
 const script="window.CADENCE_OFFLINE_PREVIEW=true;\n"+parts.join('\n');
 html=html.replace('</body>', '<script type="module">\n'+script.replace(/<\/script/gi,'<\\/script')+'\n</script>\n</body>');
-html=html.replace('Separate test workspace. Do not replace the production app until real scans and the sales brief have been checked.','OFFLINE PREVIEW - all report data is synthetic. Live scanning is disabled in this file.');
+html=html.replace(/Separate (?:V2 )?test workspace\.[^<]*/, 'OFFLINE PREVIEW - all report data is synthetic. Live scanning is disabled in this file.');
 await fs.writeFile(path.join(root,'docs','V2-preview.html'),html);

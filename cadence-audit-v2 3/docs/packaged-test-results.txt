@@ -1,970 +1,1006 @@
 
-> cadence-audit-v2@2.0.0-rc.9 test
+> cadence-audit-v2@2.0.0-rc.11 test
 > node --test test/*.test.mjs
 
 TAP version 13
 # Subtest: Every recommendation playbook has explicit AI relevance guidance
 ok 1 - Every recommendation playbook has explicit AI relevance guidance
   ---
-  duration_ms: 0.724033
+  duration_ms: 0.796753
   type: 'test'
   ...
 # Subtest: Report recommendations carry separate search and AI relevance fields
 ok 2 - Report recommendations carry separate search and AI relevance fields
   ---
-  duration_ms: 3.048981
+  duration_ms: 3.996999
   type: 'test'
   ...
 # Subtest: Sales brief discusses AI relevance without promising citations
 ok 3 - Sales brief discusses AI relevance without promising citations
   ---
-  duration_ms: 0.791835
+  duration_ms: 0.474176
   type: 'test'
   ...
 # Subtest: Browser Assist recommendations inherit AI relevance without claiming crawler verification
 ok 4 - Browser Assist recommendations inherit AI relevance without claiming crawler verification
   ---
-  duration_ms: 0.614638
+  duration_ms: 0.917535
   type: 'test'
   ...
 # Subtest: Branded entry page uses the supplied logo and versioned matched assets
 ok 5 - Branded entry page uses the supplied logo and versioned matched assets
   ---
-  duration_ms: 3.877221
+  duration_ms: 3.315105
   type: 'test'
   ...
 # Subtest: Logo is an embedded image, not external art or executable SVG content
 ok 6 - Logo is an embedded image, not external art or executable SVG content
   ---
-  duration_ms: 3.180639
+  duration_ms: 1.437921
   type: 'test'
   ...
 # Subtest: Offline preview includes its logo and has no external asset dependency
 ok 7 - Offline preview includes its logo and has no external asset dependency
   ---
-  duration_ms: 7.064741
+  duration_ms: 3.562748
   type: 'test'
   ...
-# Subtest: Brand text and button color pairs retain minimum readable contrast
-ok 8 - Brand text and button color pairs retain minimum readable contrast
+# Subtest: rc.11 site-style shell uses readable light workspace and dark hero pairs
+ok 8 - rc.11 site-style shell uses readable light workspace and dark hero pairs
   ---
-  duration_ms: 0.67576
+  duration_ms: 0.414976
+  type: 'test'
+  ...
+# Subtest: rc.11 entry shell includes site header, dark hero and light workspace hooks
+ok 9 - rc.11 entry shell includes site header, dark hero and light workspace hooks
+  ---
+  duration_ms: 1.564783
   type: 'test'
   ...
 # Subtest: Hosted logo route returns SVG under the unchanged asset security policy
-ok 9 - Hosted logo route returns SVG under the unchanged asset security policy
+ok 10 - Hosted logo route returns SVG under the unchanged asset security policy
   ---
-  duration_ms: 59.119416
+  duration_ms: 50.563312
   type: 'test'
   ...
 # Subtest: Search-access module is served as JavaScript and preserves noindex protection
-ok 10 - Search-access module is served as JavaScript and preserves noindex protection
+ok 11 - Search-access module is served as JavaScript and preserves noindex protection
   ---
-  duration_ms: 19.597445
+  duration_ms: 25.438534
   type: 'test'
   ...
 # Subtest: Browser Assist validates public same-origin captures and strips excess data
-ok 11 - Browser Assist validates public same-origin captures and strips excess data
+ok 12 - Browser Assist validates public same-origin captures and strips excess data
   ---
-  duration_ms: 2.195433
+  duration_ms: 0.945137
   type: 'test'
   ...
 # Subtest: Browser Assist rejects cross-origin captures
-ok 12 - Browser Assist rejects cross-origin captures
+ok 13 - Browser Assist rejects cross-origin captures
   ---
-  duration_ms: 0.504993
+  duration_ms: 0.408606
   type: 'test'
   ...
 # Subtest: Two rendered missing-H1 captures create search-first recommendation
-ok 13 - Two rendered missing-H1 captures create search-first recommendation
+ok 14 - Two rendered missing-H1 captures create search-first recommendation
   ---
-  duration_ms: 0.721028
+  duration_ms: 0.681408
   type: 'test'
   ...
 # Subtest: Browser Assist meta recommendation is snippet-focused rather than ranking claim
-ok 14 - Browser Assist meta recommendation is snippet-focused rather than ranking claim
+ok 15 - Browser Assist meta recommendation is snippet-focused rather than ranking claim
   ---
-  duration_ms: 0.322537
+  duration_ms: 0.248175
   type: 'test'
   ...
 # Subtest: Merging captures labels them separately and never marks server access verified
-ok 15 - Merging captures labels them separately and never marks server access verified
+ok 16 - Merging captures labels them separately and never marks server access verified
   ---
-  duration_ms: 0.566865
+  duration_ms: 0.696682
   type: 'test'
   ...
 # Subtest: Job manager persists Browser Assist imports only after terminal report
-ok 16 - Job manager persists Browser Assist imports only after terminal report
+ok 17 - Job manager persists Browser Assist imports only after terminal report
   ---
-  duration_ms: 16.418512
+  duration_ms: 8.76367
   type: 'test'
   ...
 # Subtest: Browser Assist keeps blocked link checks unverified and can recommend real broken destinations
-ok 17 - Browser Assist keeps blocked link checks unverified and can recommend real broken destinations
+ok 18 - Browser Assist keeps blocked link checks unverified and can recommend real broken destinations
   ---
-  duration_ms: 0.639695
+  duration_ms: 0.72232
   type: 'test'
   ...
 # Subtest: Merged Browser Assist reports bounded link-health counts
-ok 18 - Merged Browser Assist reports bounded link-health counts
+ok 19 - Merged Browser Assist reports bounded link-health counts
   ---
-  duration_ms: 0.340303
+  duration_ms: 0.308917
+  type: 'test'
+  ...
+# Subtest: Browser Assist can surface a multi-signal content freshness review without calling age alone a problem
+ok 20 - Browser Assist can surface a multi-signal content freshness review without calling age alone a problem
+  ---
+  duration_ms: 0.648439
   type: 'test'
   ...
 # Subtest: Real Chromium executes a controlled hydration fixture and returns usable primary content
-ok 19 - Real Chromium executes a controlled hydration fixture and returns usable primary content
+ok 21 - Real Chromium executes a controlled hydration fixture and returns usable primary content
   ---
-  duration_ms: 2933.179323
+  duration_ms: 2893.072612
+  type: 'test'
+  ...
+# Subtest: HTML analyzer extracts editorial dates and year references
+ok 22 - HTML analyzer extracts editorial dates and year references
+  ---
+  duration_ms: 9.104154
+  type: 'test'
+  ...
+# Subtest: Content freshness never flags age alone
+ok 23 - Content freshness never flags age alone
+  ---
+  duration_ms: 0.932167
+  type: 'test'
+  ...
+# Subtest: Multiple stale signals create a refresh candidate
+ok 24 - Multiple stale signals create a refresh candidate
+  ---
+  duration_ms: 0.310398
+  type: 'test'
+  ...
+# Subtest: Similar article titles surface consolidation review cue
+ok 25 - Similar article titles surface consolidation review cue
+  ---
+  duration_ms: 0.435438
   type: 'test'
   ...
 # Subtest: Browser CONNECT proxy rejects local and cloud metadata destinations
-ok 20 - Browser CONNECT proxy rejects local and cloud metadata destinations
+ok 26 - Browser CONNECT proxy rejects local and cloud metadata destinations
   ---
-  duration_ms: 18.535442
+  duration_ms: 17.809276
   type: 'test'
   ...
 # Subtest: Browser CONNECT proxy fails closed when a public hostname fails destination validation
-ok 21 - Browser CONNECT proxy fails closed when a public hostname fails destination validation
+ok 27 - Browser CONNECT proxy fails closed when a public hostname fails destination validation
   ---
-  duration_ms: 2.187662
+  duration_ms: 6.09459
   type: 'test'
   ...
 # Subtest: A mismatched frontend file prevents release startup instead of mixing versions
-ok 22 - A mismatched frontend file prevents release startup instead of mixing versions
+ok 28 - A mismatched frontend file prevents release startup instead of mixing versions
   ---
-  duration_ms: 18.81876
+  duration_ms: 11.706343
   type: 'test'
   ...
 # Subtest: HTML analyzer extracts core signals
-ok 23 - HTML analyzer extracts core signals
+ok 29 - HTML analyzer extracts core signals
   ---
-  duration_ms: 13.343225
+  duration_ms: 12.411177
   type: 'test'
   ...
 # Subtest: network guard blocks common private ranges
-ok 24 - network guard blocks common private ranges
+ok 30 - network guard blocks common private ranges
   ---
-  duration_ms: 3.521134
+  duration_ms: 4.433113
   type: 'test'
   ...
 # Subtest: rule engine prioritizes noindex and canonical mismatch
-ok 25 - rule engine prioritizes noindex and canonical mismatch
+ok 31 - rule engine prioritizes noindex and canonical mismatch
   ---
-  duration_ms: 1.751393
+  duration_ms: 2.243757
   type: 'test'
   ...
 # Subtest: Node 22 compatible pinned DNS lookup supports all-address mode
-ok 26 - Node 22 compatible pinned DNS lookup supports all-address mode
+ok 32 - Node 22 compatible pinned DNS lookup supports all-address mode
   ---
-  duration_ms: 17.862707
+  duration_ms: 17.408406
   type: 'test'
   ...
 # Subtest: render quality rejects an obviously collapsed browser render
-ok 27 - render quality rejects an obviously collapsed browser render
+ok 33 - render quality rejects an obviously collapsed browser render
   ---
-  duration_ms: 11.416759
+  duration_ms: 11.35401
   type: 'test'
   ...
 # Subtest: render quality accepts a plausible rendered page
-ok 28 - render quality accepts a plausible rendered page
+ok 34 - render quality accepts a plausible rendered page
   ---
-  duration_ms: 0.289847
+  duration_ms: 0.322787
   type: 'test'
   ...
 # Subtest: CDN-style 403 is classified as access interference rather than a confirmed broken page
-ok 29 - CDN-style 403 is classified as access interference rather than a confirmed broken page
+ok 35 - CDN-style 403 is classified as access interference rather than a confirmed broken page
   ---
-  duration_ms: 0.713917
+  duration_ms: 0.710353
   type: 'test'
   ...
 # Subtest: render quality rejects tiny output even when raw fetch was also blocked
-ok 30 - render quality rejects tiny output even when raw fetch was also blocked
+ok 36 - render quality rejects tiny output even when raw fetch was also blocked
   ---
-  duration_ms: 0.199511
+  duration_ms: 0.138419
   type: 'test'
   ...
 # Subtest: primary content analysis excludes navigation and footer boilerplate
-ok 31 - primary content analysis excludes navigation and footer boilerplate
+ok 37 - primary content analysis excludes navigation and footer boilerplate
   ---
-  duration_ms: 2.819896
+  duration_ms: 2.740738
   type: 'test'
   ...
 # Subtest: render rule compares primary content rather than whole-page boilerplate
-ok 32 - render rule compares primary content rather than whole-page boilerplate
+ok 38 - render rule compares primary content rather than whole-page boilerplate
   ---
-  duration_ms: 0.49051
+  duration_ms: 0.492994
   type: 'test'
   ...
 # Subtest: URL classifier distinguishes common site templates
-ok 33 - URL classifier distinguishes common site templates
+ok 39 - URL classifier distinguishes common site templates
   ---
-  duration_ms: 0.396218
+  duration_ms: 0.359523
   type: 'test'
   ...
 # Subtest: balanced site sampler deliberately mixes template types
-ok 34 - balanced site sampler deliberately mixes template types
+ok 40 - balanced site sampler deliberately mixes template types
   ---
-  duration_ms: 0.979799
+  duration_ms: 0.916193
   type: 'test'
   ...
 # Subtest: healthy page can surface a visibility opportunity without inventing a technical issue
-ok 35 - healthy page can surface a visibility opportunity without inventing a technical issue
+ok 41 - healthy page can surface a visibility opportunity without inventing a technical issue
   ---
-  duration_ms: 0.346643
+  duration_ms: 0.302256
   type: 'test'
   ...
 # Subtest: HTML analyzer detects authorship, breadcrumbs, and dense passage metrics
-ok 36 - HTML analyzer detects authorship, breadcrumbs, and dense passage metrics
+ok 42 - HTML analyzer detects authorship, breadcrumbs, and dense passage metrics
   ---
-  duration_ms: 0.912988
+  duration_ms: 0.892377
   type: 'test'
   ...
 # Subtest: site snapshot can flag audited URL missing from sitemap without calling it a confirmed issue
-ok 37 - site snapshot can flag audited URL missing from sitemap without calling it a confirmed issue
+ok 43 - site snapshot can flag audited URL missing from sitemap without calling it a confirmed issue
   ---
-  duration_ms: 1.117887
+  duration_ms: 1.184919
   type: 'test'
   ...
 # Subtest: site sample cross-link check stays framed as manual review
-ok 38 - site sample cross-link check stays framed as manual review
+ok 44 - site sample cross-link check stays framed as manual review
   ---
-  duration_ms: 0.685304
+  duration_ms: 0.594948
   type: 'test'
   ...
 # Subtest: deterministic audit brief ranks verified findings without inventing new IDs
-ok 39 - deterministic audit brief ranks verified findings without inventing new IDs
+ok 45 - deterministic audit brief ranks verified findings without inventing new IDs
   ---
-  duration_ms: 1.265279
+  duration_ms: 0.845456
   type: 'test'
   ...
 # Subtest: AI audit brief accepts only supplied finding keys
-ok 40 - AI audit brief accepts only supplied finding keys
+ok 46 - AI audit brief accepts only supplied finding keys
   ---
-  duration_ms: 1.541136
+  duration_ms: 0.806267
   type: 'test'
   ...
 # Subtest: HTML analyzer measures generic contextual anchor text and heading jumps
-ok 41 - HTML analyzer measures generic contextual anchor text and heading jumps
+ok 47 - HTML analyzer measures generic contextual anchor text and heading jumps
   ---
-  duration_ms: 1.31191
+  duration_ms: 2.513434
   type: 'test'
   ...
 # Subtest: page rules can surface generic anchor text as a visibility opportunity
-ok 42 - page rules can surface generic anchor text as a visibility opportunity
+ok 48 - page rules can surface generic anchor text as a visibility opportunity
   ---
-  duration_ms: 1.316857
+  duration_ms: 0.595268
   type: 'test'
   ...
 # Subtest: site rules flag redirects in sitemap samples and inconsistent canonical coverage
-ok 43 - site rules flag redirects in sitemap samples and inconsistent canonical coverage
+ok 49 - site rules flag redirects in sitemap samples and inconsistent canonical coverage
   ---
-  duration_ms: 2.606263
+  duration_ms: 0.440615
   type: 'test'
   ...
 # Subtest: relationship graph surfaces weak article-to-commercial pathways without calling them errors
-ok 44 - relationship graph surfaces weak article-to-commercial pathways without calling them errors
+ok 50 - relationship graph surfaces weak article-to-commercial pathways without calling them errors
   ---
-  duration_ms: 3.775698
+  duration_ms: 1.693697
   type: 'test'
   ...
 # Subtest: relationship graph does not flag article/service pathways when contextual connections are present
-ok 45 - relationship graph does not flag article/service pathways when contextual connections are present
+ok 51 - relationship graph does not flag article/service pathways when contextual connections are present
   ---
-  duration_ms: 1.223196
+  duration_ms: 0.694018
   type: 'test'
   ...
 # Subtest: relationship graph can surface sampled contextual inbound coverage as manual review
-ok 46 - relationship graph can surface sampled contextual inbound coverage as manual review
+ok 52 - relationship graph can surface sampled contextual inbound coverage as manual review
   ---
-  duration_ms: 1.224558
+  duration_ms: 0.657803
   type: 'test'
   ...
 # Subtest: HTML analyzer distinguishes source-like citations from ordinary external links
-ok 47 - HTML analyzer distinguishes source-like citations from ordinary external links
+ok 53 - HTML analyzer distinguishes source-like citations from ordinary external links
   ---
-  duration_ms: 1.936142
+  duration_ms: 1.374486
   type: 'test'
   ...
 # Subtest: HTML analyzer captures explicit author profile and entity identity details
-ok 48 - HTML analyzer captures explicit author profile and entity identity details
+ok 54 - HTML analyzer captures explicit author profile and entity identity details
   ---
-  duration_ms: 0.758735
+  duration_ms: 1.518477
   type: 'test'
   ...
 # Subtest: template profiles compare page-type medians and editorial signals
-ok 49 - template profiles compare page-type medians and editorial signals
+ok 55 - template profiles compare page-type medians and editorial signals
   ---
-  duration_ms: 1.04736
+  duration_ms: 0.462378
   type: 'test'
   ...
 # Subtest: relationship citation finding counts source-like citations rather than any external link
-ok 50 - relationship citation finding counts source-like citations rather than any external link
+ok 56 - relationship citation finding counts source-like citations rather than any external link
   ---
-  duration_ms: 0.554937
+  duration_ms: 0.400444
   type: 'test'
   ...
 # Subtest: relationship graph surfaces low contextual support for sampled commercial pages
-ok 51 - relationship graph surfaces low contextual support for sampled commercial pages
+ok 57 - relationship graph surfaces low contextual support for sampled commercial pages
   ---
-  duration_ms: 0.845225
+  duration_ms: 0.535589
   type: 'test'
   ...
 # Subtest: verification metadata explains sampled internal-link limitations
-ok 52 - verification metadata explains sampled internal-link limitations
+ok 58 - verification metadata explains sampled internal-link limitations
   ---
-  duration_ms: 0.445943
+  duration_ms: 0.297509
   type: 'test'
   ...
 # Subtest: verification metadata describes the source-like citation classifier conservatively
-ok 53 - verification metadata describes the source-like citation classifier conservatively
+ok 59 - verification metadata describes the source-like citation classifier conservatively
   ---
-  duration_ms: 0.249546
+  duration_ms: 0.178169
   type: 'test'
   ...
 # Subtest: attachVerification preserves finding fields and adds confidence guidance
-ok 54 - attachVerification preserves finding fields and adds confidence guidance
+ok 60 - attachVerification preserves finding fields and adds confidence guidance
   ---
-  duration_ms: 0.320824
+  duration_ms: 0.240263
   type: 'test'
   ...
 # Subtest: review payload validation accepts supported decisions and rejects unsupported ones
-ok 55 - review payload validation accepts supported decisions and rejects unsupported ones
+ok 61 - review payload validation accepts supported decisions and rejects unsupported ones
   ---
-  duration_ms: 0.584212
+  duration_ms: 0.436168
   type: 'test'
   ...
 # Subtest: review decisions append to a local JSONL feedback log
-ok 56 - review decisions append to a local JSONL feedback log
+ok 62 - review decisions append to a local JSONL feedback log
   ---
-  duration_ms: 26.100458
+  duration_ms: 17.395591
   type: 'test'
   ...
 # Subtest: HTML analyzer captures on-page QA metadata, multiple H1s, images, and hreflang
-ok 57 - HTML analyzer captures on-page QA metadata, multiple H1s, images, and hreflang
+ok 63 - HTML analyzer captures on-page QA metadata, multiple H1s, images, and hreflang
   ---
-  duration_ms: 5.597247
+  duration_ms: 1.400544
   type: 'test'
   ...
 # Subtest: On-Page QA separates routine review cues from confirmed issues
-ok 58 - On-Page QA separates routine review cues from confirmed issues
+ok 64 - On-Page QA separates routine review cues from confirmed issues
   ---
-  duration_ms: 4.158095
+  duration_ms: 6.126028
   type: 'test'
   ...
 # Subtest: On-Page QA can promote repeated missing meta descriptions without calling them a ranking error
-ok 59 - On-Page QA can promote repeated missing meta descriptions without calling them a ranking error
+ok 65 - On-Page QA can promote repeated missing meta descriptions without calling them a ranking error
   ---
-  duration_ms: 7.370703
+  duration_ms: 1.327564
   type: 'test'
   ...
 # Subtest: deterministic audit brief includes a paced recording plan tied to selected findings
-ok 60 - deterministic audit brief includes a paced recording plan tied to selected findings
+ok 66 - deterministic audit brief includes a paced recording plan tied to selected findings
   ---
-  duration_ms: 0.314154
+  duration_ms: 0.306173
   type: 'test'
   ...
 # Subtest: On-Page QA exposes observation totals, recurring template patterns, and per-page module summaries
-ok 61 - On-Page QA exposes observation totals, recurring template patterns, and per-page module summaries
+ok 67 - On-Page QA exposes observation totals, recurring template patterns, and per-page module summaries
   ---
-  duration_ms: 1.094041
+  duration_ms: 1.136826
   type: 'test'
   ...
 # Subtest: AI recording plan validates selected finding keys and keeps generated plan framing separate from evidence
-ok 62 - AI recording plan validates selected finding keys and keeps generated plan framing separate from evidence
+ok 68 - AI recording plan validates selected finding keys and keeps generated plan framing separate from evidence
   ---
-  duration_ms: 0.536389
+  duration_ms: 0.514106
   type: 'test'
   ...
 # Subtest: On-Page QA promotes repeated confirmed title/meta/H1 implementation problems into a systemic finding
-ok 63 - On-Page QA promotes repeated confirmed title/meta/H1 implementation problems into a systemic finding
+ok 69 - On-Page QA promotes repeated confirmed title/meta/H1 implementation problems into a systemic finding
   ---
-  duration_ms: 5.740944
+  duration_ms: 7.219168
   type: 'test'
   ...
 # Subtest: priority tuning merges overlapping article-to-commercial and commercial-inbound findings
-ok 64 - priority tuning merges overlapping article-to-commercial and commercial-inbound findings
+ok 70 - priority tuning merges overlapping article-to-commercial and commercial-inbound findings
   ---
-  duration_ms: 0.515207
+  duration_ms: 0.369237
   type: 'test'
   ...
 # Subtest: priority tuning favors variety and allows systemic on-page problems to outrank softer duplicate architecture points
-ok 65 - priority tuning favors variety and allows systemic on-page problems to outrank softer duplicate architecture points
+ok 71 - priority tuning favors variety and allows systemic on-page problems to outrank softer duplicate architecture points
   ---
-  duration_ms: 0.241665
+  duration_ms: 0.223448
   type: 'test'
   ...
 # Subtest: priority tuning does not pad the brief with weak below-threshold housekeeping
-ok 66 - priority tuning does not pad the brief with weak below-threshold housekeeping
+ok 72 - priority tuning does not pad the brief with weak below-threshold housekeeping
   ---
-  duration_ms: 0.120873
+  duration_ms: 0.156326
   type: 'test'
   ...
 # Subtest: production session tokens expire and reject tampering
-ok 67 - production session tokens expire and reject tampering
+ok 73 - production session tokens expire and reject tampering
   ---
-  duration_ms: 0.552704
+  duration_ms: 0.552434
   type: 'test'
   ...
 # Subtest: production cookie parser and host allowlist behave conservatively
-ok 68 - production cookie parser and host allowlist behave conservatively
+ok 74 - production cookie parser and host allowlist behave conservatively
   ---
-  duration_ms: 0.276517
+  duration_ms: 0.281355
   type: 'test'
   ...
 # Subtest: scan rate limiter enforces a rolling request cap
-ok 69 - scan rate limiter enforces a rolling request cap
+ok 75 - scan rate limiter enforces a rolling request cap
   ---
-  duration_ms: 0.175515
+  duration_ms: 1.052278
   type: 'test'
   ...
 # Subtest: browser request guard blocks private and unsupported targets
-ok 70 - browser request guard blocks private and unsupported targets
+ok 76 - browser request guard blocks private and unsupported targets
   ---
-  duration_ms: 0.486644
+  duration_ms: 0.389789
   type: 'test'
   ...
 # Subtest: hosted review log can write to configured persistent data directory
-ok 71 - hosted review log can write to configured persistent data directory
+ok 77 - hosted review log can write to configured persistent data directory
   ---
-  duration_ms: 7.684797
+  duration_ms: 5.920979
   type: 'test'
   ...
 # Subtest: client explanations describe meaning instead of repeating scanner evidence
-ok 72 - client explanations describe meaning instead of repeating scanner evidence
+ok 78 - client explanations describe meaning instead of repeating scanner evidence
   ---
-  duration_ms: 1.279821
+  duration_ms: 1.094012
   type: 'test'
   ...
 # Subtest: AI plain-English explanations avoid sample language
-ok 73 - AI plain-English explanations avoid sample language
+ok 79 - AI plain-English explanations avoid sample language
   ---
-  duration_ms: 0.274253
+  duration_ms: 0.243448
   type: 'test'
   ...
 # Subtest: new recommendations keep observation and client explanation separate
-ok 74 - new recommendations keep observation and client explanation separate
+ok 80 - new recommendations keep observation and client explanation separate
   ---
-  duration_ms: 4.292608
+  duration_ms: 3.017185
   type: 'test'
   ...
 # Subtest: saved reports refresh the simple explanation without changing observation
-ok 75 - saved reports refresh the simple explanation without changing observation
+ok 81 - saved reports refresh the simple explanation without changing observation
   ---
-  duration_ms: 0.324399
+  duration_ms: 0.246833
   type: 'test'
   ...
 # Subtest: saved Browser Assist recommendations also receive current plain-language explanation
-ok 76 - saved Browser Assist recommendations also receive current plain-language explanation
+ok 82 - saved Browser Assist recommendations also receive current plain-language explanation
   ---
-  duration_ms: 0.157938
+  duration_ms: 0.390479
   type: 'test'
   ...
 # Subtest: Browser Assist talk is meaning-first rather than capture-count-first
-ok 77 - Browser Assist talk is meaning-first rather than capture-count-first
+ok 83 - Browser Assist talk is meaning-first rather than capture-count-first
   ---
-  duration_ms: 0.717723
+  duration_ms: 0.790013
   type: 'test'
   ...
 # Subtest: sales brief labels the plain explanation separately from observation
-ok 78 - sales brief labels the plain explanation separately from observation
+ok 84 - sales brief labels the plain explanation separately from observation
   ---
-  duration_ms: 0.835401
+  duration_ms: 0.528448
   type: 'test'
   ...
 # Subtest: 24 unique registry tokens include the new Mistral split and two policy-only controls
-ok 79 - 24 unique registry tokens include the new Mistral split and two policy-only controls
+ok 85 - 24 unique registry tokens include the new Mistral split and two policy-only controls
   ---
-  duration_ms: 1.086119
+  duration_ms: 1.173081
   type: 'test'
   ...
 # Subtest: OpenAI search and training policies remain independent and training is not promoted
-ok 80 - OpenAI search and training policies remain independent and training is not promoted
+ok 86 - OpenAI search and training policies remain independent and training is not promoted
   ---
-  duration_ms: 3.284116
+  duration_ms: 3.435927
   type: 'test'
   ...
 # Subtest: Google-Extended is mixed-use context, not an AI Overviews block or a network crawler
-ok 81 - Google-Extended is mixed-use context, not an AI Overviews block or a network crawler
+ok 87 - Google-Extended is mixed-use context, not an AI Overviews block or a network crawler
   ---
-  duration_ms: 0.972127
+  duration_ms: 1.175805
   type: 'test'
   ...
 # Subtest: Anthropic user-requested agent is robots-governed and can create a policy review
-ok 82 - Anthropic user-requested agent is robots-governed and can create a policy review
+ok 88 - Anthropic user-requested agent is robots-governed and can create a policy review
   ---
-  duration_ms: 2.888815
+  duration_ms: 1.552814
   type: 'test'
   ...
 # Subtest: Advisory user fetcher rules never become proof of provider blocking
-ok 83 - Advisory user fetcher rules never become proof of provider blocking
+ok 89 - Advisory user fetcher rules never become proof of provider blocking
   ---
-  duration_ms: 1.524381
+  duration_ms: 1.370358
   type: 'test'
   ...
 # Subtest: Documentation gaps remain labeled, do not create search recommendations
-ok 84 - Documentation gaps remain labeled, do not create search recommendations
+ok 90 - Documentation gaps remain labeled, do not create search recommendations
   ---
-  duration_ms: 2.039338
+  duration_ms: 1.425381
   type: 'test'
   ...
 # Subtest: Explicit missing robots file is distinct from an allow rule
-ok 85 - Explicit missing robots file is distinct from an allow rule
+ok 91 - Explicit missing robots file is distinct from an allow rule
   ---
-  duration_ms: 0.442788
+  duration_ms: 0.419684
   type: 'test'
   ...
 # Subtest: 401 403 429 and 5xx responses are unknown rather than assumed provider block or allow
-ok 86 - 401 403 429 and 5xx responses are unknown rather than assumed provider block or allow
+ok 92 - 401 403 429 and 5xx responses are unknown rather than assumed provider block or allow
   ---
-  duration_ms: 1.108773
+  duration_ms: 1.227433
   type: 'test'
   ...
 # Subtest: A 200 HTML challenge is never parsed as an allow-all policy
-ok 87 - A 200 HTML challenge is never parsed as an allow-all policy
+ok 93 - A 200 HTML challenge is never parsed as an allow-all policy
   ---
-  duration_ms: 0.304851
+  duration_ms: 0.28462
   type: 'test'
   ...
 # Subtest: A challenge-marked 404 is unknown rather than no-file
-ok 88 - A challenge-marked 404 is unknown rather than no-file
+ok 94 - A challenge-marked 404 is unknown rather than no-file
   ---
-  duration_ms: 1.180392
+  duration_ms: 0.871385
   type: 'test'
   ...
 # Subtest: A legitimate Disallow captcha path is not mistaken for a security challenge
-ok 89 - A legitimate Disallow captcha path is not mistaken for a security challenge
+ok 95 - A legitimate Disallow captcha path is not mistaken for a security challenge
   ---
-  duration_ms: 0.293833
+  duration_ms: 0.295927
   type: 'test'
   ...
 # Subtest: Oversized policy is not silently truncated to an allow
-ok 90 - Oversized policy is not silently truncated to an allow
+ok 96 - Oversized policy is not silently truncated to an allow
   ---
-  duration_ms: 1.588798
+  duration_ms: 1.68237
   type: 'test'
   ...
 # Subtest: Malformed and unsupported policy syntax stays unknown with review context
-ok 91 - Malformed and unsupported policy syntax stays unknown with review context
+ok 97 - Malformed and unsupported policy syntax stays unknown with review context
   ---
-  duration_ms: 0.180012
+  duration_ms: 0.188595
   type: 'test'
   ...
 # Subtest: Empty and comments-only successful policies are permitted with no invented allow rule
-ok 92 - Empty and comments-only successful policies are permitted with no invented allow rule
+ok 98 - Empty and comments-only successful policies are permitted with no invented allow rule
   ---
-  duration_ms: 0.255686
+  duration_ms: 0.353965
   type: 'test'
   ...
 # Subtest: BOM, CR line endings, same-token groups and allow on equal specificity work with evidence lines
-ok 93 - BOM, CR line endings, same-token groups and allow on equal specificity work with evidence lines
+ok 99 - BOM, CR line endings, same-token groups and allow on equal specificity work with evidence lines
   ---
-  duration_ms: 0.809812
+  duration_ms: 0.666646
   type: 'test'
   ...
 # Subtest: Named empty Disallow does not merge with the next bot group or wildcard restrictions
-ok 94 - Named empty Disallow does not merge with the next bot group or wildcard restrictions
+ok 100 - Named empty Disallow does not merge with the next bot group or wildcard restrictions
   ---
-  duration_ms: 0.113201
+  duration_ms: 0.143256
   type: 'test'
   ...
 # Subtest: Rules match case-sensitive paths and support terminal anchors and query strings
-ok 95 - Rules match case-sensitive paths and support terminal anchors and query strings
+ok 101 - Rules match case-sensitive paths and support terminal anchors and query strings
   ---
-  duration_ms: 0.154824
+  duration_ms: 0.162665
   type: 'test'
   ...
 # Subtest: URL encoding normalization covers unreserved ASCII and UTF-8 without decoding reserved slashes
-ok 96 - URL encoding normalization covers unreserved ASCII and UTF-8 without decoding reserved slashes
+ok 102 - URL encoding normalization covers unreserved ASCII and UTF-8 without decoding reserved slashes
   ---
-  duration_ms: 0.282366
+  duration_ms: 0.208104
   type: 'test'
   ...
 # Subtest: The robots file itself is implicitly allowed
-ok 97 - The robots file itself is implicitly allowed
+ok 103 - The robots file itself is implicitly allowed
   ---
-  duration_ms: 0.10615
+  duration_ms: 0.088694
   type: 'test'
   ...
 # Subtest: Applebot documented Googlebot fallback is shown, without affecting Extended control
-ok 98 - Applebot documented Googlebot fallback is shown, without affecting Extended control
+ok 104 - Applebot documented Googlebot fallback is shown, without affecting Extended control
   ---
-  duration_ms: 0.263708
+  duration_ms: 0.279822
   type: 'test'
   ...
 # Subtest: Explicit Applebot group overrides the Googlebot fallback
-ok 99 - Explicit Applebot group overrides the Googlebot fallback
+ok 105 - Explicit Applebot group overrides the Googlebot fallback
   ---
-  duration_ms: 0.184418
+  duration_ms: 0.249386
   type: 'test'
   ...
 # Subtest: Amazon unspecified fallback remains unknown instead of inventing a precedence
-ok 100 - Amazon unspecified fallback remains unknown instead of inventing a precedence
+ok 106 - Amazon unspecified fallback remains unknown instead of inventing a precedence
   ---
-  duration_ms: 0.249527
+  duration_ms: 0.212581
   type: 'test'
   ...
 # Subtest: Explicit Amazon search group produces a direct policy result
-ok 101 - Explicit Amazon search group produces a direct policy result
+ok 107 - Explicit Amazon search group produces a direct policy result
   ---
-  duration_ms: 0.181134
+  duration_ms: 0.169325
   type: 'test'
   ...
 # Subtest: A robots policy is never borrowed by an uninspected subdomain or HTTP origin
-ok 102 - A robots policy is never borrowed by an uninspected subdomain or HTTP origin
+ok 108 - A robots policy is never borrowed by an uninspected subdomain or HTTP origin
   ---
-  duration_ms: 0.741108
+  duration_ms: 0.831085
   type: 'test'
   ...
 # Subtest: Homepage permission and a specific service-path disallow are not collapsed into one status
-ok 103 - Homepage permission and a specific service-path disallow are not collapsed into one status
+ok 109 - Homepage permission and a specific service-path disallow are not collapsed into one status
   ---
-  duration_ms: 0.920208
+  duration_ms: 0.962623
   type: 'test'
   ...
 # Subtest: URL samples preserve origins, remove fragments, and stay bounded
-ok 104 - URL samples preserve origins, remove fragments, and stay bounded
+ok 110 - URL samples preserve origins, remove fragments, and stay bounded
   ---
-  duration_ms: 1.814538
+  duration_ms: 1.714589
   type: 'test'
   ...
 # Subtest: Expanded coverage adds no per-bot page requests: one robots fetch per origin
-ok 105 - Expanded coverage adds no per-bot page requests: one robots fetch per origin
+ok 111 - Expanded coverage adds no per-bot page requests: one robots fetch per origin
   ---
-  duration_ms: 83.671949
+  duration_ms: 69.5794
   type: 'test'
   ...
 # Subtest: Page-only mode evaluates the requested and redirected origin independently
-ok 106 - Page-only mode evaluates the requested and redirected origin independently
+ok 112 - Page-only mode evaluates the requested and redirected origin independently
   ---
-  duration_ms: 8.102417
+  duration_ms: 7.142142
   type: 'test'
   ...
 # Subtest: Scanner 403 and robots permission are independent evidence
-ok 107 - Scanner 403 and robots permission are independent evidence
+ok 113 - Scanner 403 and robots permission are independent evidence
   ---
-  duration_ms: 0.653145
+  duration_ms: 0.532724
   type: 'test'
   ...
 # Subtest: Policy recommendation uses specific evidence and a solution, never promotes only GPTBot
-ok 108 - Policy recommendation uses specific evidence and a solution, never promotes only GPTBot
+ok 114 - Policy recommendation uses specific evidence and a solution, never promotes only GPTBot
   ---
-  duration_ms: 1.653615
+  duration_ms: 1.002954
   type: 'test'
   ...
 # Subtest: Brief retains policy versus actual-access qualification
-ok 109 - Brief retains policy versus actual-access qualification
+ok 115 - Brief retains policy versus actual-access qualification
   ---
-  duration_ms: 0.852507
+  duration_ms: 0.760919
   type: 'test'
   ...
 # Subtest: Policy UI escapes untrusted rule text and never creates executable links
-ok 110 - Policy UI escapes untrusted rule text and never creates executable links
+ok 116 - Policy UI escapes untrusted rule text and never creates executable links
   ---
-  duration_ms: 1.623841
+  duration_ms: 1.194313
   type: 'test'
   ...
 # Subtest: Repeated-star path does not rely on exponential regex backtracking
-ok 111 - Repeated-star path does not rely on exponential regex backtracking
+ok 117 - Repeated-star path does not rely on exponential regex backtracking
   ---
-  duration_ms: 0.266141
+  duration_ms: 0.260764
   type: 'test'
   ...
 # Subtest: Missing robots files are distinguished from inspected Allow rules in the UI
-ok 112 - Missing robots files are distinguished from inspected Allow rules in the UI
+ok 118 - Missing robots files are distinguished from inspected Allow rules in the UI
   ---
-  duration_ms: 0.600396
+  duration_ms: 0.557602
   type: 'test'
   ...
 # Subtest: Search wording gives H1 a search mechanism without a ranking guarantee
-ok 113 - Search wording gives H1 a search mechanism without a ranking guarantee
+ok 119 - Search wording gives H1 a search mechanism without a ranking guarantee
   ---
-  duration_ms: 0.99432
+  duration_ms: 1.151919
   type: 'test'
   ...
 # Subtest: Every playbook separates the supported effect from unproven impact
-ok 114 - Every playbook separates the supported effect from unproven impact
+ok 120 - Every playbook separates the supported effect from unproven impact
   ---
-  duration_ms: 0.348166
+  duration_ms: 0.32446
   type: 'test'
   ...
 # Subtest: A cf-ray on a normal page is not evidence of denied access
-ok 115 - A cf-ray on a normal page is not evidence of denied access
+ok 121 - A cf-ray on a normal page is not evidence of denied access
   ---
-  duration_ms: 0.816322
+  duration_ms: 2.505172
   type: 'test'
   ...
 # Subtest: A cf-mitigated challenge with HTTP 200 is not inspected as a page
-ok 116 - A cf-mitigated challenge with HTTP 200 is not inspected as a page
+ok 122 - A cf-mitigated challenge with HTTP 200 is not inspected as a page
   ---
-  duration_ms: 0.207253
+  duration_ms: 0.250999
   type: 'test'
   ...
 # Subtest: A challenge-title response is not inspected even with HTTP 200
-ok 117 - A challenge-title response is not inspected even with HTTP 200
+ok 123 - A challenge-title response is not inspected even with HTTP 200
   ---
-  duration_ms: 0.140442
+  duration_ms: 0.23859
   type: 'test'
   ...
 # Subtest: An article discussing access denied and Cloudflare stays inspectable
-ok 118 - An article discussing access denied and Cloudflare stays inspectable
+ok 124 - An article discussing access denied and Cloudflare stays inspectable
   ---
-  duration_ms: 0.116837
+  duration_ms: 0.162305
   type: 'test'
   ...
 # Subtest: 403 without branded evidence remains an access observation, not proven crawler blocking
-ok 119 - 403 without branded evidence remains an access observation, not proven crawler blocking
+ok 125 - 403 without branded evidence remains an access observation, not proven crawler blocking
   ---
-  duration_ms: 0.134794
+  duration_ms: 0.111489
   type: 'test'
   ...
 # Subtest: Per-origin requests stop after three consecutive denials, including concurrent callers
-ok 120 - Per-origin requests stop after three consecutive denials, including concurrent callers
+ok 126 - Per-origin requests stop after three consecutive denials, including concurrent callers
   ---
-  duration_ms: 5.89113
+  duration_ms: 7.436276
   type: 'test'
   ...
 # Subtest: A good response resets the consecutive-denial count
-ok 121 - A good response resets the consecutive-denial count
+ok 127 - A good response resets the consecutive-denial count
   ---
-  duration_ms: 0.979047
+  duration_ms: 1.890164
   type: 'test'
   ...
 # Subtest: A target 429 stops further requests immediately and records Retry-After
-ok 122 - A target 429 stops further requests immediately and records Retry-After
+ok 128 - A target 429 stops further requests immediately and records Retry-After
   ---
-  duration_ms: 1.98098
+  duration_ms: 0.92767
   type: 'test'
   ...
 # Subtest: Pacing is sequential per origin and already-fetched pages are reused
-ok 123 - Pacing is sequential per origin and already-fetched pages are reused
+ok 129 - Pacing is sequential per origin and already-fetched pages are reused
   ---
-  duration_ms: 21.281045
+  duration_ms: 20.62109
   type: 'test'
   ...
 # Subtest: A paused origin does not pause a different origin
-ok 124 - A paused origin does not pause a different origin
+ok 130 - A paused origin does not pause a different origin
   ---
-  duration_ms: 0.652274
+  duration_ms: 0.640357
   type: 'test'
   ...
 # Subtest: Retry-After accepts seconds or an HTTP date
-ok 125 - Retry-After accepts seconds or an HTTP date
+ok 131 - Retry-After accepts seconds or an HTTP date
   ---
-  duration_ms: 0.117848
+  duration_ms: 0.134313
   type: 'test'
   ...
 # Subtest: Denied link targets never become confirmed broken-link recommendations
-ok 126 - Denied link targets never become confirmed broken-link recommendations
+ok 132 - Denied link targets never become confirmed broken-link recommendations
   ---
-  duration_ms: 10.30486
+  duration_ms: 13.586631
   type: 'test'
   ...
 # Subtest: Denied HTML samples and successful entry rendering are counted separately
-ok 127 - Denied HTML samples and successful entry rendering are counted separately
+ok 133 - Denied HTML samples and successful entry rendering are counted separately
   ---
-  duration_ms: 4.580503
+  duration_ms: 3.451581
   type: 'test'
   ...
 # Subtest: Sparse sample does not create broad missing-schema or link-support recommendations
-ok 128 - Sparse sample does not create broad missing-schema or link-support recommendations
+ok 134 - Sparse sample does not create broad missing-schema or link-support recommendations
   ---
-  duration_ms: 2.653474
+  duration_ms: 2.299381
   type: 'test'
   ...
 # Subtest: Blocked pipeline records real denials, skips further calls, and never invents H1s or schema
-ok 129 - Blocked pipeline records real denials, skips further calls, and never invents H1s or schema
+ok 135 - Blocked pipeline records real denials, skips further calls, and never invents H1s or schema
   ---
-  duration_ms: 31.918037
+  duration_ms: 33.038225
   type: 'test'
   ...
 # Subtest: A 200 challenge cannot create missing headings, titles, or structured-data findings
-ok 130 - A 200 challenge cannot create missing headings, titles, or structured-data findings
+ok 136 - A 200 challenge cannot create missing headings, titles, or structured-data findings
   ---
-  duration_ms: 1.67008
+  duration_ms: 1.667247
   type: 'test'
   ...
 # Subtest: Default scan caps remain 6/session and 12/app with validated overrides
-ok 131 - Default scan caps remain 6/session and 12/app with validated overrides
+ok 137 - Default scan caps remain 6/session and 12/app with validated overrides
   ---
-  duration_ms: 0.739266
+  duration_ms: 1.178429
   type: 'test'
   ...
 # Subtest: Rejected global capacity does not consume a new session quota
-ok 132 - Rejected global capacity does not consume a new session quota
+ok 138 - Rejected global capacity does not consume a new session quota
   ---
-  duration_ms: 0.305531
+  duration_ms: 0.369748
   type: 'test'
   ...
 # Subtest: Rejected job reservations are released once, and windows reset from their first accepted start
-ok 133 - Rejected job reservations are released once, and windows reset from their first accepted start
+ok 139 - Rejected job reservations are released once, and windows reset from their first accepted start
   ---
-  duration_ms: 0.182405
+  duration_ms: 0.195194
   type: 'test'
   ...
 # Subtest: Rate-limited API returns 429, scope and Retry-After without creating another scan
-ok 134 - Rate-limited API returns 429, scope and Retry-After without creating another scan
+ok 140 - Rate-limited API returns 429, scope and Retry-After without creating another scan
   ---
-  duration_ms: 163.366053
+  duration_ms: 184.019353
   type: 'test'
   ...
 # Subtest: Search brief includes the new explanation and supported/unproven distinction
-ok 135 - Search brief includes the new explanation and supported/unproven distinction
+ok 141 - Search brief includes the new explanation and supported/unproven distinction
   ---
-  duration_ms: 1.738574
+  duration_ms: 0.637552
   type: 'test'
   ...
 # Subtest: Search-first presentation refreshes saved recommendation copy without changing evidence
-ok 136 - Search-first presentation refreshes saved recommendation copy without changing evidence
+ok 142 - Search-first presentation refreshes saved recommendation copy without changing evidence
   ---
-  duration_ms: 0.951146
+  duration_ms: 0.529529
   type: 'test'
   ...
 # Subtest: site health confirms real errors and redirects but keeps 403 unverified
-ok 137 - site health confirms real errors and redirects but keeps 403 unverified
+ok 143 - site health confirms real errors and redirects but keeps 403 unverified
   ---
-  duration_ms: 32.040302
+  duration_ms: 23.370891
   type: 'test'
   ...
 # Subtest: soft 404s are review cues, not confirmed broken errors
-ok 138 - soft 404s are review cues, not confirmed broken errors
+ok 144 - soft 404s are review cues, not confirmed broken errors
   ---
-  duration_ms: 2.190546
+  duration_ms: 1.883563
   type: 'test'
   ...
 # Subtest: pipeline exposes bounded site health and can promote confirmed broken paths
-ok 139 - pipeline exposes bounded site health and can promote confirmed broken paths
+ok 145 - pipeline exposes bounded site health and can promote confirmed broken paths
   ---
-  duration_ms: 20.425845
+  duration_ms: 18.01785
   type: 'test'
   ...
 # Subtest: V2 rejects credential URLs and unsupported schemes/ports
-ok 140 - V2 rejects credential URLs and unsupported schemes/ports
+ok 146 - V2 rejects credential URLs and unsupported schemes/ports
   ---
-  duration_ms: 1.383999
+  duration_ms: 1.275195
   type: 'test'
   ...
 # Subtest: V2 blocks alternate, mapped and reserved IP representations
-ok 141 - V2 blocks alternate, mapped and reserved IP representations
+ok 147 - V2 blocks alternate, mapped and reserved IP representations
   ---
-  duration_ms: 4.297856
+  duration_ms: 4.601065
   type: 'test'
   ...
 # Subtest: Redirect destinations are revalidated before a second fetch
-ok 142 - Redirect destinations are revalidated before a second fetch
+ok 148 - Redirect destinations are revalidated before a second fetch
   ---
-  duration_ms: 1.822491
+  duration_ms: 1.899438
   type: 'test'
   ...
 # Subtest: Per-scan request budget is enforced
-ok 143 - Per-scan request budget is enforced
+ok 149 - Per-scan request budget is enforced
   ---
-  duration_ms: 0.900619
+  duration_ms: 0.899308
   type: 'test'
   ...
 # Subtest: Download cap also applies to compressed response expansion
-ok 144 - Download cap also applies to compressed response expansion
+ok 150 - Download cap also applies to compressed response expansion
   ---
-  duration_ms: 31.07837
+  duration_ms: 35.00825
   type: 'test'
   ...
 # Subtest: Invalid HTML numeric entities do not crash the analyzer
-ok 145 - Invalid HTML numeric entities do not crash the analyzer
+ok 151 - Invalid HTML numeric entities do not crash the analyzer
   ---
-  duration_ms: 4.750178
+  duration_ms: 5.375545
   type: 'test'
   ...
 # Subtest: Empty or unavailable coverage is never called a complete scan
-ok 146 - Empty or unavailable coverage is never called a complete scan
+ok 152 - Empty or unavailable coverage is never called a complete scan
   ---
-  duration_ms: 1.772495
+  duration_ms: 2.006549
   type: 'test'
   ...
 # Subtest: QA H1 observations get a concrete remedy and retain the sample count
-ok 147 - QA H1 observations get a concrete remedy and retain the sample count
+ok 153 - QA H1 observations get a concrete remedy and retain the sample count
   ---
-  duration_ms: 1.348946
+  duration_ms: 1.447765
   type: 'test'
   ...
 # Subtest: Length-only housekeeping does not manufacture top recommendations
-ok 148 - Length-only housekeeping does not manufacture top recommendations
+ok 154 - Length-only housekeeping does not manufacture top recommendations
   ---
-  duration_ms: 0.523591
+  duration_ms: 0.574327
   type: 'test'
   ...
 # Subtest: Brief includes remedies and qualifications, excludes ignored findings
-ok 149 - Brief includes remedies and qualifications, excludes ignored findings
+ok 155 - Brief includes remedies and qualifications, excludes ignored findings
   ---
-  duration_ms: 0.619986
+  duration_ms: 0.820569
   type: 'test'
   ...
 # Subtest: All ignored recommendations stay out of the brief instead of falling back
-ok 150 - All ignored recommendations stay out of the brief instead of falling back
+ok 156 - All ignored recommendations stay out of the brief instead of falling back
   ---
-  duration_ms: 0.187062
+  duration_ms: 0.239642
   type: 'test'
   ...
 # Subtest: Unreviewed brief is labeled not client-ready
-ok 151 - Unreviewed brief is labeled not client-ready
+ok 157 - Unreviewed brief is labeled not client-ready
   ---
-  duration_ms: 0.138559
+  duration_ms: 0.139321
   type: 'test'
   ...
 # Subtest: Controlled site scan runs the complete data-to-recommendation pipeline
-ok 152 - Controlled site scan runs the complete data-to-recommendation pipeline
+ok 158 - Controlled site scan runs the complete data-to-recommendation pipeline
   ---
-  duration_ms: 60.60577
+  duration_ms: 85.362662
   type: 'test'
   ...
 # Subtest: Robots disallow stops page retrieval and does not create on-page passes
-ok 153 - Robots disallow stops page retrieval and does not create on-page passes
+ok 159 - Robots disallow stops page retrieval and does not create on-page passes
   ---
-  duration_ms: 1.286832
+  duration_ms: 2.704894
   type: 'test'
   ...
 # Subtest: A blocked entry request is a coverage gap, not fabricated missing metadata
-ok 154 - A blocked entry request is a coverage gap, not fabricated missing metadata
+ok 160 - A blocked entry request is a coverage gap, not fabricated missing metadata
   ---
-  duration_ms: 1.427885
+  duration_ms: 1.707338
   type: 'test'
   ...
-# {"event":"worker_exit","jobId":"28c5f3aa-fbf2-4528-a078-c5aa4ded3da2","exitCode":42,"signal":null,"detail":""}
+# {"event":"worker_exit","jobId":"fd62fd73-6467-449d-81a7-3ca23456fae0","exitCode":42,"signal":null,"detail":""}
 # Subtest: Worker crash is isolated, terminal and does not become a passing report
-ok 155 - Worker crash is isolated, terminal and does not become a passing report
+ok 161 - Worker crash is isolated, terminal and does not become a passing report
   ---
-  duration_ms: 149.820241
+  duration_ms: 153.496123
   type: 'test'
   ...
 # Subtest: Worker timeout retains a partial checkpoint and frees the queue
-ok 156 - Worker timeout retains a partial checkpoint and frees the queue
+ok 162 - Worker timeout retains a partial checkpoint and frees the queue
   ---
-  duration_ms: 485.78295
+  duration_ms: 488.762073
   type: 'test'
   ...
 # Subtest: Queued scans remain one-at-a-time under simultaneous submissions
-ok 157 - Queued scans remain one-at-a-time under simultaneous submissions
+ok 163 - Queued scans remain one-at-a-time under simultaneous submissions
   ---
-  duration_ms: 475.239343
+  duration_ms: 476.195961
   type: 'test'
   ...
 # Subtest: Interrupted jobs recover as interrupted, never completed, after restart
-ok 158 - Interrupted jobs recover as interrupted, never completed, after restart
+ok 164 - Interrupted jobs recover as interrupted, never completed, after restart
   ---
-  duration_ms: 2.51091
+  duration_ms: 2.320312
   type: 'test'
   ...
 # {"event":"request_error","message":"Confirm that you reviewed the examples before selecting this for a video."}
 # Subtest: V2 API uses 202 jobs, JSON errors, version/CSRF checks and browser ownership
-ok 159 - V2 API uses 202 jobs, JSON errors, version/CSRF checks and browser ownership
+ok 165 - V2 API uses 202 jobs, JSON errors, version/CSRF checks and browser ownership
   ---
-  duration_ms: 356.682338
+  duration_ms: 350.868306
   type: 'test'
   ...
-1..159
-# tests 159
+1..165
+# tests 165
 # suites 0
-# pass 159
+# pass 165
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 5493.207468
+# duration_ms 5445.147409

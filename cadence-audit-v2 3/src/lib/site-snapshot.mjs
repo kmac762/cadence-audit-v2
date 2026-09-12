@@ -687,6 +687,36 @@ export async function createSiteSnapshot(targetUrl, robots, { sampleSize = DEFAU
   const extraPages = await mapLimit(extras, 2, async e=>{const p=await scanSnapshotEntry(e);onProgress({stage:'relationships',message:'Mapping contextual links in the sample',done:++linked,total:extras.length});return p;});
   const extraMap = new Map(extraPages.map((page) => [normalizeComparableUrl(page?.requestedUrl) || normalizeComparableUrl(page?.finalUrl), page]));
   const relationshipPages = relationshipEntries.map((entry) => existing.get(normalizeComparableUrl(entry.url)) || extraMap.get(normalizeComparableUrl(entry.url))).filter(Boolean);
+
+  // Content freshness gets its own small, bounded article sample. This avoids hiding the
+  // module just because a balanced technical sample happened to under-represent the blog.
+  // It still respects the same request policy, robots checks, denial stop rules and caching.
+  const articlePool = uniqueEntries(discovered.pageEntries)
+    .map((entry) => ({ ...entry, pageType:classifyUrlType(entry.url, entry.sourceSitemap) }))
+    .filter((entry) => entry.pageType === 'article');
+  const freshnessTarget = Math.min(8, articlePool.length);
+  const freshnessEntries = evenlySample(articlePool, freshnessTarget);
+  const allExisting = new Map();
+  for (const page of [...pages, ...extraPages]) {
+    const key = normalizeComparableUrl(page?.requestedUrl) || normalizeComparableUrl(page?.finalUrl);
+    if (key) allExisting.set(key, page);
+  }
+  const freshnessExtras = freshnessEntries.filter((entry) => !allExisting.has(normalizeComparableUrl(entry.url)));
+  let freshnessDone = 0;
+  const freshnessExtraPages = await mapLimit(freshnessExtras, 1, async (entry) => {
+    const page = await scanSnapshotEntry(entry);
+    onProgress({stage:'freshness',message:'Inspecting a small article sample for content freshness',done:++freshnessDone,total:freshnessExtras.length});
+    return page;
+  });
+  const freshnessExtraMap = new Map(freshnessExtraPages.map((page) => [normalizeComparableUrl(page?.requestedUrl) || normalizeComparableUrl(page?.finalUrl), page]));
+  const freshnessPages = freshnessEntries.map((entry) => allExisting.get(normalizeComparableUrl(entry.url)) || freshnessExtraMap.get(normalizeComparableUrl(entry.url))).filter(Boolean);
+  const freshnessCoverage = {
+    candidatesDiscovered:articlePool.length,
+    selected:freshnessEntries.length,
+    attempted:freshnessPages.filter((page) => page?.requestAttempted).length,
+    usable:freshnessPages.filter((page) => page?.usable && page.pageType === 'article').length
+  };
+
   const relationshipGraph = buildRelationshipGraph(relationshipPages, discovered.pageEntries);
 
   const sampleComposition = pages.reduce((acc, page) => {
@@ -709,6 +739,8 @@ export async function createSiteSnapshot(targetUrl, robots, { sampleSize = DEFAU
     templateProfiles:buildTemplateProfiles(pages),
     pages,
     relationshipPages,
+    freshnessPages,
+    freshnessCoverage,
     relationshipGraph
   };
   snapshot.findings = [...makeSiteFindings(snapshot), ...makeRelationshipFindings(relationshipGraph)].sort((a,b) => b.score - a.score);
@@ -716,5 +748,5 @@ export async function createSiteSnapshot(targetUrl, robots, { sampleSize = DEFAU
 }
 
 export function disabledSiteSnapshot() {
-  return { enabled:false, origin:null, sitemapFound:null, sitemapReports:[], sitemapPageCount:0, sitemapPageUrls:[], sampleSize:0, sampleComposition:{}, templateProfiles:{}, pages:[], relationshipGraph:{ enabled:false, pageCount:0, usablePageCount:0 }, findings:[] };
+  return { enabled:false, origin:null, sitemapFound:null, sitemapReports:[], sitemapPageCount:0, sitemapPageUrls:[], sampleSize:0, sampleComposition:{}, templateProfiles:{}, pages:[], relationshipPages:[], freshnessPages:[], freshnessCoverage:{candidatesDiscovered:0,selected:0,attempted:0,usable:0}, relationshipGraph:{ enabled:false, pageCount:0, usablePageCount:0 }, findings:[] };
 }

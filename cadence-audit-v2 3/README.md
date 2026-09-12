@@ -1,6 +1,6 @@
 # Cadence Search Audit Workspace V2
 
-**2.0.0-rc.9 | Separate staging candidate, not a production replacement**
+**2.0.0-rc.12 | Separate staging candidate, not a production replacement**
 
 The change is not another visual patch. This package contains one matched server,
 scanner adapter, recommendation library, browser interface and release manifest.
@@ -11,6 +11,21 @@ Open **START-HERE.html** for the browser-only installation steps. Open
 **docs/V2-preview.html** for an interactive, offline, synthetic example. The preview
 cannot crawl a website; it shows the sales wording and review workflow without a
 server or an API key.
+
+
+## rc.12: established audit-tool UX + visible Content Freshness
+
+- Restores visual parity with the existing Cadence URL Audit Assistant: white masthead, spectrum rule, dark canvas, editorial serif hierarchy, signal/orbit motif, and dark evidence cards.
+- Content Freshness is always represented in the report rather than disappearing when zero articles were inspected.
+- Site-sample scans reserve a bounded freshness sample of up to eight sitemap-discovered article URLs, reusing pages already fetched wherever possible.
+- A zero-article result is explicitly labeled as incomplete coverage, never as proof that the blog is current.
+
+
+## rc.10: Content Freshness
+
+- Adds bounded blog/article freshness review using age plus additional staleness signals.
+- Age alone is never treated as a defect or proof of traffic decay.
+- Browser Assist can contribute rendered-page freshness signals when the hosted scanner is blocked.
 
 ## rc.9: Broken links and page paths
 
@@ -95,11 +110,11 @@ sensitive client information in notes. See docs/SECURITY.md.
 
 ## Branding
 
-The supplied Cadence Search logo is displayed in **white on transparency**, without
-a white panel. Its original embedded pixels and geometry are preserved; CSS applies
-brightness(0) invert(1) to the complete mark. The favicon keeps the original multicolor
-ring. The interface remains navy with purple/cyan/green accents and system fonts.
-No generated replacement wordmark or font file is included.
+The supplied Cadence Search logo keeps its original embedded pixels and geometry.
+rc.12 displays the original dark/multicolor lockup on a white navigation bar, while the
+hero and footer use deep navy with restrained purple/cyan/green accents. The working
+canvas and report cards are light for easier long-form review. System fonts are used;
+no generated replacement wordmark or font file is included.
 
 This is a complete matched release, not a patch. Use this archive instead of the
 earlier V2 archive. The folder remains `cadence-audit-v2`; do not upload isolated
