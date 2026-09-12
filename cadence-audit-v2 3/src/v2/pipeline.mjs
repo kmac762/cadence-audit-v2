@@ -13,6 +13,7 @@ import {getRequestPolicy} from './request-policy.mjs';
 import {makeReport} from './report.mjs';
 import {accessSampleUrls} from './search-access.mjs';
 import {inspectSiteHealth,siteHealthFindings} from './site-health.mjs';
+import {analyzeContentFreshness,contentFreshnessFindings} from './content-freshness.mjs';
 
 export async function runScan(input,options={},hooks={}) {
   const url=normalizeHttpUrl(input).href;
@@ -20,6 +21,7 @@ export async function runScan(input,options={},hooks={}) {
   const facts={requestedUrl:url,finalUrl:url,scannedAt:new Date().toISOString(),pageType:classifyUrlType(url),responseStatus:null,responseHeaders:{},redirectChain:[],raw:null,access:{pageContentUsable:false},contentAnalysis:{usable:false,html:null,source:null},rendered:{enabled:options.render!==false,succeeded:false,pending:true},robots:{agents:{},sitemaps:[]},robotsByOrigin:{},siteSnapshot:disabledSiteSnapshot(),scanWarnings:[],scanComplete:false};
   let qa=null;let phase='access';
   facts.siteHealth={enabled:false};
+  facts.contentFreshness={enabled:false};
   const loadPolicy=async target=>{
     const origin=new URL(target).origin;
     if(!facts.robotsByOrigin[origin])facts.robotsByOrigin[origin]=await analyzeRobots(target);
@@ -68,6 +70,8 @@ export async function runScan(input,options={},hooks={}) {
     const entryKey=new URL(facts.finalUrl).href.replace(/\/+$/,'');
     const entryResults=(facts.siteHealth.results||[]).filter(r=>(r.sources||[]).some(src=>String(src).replace(/\/+$/,'')===entryKey)).slice(0,20);
     const links={enabled:!!facts.contentAnalysis?.usable,limit:20,sourceUrl:facts.finalUrl,checked:entryResults.length,results:entryResults};
+    phase='freshness';progress({stage:phase,message:'Reviewing sampled blog content for freshness and consolidation signals'});
+    facts.contentFreshness=analyzeContentFreshness(facts);
     facts.requestPolicy=getRequestPolicy().summary();
     if(facts.requestPolicy.pausedOrigins.length)warning('Scanner access','Further requests were stopped after repeated denials or a target rate limit. Do not infer search-crawler blocking or missing content from uninspected pages.');
     qa=buildOnPageQa(facts,links);
@@ -75,7 +79,7 @@ export async function runScan(input,options={},hooks={}) {
     progress({stage:'recommendations',message:'Connecting observations to solutions and verification steps'});
     let pageFindings=[];
     try {pageFindings=generateFindings(facts).map(f=>({scope:'page',...f}));}catch(error){warning('Finding rules','Some page-level rules could not be evaluated.');}
-    const findings=[...pageFindings,...(facts.siteSnapshot.findings||[]),...(qa.findings||[]),...siteHealthFindings(facts.siteHealth)];
+    const findings=[...pageFindings,...(facts.siteSnapshot.findings||[]),...(qa.findings||[]),...siteHealthFindings(facts.siteHealth),...contentFreshnessFindings(facts.contentFreshness)];
     const report=makeReport({facts,onPageQa:qa,findings},true);
     hooks.checkpoint?.(report);return report;
   }catch(error){

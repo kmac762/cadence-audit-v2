@@ -1,6 +1,6 @@
 export const demoReport={
   "schemaVersion": 2,
-  "release": "2.0.0-rc.9",
+  "release": "2.0.0-rc.10",
   "requestedUrl": "https://example.com/",
   "finalUrl": "https://example.com/",
   "scannedAt": "2026-09-11T12:00:00Z",
@@ -19,6 +19,8 @@ export const demoReport={
     "renderRequested": true,
     "renderSucceeded": true,
     "renderedPageCount": 1,
+    "contentFreshnessArticles": 8,
+    "contentFreshnessCandidates": 3,
     "browserAssistPages": 3
   },
   "warnings": [],
@@ -313,6 +315,49 @@ export const demoReport={
     "Only the entry URL is browser-rendered in real scans.",
     "A limited sample cannot prove sitewide orphaning or lost revenue."
   ],
+  "contentFreshness": {
+    "enabled": true,
+    "checkedAt": "2026-09-11T12:00:00Z",
+    "articlesReviewed": 8,
+    "counts": {
+      "likelyCurrent": 5,
+      "worthRefreshing": 2,
+      "strongRefreshCandidates": 1,
+      "refreshCandidates": 3,
+      "consolidationCandidates": 1
+    },
+    "candidates": [
+      {
+        "url": "https://example.com/blog/guide-2022/",
+        "title": "Example Guide for 2022",
+        "published": "2022-05-12T00:00:00.000Z",
+        "modified": null,
+        "reasons": [
+          "page title references 2022",
+          "older year references appear in primary content",
+          "no newer structured modification date was detected"
+        ],
+        "level": "strong"
+      }
+    ],
+    "consolidationCandidates": [
+      {
+        "urlA": "https://example.com/blog/example-guide/",
+        "titleA": "Example Search Guide",
+        "urlB": "https://example.com/blog/example-search-tips/",
+        "titleB": "Example Search Tips Guide",
+        "similarity": 0.6,
+        "shared": [
+          "example",
+          "search",
+          "guide"
+        ]
+      }
+    ],
+    "limitations": [
+      "Synthetic freshness example. Age alone is never a finding."
+    ]
+  },
   "searchAccess": {
     "registryVersion": "2026-09-11.1",
     "registryReviewedAt": "2026-09-11",

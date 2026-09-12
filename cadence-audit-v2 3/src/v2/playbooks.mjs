@@ -17,6 +17,23 @@ export const PLAYBOOKS={
     "source": "https://developers.google.com/search/docs/appearance/title-link",
     "searchEffect": "Supported: a clearer, more consistent page-topic signal and an additional documented input Google can use when generating title links. Not established: that the missing H1 caused a ranking loss, that adding one will improve rankings, or that it directly changes AI citations."
   },
+  "freshness": {
+    "title": "Refresh content that is starting to show its age",
+    "theme": "Content freshness",
+    "why": "Search visibility connection: older content can continue to perform well when it is still accurate and useful. The opportunity appears when an article also shows signs that facts, examples, sources, terminology or search intent may have moved on. This check uses multiple freshness signals together and never treats age alone as a problem.",
+    "steps": [
+      "Open the highest-signal articles and compare the page against current search intent, current facts and the results now competing for the topic.",
+      "Update only information that has genuinely changed: statistics, examples, terminology, sources, internal links and obsolete recommendations. Preserve useful history and the existing URL where the page still serves the same intent.",
+      "Publish a meaningful modification date only after a substantive update, re-crawl the page and monitor query visibility or Search Console performance when client data is available."
+    ],
+    "success": "The reviewed article is accurate for the current topic, uses current evidence where needed, keeps useful historical value, and clearly reflects any meaningful revision. Search performance is measured after recrawling rather than assumed.",
+    "caveat": "An old publication date is not a ranking problem by itself. This scanner cannot prove content decay without historical search-performance data, and old year references may be intentionally historical.",
+    "userNote": "Secondary benefit: current examples and references can also make the article more useful to readers, but the recommendation is surfaced because the page may be losing topical or factual relevance for search.",
+    "effort": "Editorial review, source verification and targeted updates; scope depends on how much of the article has actually changed.",
+    "talk": "Some existing articles show signs that the information may be getting dated. We’d refresh the facts, examples and sources that have changed so the page stays relevant for current search without rewriting content that is still useful.",
+    "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+    "searchEffect": "Supported: a structured prompt to review whether existing content remains accurate, useful and aligned with current search intent. Not established: traffic decay, a freshness bonus, or a ranking gain from changing a date."
+  },
   "titles": {
     "title": "Make important pages easier to distinguish in search",
     "theme": "On-page",
@@ -316,6 +333,7 @@ export const AI_RELEVANCE={
   international:{level:'Supporting',why:'AI-assisted search still needs the right localized page to be discoverable and understandable. Correct language and regional relationships can help Search select the intended version, which can also matter when Google AI features draw from that index.',effect:'Supported after full validation: clearer localized page relationships. Not established: a direct AI visibility gain or equivalent behavior across every AI search provider.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'The AI relevance is making sure the correct localized page can enter the Search foundation that Google AI features use; it is not a separate AI ranking tactic.'},
   social:{level:'Limited',why:'Open Graph metadata is mainly a sharing-preview control. It is not a documented requirement for Google generative AI visibility and should not be sold as an AI optimization.',effect:'Supported: better social preview consistency. Not established: AI search visibility or citation impact.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'There is very little defensible AI-search angle here; Open Graph is mainly a sharing-preview control.'},
   content:{level:'Strong supporting relevance',why:'Google now explicitly recommends unique, useful, non-commodity content for generative AI search and notes that AI features may use query fan-out to retrieve supporting pages across related subtopics. This makes depth, originality and clear topical coverage relevant to both classic and AI-assisted discovery.',effect:'Supported: alignment with documented Google generative AI guidance around unique, useful content and broader query coverage. Not established: guaranteed inclusion, a specific AI citation, or provider-wide behavior outside Google.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'This has strong AI-search relevance when the content is genuinely unique and useful: Google specifically emphasizes non-commodity content and broader subtopic retrieval in generative AI search.'},
+  freshness:{level:'Supporting',why:'AI-assisted search benefits from content that is accurate, current and easy to verify when the topic changes over time. Fresh facts and sources can improve retrieval quality, but there is no universal AI freshness bonus and old content can remain useful.',effect:'Supported: better factual currency and source verifiability when an article genuinely needs updating. Not established: guaranteed AI citations, a freshness ranking boost or a requirement to continually change publication dates.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'For AI search, current facts and sources make changing topics easier to retrieve and verify, but an old publish date by itself is not a problem.'},
   template:{level:'Depends on the underlying issue',why:'AI relevance follows the actual repeated problem. Indexing and crawler-access issues can be directly important; titles, headings, content and schema are generally supporting signals. A recurring template pattern is not itself an AI ranking factor.',effect:'Supported only after the repeated issue is identified and tied to a documented search or AI mechanism. Not established: AI visibility impact from repetition alone.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'The AI angle depends on the actual repeated issue. Access and indexing can be direct; content, headings and schema are usually supporting context rather than standalone AI ranking factors.'}
 };
 
@@ -337,6 +355,7 @@ const CLIENT_AI_EXPLANATIONS={
   international:"AI-assisted search still needs the correct language or regional page. Clear localization helps the right version enter the same search foundation.",
   social:"There is very little AI-search impact here. Open Graph is mainly about social sharing.",
   content:"This is one of the stronger AI-search opportunities. Original, useful content with clear topical depth gives AI-assisted search more valuable material to retrieve and reference.",
+  freshness:"For AI search, current facts and sources make changing topics easier to retrieve and verify. An old publish date by itself is not a problem.",
   template:"The AI impact depends on the underlying issue. Access and indexing can be direct; headings, content and schema are usually supporting context."
 };
 for(const [key,talk] of Object.entries(CLIENT_AI_EXPLANATIONS))if(AI_RELEVANCE[key])AI_RELEVANCE[key].talk=talk;
@@ -357,6 +376,7 @@ export function playbookKey(f){const s=[f.id,f.category,f.title].join(' ').toLow
  if(/title/.test(s))return 'titles';
  if(/image|alt.text/.test(s))return 'images';
  if(/schema|jsonld|structured-data|breadcrumb/.test(s))return 'schema';
+ if(/freshness|stale|outdated|content-age|content-decay|refresh-candidate/.test(s))return 'freshness';
  if(/link|content-pathways|discovery/.test(s))return 'links';
  if(/onpage-systemic|on-page/.test(s))return 'template';
  return 'content';}
