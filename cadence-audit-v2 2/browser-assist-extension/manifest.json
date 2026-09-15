@@ -1,8 +1,0 @@
-{
-  "manifest_version": 3,
-  "name": "Cadence Browser Assist",
-  "version": "1.0.0",
-  "description": "Capture public-page search audit evidence for Cadence Search prospect audits.",
-  "permissions": ["activeTab", "scripting", "downloads"],
-  "action": {"default_title": "Cadence Browser Assist", "default_popup": "popup.html"}
-}
