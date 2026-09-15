@@ -118,6 +118,11 @@ footer::before {content:""; position:absolute; top:-1px; left:28px; width:128px;
 /* Approved white transparent logo: preserve original geometry and alpha. */
 .brand-logo{filter:brightness(0) invert(1)}
 
+/* Browser Assist prospect fallback */
+.browser-assist{margin:28px 0;padding:24px;border:1px solid rgba(46,217,223,.28);border-radius:18px;background:linear-gradient(180deg,rgba(16,37,72,.72),rgba(8,22,45,.72));display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:24px;align-items:start}.browser-assist.recommended{border-color:rgba(46,217,223,.62);box-shadow:0 0 0 1px rgba(46,217,223,.08) inset}.browser-assist h2{margin:.15rem 0 .5rem}.browser-assist p{margin:.45rem 0}.browser-assist-actions{display:flex;flex-direction:column;gap:10px}.browser-assist-actions button{width:100%}.browser-assist-actions small{color:var(--muted,#a8b6cf);line-height:1.45}.browser-assist details{grid-column:1/-1;border-top:1px solid rgba(168,182,207,.18);padding-top:14px}.browser-assist summary{cursor:pointer;font-weight:700}.browser-assist .qa-items{margin-top:12px}@media(max-width:760px){.browser-assist{grid-template-columns:1fr}.browser-assist details{grid-column:auto}}
+
+.qa-link-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 18px;margin:8px 0 9px}.qa-link-facts p{display:flex;gap:8px;align-items:baseline;min-width:0}.qa-link-facts span{color:var(--muted);font-size:10px;letter-spacing:.5px;text-transform:uppercase;min-width:112px;flex:0 0 auto}.qa-link-facts b{color:var(--ink);font-weight:650}.qa-link-item>a{display:inline-block;margin-top:2px}@media(max-width:760px){.qa-link-facts{grid-template-columns:1fr}.qa-link-facts p{display:block}.qa-link-facts span{display:block;min-width:0;margin-bottom:1px}}
+
 </style>
 
 </head>
@@ -135,12 +140,12 @@ footer::before {content:""; position:absolute; top:-1px; left:28px; width:128px;
 <section id="report" hidden></section>
 <section class="privacy-note"><strong>No password is configured.</strong> Anyone who knows this address can initiate a scan. Noindex does not make the service private. Anonymous browser sessions separate scan records; rate limits limit use, not access.</section>
 </main>
-<footer><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 / brand candidate rc.2</span></footer>
+<footer><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 / search-focused candidate rc.8</span></footer>
 <dialog id="brief-dialog"><div class="section-top"><div><p class="eyebrow">RECORDING PREP</p><h2>Your sales brief</h2></div><button class="quiet" id="brief-close">Close</button></div><p class="hint">Selected recommendations are included only after you confirm reviewing the examples. Unreviewed suggestions are labeled.</p><textarea id="brief-text" readonly aria-label="Recording brief"></textarea><div class="dialog-actions"><button id="copy-brief" class="primary">Copy brief</button><span id="copy-status" role="status"></span></div></dialog>
 <noscript>This workspace requires JavaScript. Enable it to start or inspect a scan.</noscript>
 <script type="module">
 window.CADENCE_OFFLINE_PREVIEW=true;
-const RELEASE='2.0.0-rc.3';
+const RELEASE='2.0.0-rc.8';
 const API_VERSION=2;
 const REVIEW_VALUES=['unreviewed','use','investigate','ignore'];
 
@@ -152,8 +157,8 @@ function recordingBrief(report,reviews={}){
  const suggestions=anyReviewed?[]:recs;
  const main=selected.length?selected:suggestions;
  const c=report.coverage||{},q=report.qa||{};
- const lines=['CADENCE SEARCH | SALES AUDIT BRIEF',`URL: ${report.finalUrl||report.requestedUrl}`,`Coverage: ${c.sampleUsable||0}/${c.sampleAttempted||0} usable sampled pages; ${c.relationshipPages||0} relationship pages; ${c.renderedPageCount||0} entry-page browser render.`,`Scan: ${report.status}. This is a sample, not a sitewide clearance.`,`On-page QA: ${q.issueObservations||0} implementation observations; ${q.reviewObservations||0} review observations.`,...((report.warnings||[]).length?['Coverage gaps: '+report.warnings.map(w=>w.component+': '+w.message).join(' | ')]:[]),...(report.searchAccess?[`Search & AI policy: ${report.searchAccess.summary.entries} agents/controls evaluated across ${report.searchAccess.pageCount} URL paths; ${report.searchAccess.summary.searchRestricted} search entries have disallowed paths; ${report.searchAccess.summary.searchUnknown} search entries have unknown outcomes. Actual provider access is not verified.`, `Training-only restrictions are policy choices, not automatic search problems. Mixed-use controls are reviewed separately.`]:[]),'','OPENING','I looked at a sample of the site to identify useful improvements, not to manufacture a list of errors. Here are the recommendations I would verify and scope first.','',selected.length?'SELECTED AFTER REVIEW':suggestions.length?'UNREVIEWED SUGGESTIONS - NOT CLIENT-READY':'NO RECOMMENDATIONS SELECTED'];
- main.forEach((r,i)=>{lines.push('',`${i+1}. ${r.title}`,`What we observed: ${r.observation}`,`Why it matters: ${r.why}`,'Cadence approach: '+r.solution.join(' '),`Success check: ${r.success}`,`Talk track: ${r.talk}`,`Qualification: ${r.caveat}`);const urls=[...new Set(r.evidence.map(e=>e.url).filter(Boolean))].slice(0,3);if(urls.length)lines.push('Examples: '+urls.join(' | '));if(reviews[r.id]?.note)lines.push('Auditor note: '+reviews[r.id].note);});
+ const lines=['CADENCE SEARCH | SALES AUDIT BRIEF',`URL: ${report.finalUrl||report.requestedUrl}`,`Coverage: ${c.sampleUsable||0}/${c.samplePlanned??c.sampleAttempted??0} usable sampled pages; ${c.relationshipPages||0}/${c.relationshipPlanned??c.relationshipPages??0} usable relationship pages; ${c.renderedPageCount||0} entry-page browser render.`,`Scan: ${report.status}. This is a sample, not a sitewide clearance.`,`On-page QA: ${q.issueObservations||0} implementation observations; ${q.reviewObservations||0} review observations.`,...((report.warnings||[]).length?['Coverage gaps: '+report.warnings.map(w=>w.component+': '+w.message).join(' | ')]:[]),...(report.searchAccess?[`Search & AI policy: ${report.searchAccess.summary.entries} agents/controls evaluated across ${report.searchAccess.pageCount} URL paths; ${report.searchAccess.summary.searchRestricted} search entries have disallowed paths; ${report.searchAccess.summary.searchUnknown} search entries have unknown outcomes. Actual provider access is not verified.`, `Training-only restrictions are policy choices, not automatic search problems. Mixed-use controls are reviewed separately.`]:[]),'','OPENING','I reviewed a sample for search discovery, indexing, relevance and search-result appearance. These recommendations explain the specific search connection, how we would address it and what still needs verification.','',selected.length?'SELECTED AFTER REVIEW':suggestions.length?'UNREVIEWED SUGGESTIONS - NOT CLIENT-READY':'NO RECOMMENDATIONS SELECTED'];
+ main.forEach((r,i)=>{lines.push('',`${i+1}. ${r.title}`,`What we observed: ${r.observation}`,`Why it matters for search visibility: ${r.why}`,'Cadence search approach: '+r.solution.join(' '),`Search success check: ${r.success}`,`Talk track: ${r.talk}`,`Expected search effect - supported vs. unproven: ${r.searchEffect||r.caveat}`,...(r.userNote?[`Secondary user benefit: ${r.userNote.replace(/^Secondary benefit:\s*/i,'')}`]:[]),`Qualification: ${r.caveat}`);const urls=[...new Set(r.evidence.map(e=>e.url).filter(Boolean))].slice(0,3);if(urls.length)lines.push('Examples: '+urls.join(' | '));if(reviews[r.id]?.note)lines.push('Auditor note: '+reviews[r.id].note);});
  if(investigate.length){lines.push('','NEEDS INVESTIGATION');for(const r of investigate)lines.push('',r.title,'Verify: '+r.verify,'Qualification: '+r.caveat);}
  lines.push('','CLOSING',main.length?'We would verify the examples, agree the priority pages, implement the appropriate changes and test the result. These are proposed improvements, not a promise of rankings or leads.':'The scan does not supply a client-ready recommendation yet. Complete the evidence review or investigate the coverage gaps before recording.');
  return lines.join('\n');
@@ -161,7 +166,7 @@ function recordingBrief(report,reviews={}){
 
 const demoReport={
   "schemaVersion": 2,
-  "release": "2.0.0-rc.3",
+  "release": "2.0.0-rc.8",
   "requestedUrl": "https://example.com/",
   "finalUrl": "https://example.com/",
   "scannedAt": "2026-09-11T12:00:00Z",
@@ -171,34 +176,40 @@ const demoReport={
   "coverage": {
     "sampleUsable": 14,
     "sampleAttempted": 14,
+    "samplePlanned": 14,
+    "sampleSkipped": 0,
+    "entryAnalysisSource": "initial-html",
     "relationshipPages": 24,
+    "relationshipPlanned": 24,
     "sitemapUrls": 36,
     "renderRequested": true,
     "renderSucceeded": true,
-    "renderedPageCount": 1
+    "renderedPageCount": 1,
+    "browserAssistPages": 3
   },
   "warnings": [],
   "recommendations": [
     {
       "id": "sample:h1",
       "playbook": "headings",
-      "title": "Give each page a clearly defined main heading",
-      "theme": "On-page",
+      "title": "Missing Header 1 Tags",
+      "theme": "On-Page SEO",
       "observation": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages.",
-      "why": "A visible title and a correctly marked main heading are not always the same thing. A clear heading structure helps readers, assistive technology and automated systems understand how the page is organized.",
+      "why": "Search visibility connection: Google uses prominent page titles and heading elements, including H1s, as inputs when it understands a page and generates the title link shown in search results. If an affected page does not clearly identify its primary service or topic in a main heading, the search opportunity is to make that relevance signal more explicit and consistent. The goal is not to add an H1 for a score; it is to make the page's intended search topic unmistakable.",
+      "searchEffect": "Supported: a clearer, more consistent page-topic signal and an additional documented input Google can use when generating title links. Not established: that the missing H1 caused a ranking loss, that adding one will improve rankings, or that it directly changes AI citations.",
       "solution": [
-        "Open representative affected pages and compare the visible title with the H1 in the initial and rendered HTML.",
-        "Check whether the pages share a CMS template or component. Where appropriate, output each descriptive page title as the main H1 and organize supporting sections beneath it.",
-        "Recheck the affected templates and sample pages after the change; avoid changing the design unnecessarily."
+        "Map each affected page to the service, product, location or topic it is intended to rank for. Compare the title tag, visible page title and H1 in both initial and rendered HTML so we know whether the observed gap is real.",
+        "Where the main topic is unclear or the template fails to output it as the primary heading, update the copy and/or CMS template so the page has one descriptive, search-relevant main heading aligned with the title tag and body content. Do not keyword-stuff or redesign the page simply to add a tag.",
+        "Re-crawl the affected pages and review the title link Google actually shows after recrawling. With client data, compare relevant query impressions, clicks and indexed-page behavior over time; treat those outcomes separately from the technical fix."
       ],
-      "success": "The affected pages expose an appropriate descriptive main heading and logical supporting sections in a follow-up inspection.",
-      "verify": "Open representative affected pages and compare the visible title with the H1 in the initial and rendered HTML.",
-      "caveat": "Missing or multiple H1 elements do not establish a ranking penalty. A common template is a hypothesis until it is inspected.",
-      "effort": "Template/content change plus QA; confirm after CMS inspection.",
+      "success": "The affected pages clearly state the service or topic they are intended to be found for, expose that topic in an appropriate main heading, and provide Google with a stronger, consistent source for page-topic and title-link interpretation. Any visibility change is measured after recrawling rather than assumed.",
+      "verify": "Map each affected page to the service, product, location or topic it is intended to rank for. Compare the title tag, visible page title and H1 in both initial and rendered HTML so we know whether the observed gap is real.",
+      "caveat": "A missing H1 by itself is not a ranking penalty and does not prove lost traffic. Google can use other prominent text and signals. The search case becomes stronger when the page's main topic is also vague, inconsistent, or poorly aligned with the query intent.",
+      "effort": "Search-intent/content review plus template QA; confirm after inspecting the CMS implementation.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages. The first step is to check how the page titles are built. Where the heading markup is missing or confusing, we would fix the appropriate template or page field and then recheck the affected pages together, rather than redesign them.",
-      "source": "https://www.w3.org/WAI/tutorials/page-structure/headings/",
+      "talk": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages. Fourteen of the sampled pages did not expose an H1 in the inspected HTML. We would first confirm what each page is supposed to rank for, then make sure that topic is clearly expressed in the page title, main heading and supporting copy. The search goal is stronger topic clarity and a cleaner title-link input for Google, not simply adding a tag to satisfy an audit.",
+      "source": "https://developers.google.com/search/docs/appearance/title-link",
       "evidence": [
         {
           "label": "Example count",
@@ -220,22 +231,23 @@ const demoReport={
     {
       "id": "sample:links",
       "playbook": "links",
-      "title": "Connect useful content to the services it supports",
-      "theme": "Architecture",
+      "title": "Implement Internal Link Strategy",
+      "theme": "Internal Linking",
       "observation": "In this synthetic link sample, 3 of 9 articles link to a service or location page.",
-      "why": "Relevant contextual links give readers a useful next step and help crawlers discover related pages. A limited sample can identify pages to investigate, but it cannot prove sitewide orphaning or lost authority.",
+      "why": "Search connection: URL discovery and relevance context. Google follows crawlable internal links to discover pages, and descriptive anchor text helps it understand destinations. The opportunity is to connect related informational content to priority service pages where the topic genuinely fits.",
+      "searchEffect": "Supported: explicit crawlable routes and contextual anchor text to priority URLs. Not established: sitewide orphaning, lost link equity or ranking loss from this limited sample.",
       "solution": [
-        "Review the example articles and commercial pages for genuine topic and audience overlap.",
-        "Map useful article-to-service and related-service pathways. Add descriptive links where they help readers, not a forced link on every page.",
-        "Run a fuller link crawl and check that the intended pathways exist, use crawlable anchors and reach the correct destination."
+        "Identify priority service, product or location pages and inspect which related articles actually discuss those subjects. Validate the sampled links before assuming a gap exists sitewide.",
+        "Map topically relevant source pages to each destination. Add ordinary <a href> links with accurate descriptive anchors where useful context already exists; do not force every article to link to every service.",
+        "Verify the links and destination status in a fuller crawl. With client access, assess discovery/indexing and relevant query impressions for the destination pages over time."
       ],
-      "success": "Relevant informational pages connect naturally to appropriate services and supporting resources. A follow-up crawl confirms the pathways.",
-      "verify": "Review the example articles and commercial pages for genuine topic and audience overlap.",
+      "success": "The intended pages have confirmed crawlable links from relevant content, using descriptive anchor text. Subsequent indexing and search performance are measured separately.",
+      "verify": "Identify priority service, product or location pages and inspect which related articles actually discuss those subjects. Validate the sampled links before assuming a gap exists sitewide.",
       "caveat": "Counts refer only to inspected pages. Low inbound counts in a sample do not prove that a page is orphaned or that conversion performance is poor.",
       "effort": "Content mapping, editorial edits and link QA; scope depends on relevance.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "In this synthetic link sample, 3 of 9 articles link to a service or location page. We would review which articles naturally support which services, add helpful links at those points and verify the routes afterward. It is about giving useful content a clearer next step, not adding links just to satisfy a score.",
+      "talk": "In this synthetic link sample, 3 of 9 articles link to a service or location page. We would strengthen the links from relevant articles to the service pages you want found in search. That gives Google clear routes to those pages and useful context about their subjects. We would confirm the broader link picture first rather than call pages orphaned from a small sample.",
       "source": "https://developers.google.com/search/docs/crawling-indexing/links-crawlable",
       "evidence": [
         {
@@ -253,10 +265,11 @@ const demoReport={
     {
       "id": "sample:sources",
       "playbook": "sources",
-      "title": "Make important factual claims easier to verify",
-      "theme": "Content trust",
+      "title": "Add Supporting Sources and Citations",
+      "theme": "Content Quality",
       "observation": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed.",
-      "why": "Readers need a way to check claims that depend on outside evidence. A source-link classifier is only a starting point: an outbound link is not necessarily a citation, and legitimate citations may be unlinked or missed.",
+      "why": "Search connection: an indirect content-quality review, not a technical ranking rule. Google's helpful-content guidance asks whether information has clear sourcing and demonstrates expertise. A source-link count cannot determine the accuracy or quality of an article.",
+      "searchEffect": "Supported: a lead for reviewing evidence in factual content. Not established: a citation-count ranking factor, that the articles have no references, or that adding outbound links earns AI citations.",
       "solution": [
         "Review the factual or research-heavy example articles and locate claims that actually depend on external evidence.",
         "Check any existing references, then cite the strongest relevant original or authoritative source where it helps the reader. Correct unsupported claims rather than merely adding links.",
@@ -268,7 +281,7 @@ const demoReport={
       "effort": "Editorial and subject-matter review; varies with the claims.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed. We would review the factual articles for claims that need outside support, check the existing references and add or correct sources where they genuinely help the reader verify the information.",
+      "talk": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed. For factual articles targeting search, we would verify the claims and make their supporting evidence clear where needed. The aim is reliable content, not adding external links as a supposed ranking trick.",
       "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
       "evidence": [
         {
@@ -286,10 +299,11 @@ const demoReport={
     {
       "id": "sample:search-access",
       "playbook": "ai",
-      "title": "Align AI crawler policy with your discovery goals",
-      "theme": "AI access",
+      "title": "Review Search & AI Crawler Access",
+      "theme": "Search & AI Access",
       "observation": "The inspected robots policies disallow at least one checked URL path for 2 search or robots-governed retrieval agents: OAI-SearchBot, Claude-SearchBot. Intent and actual provider access still need verification.",
       "why": "Search retrieval, model training and user-initiated fetching are different uses. The relevant crawler policy should reflect the owner's goals rather than a blanket instruction to allow every AI bot.",
+      "searchEffect": "Supported: the documented search crawler's published policy for the checked paths. Not established: actual provider requests, inclusion, citations or a ranking change. Training preferences are separate.",
       "solution": [
         "Confirm the client's policy for search discovery, user-requested access and model training separately.",
         "Review the exact robots group and any firewall controls for the affected crawler. Change only restrictions that conflict with the agreed policy.",
@@ -12448,6 +12462,97 @@ const demoReport={
       "Unavailable, oversized, malformed or challenge responses stay unknown. Provider caches and undocumented fallback behavior can differ.",
       "The registry is versioned and manually reviewed, not automatically updated. Documentation gaps are marked per provider."
     ]
+  },
+  "browserAssist": {
+    "capturedPages": 3,
+    "pages": [
+      {
+        "schemaVersion": "cadence-browser-assist-1",
+        "capturedAt": "2026-09-11T12:00:00Z",
+        "url": "https://example.com/",
+        "page": {
+          "title": "Example Home",
+          "metaDescription": "Example description",
+          "canonical": "https://example.com/",
+          "headings": {
+            "h1": [
+              "Example Home"
+            ],
+            "h2": []
+          },
+          "structuredDataTypes": [
+            "Organization"
+          ],
+          "images": {
+            "total": 4,
+            "missingAlt": 0
+          },
+          "links": {
+            "internalPrimary": 5,
+            "externalPrimary": 1
+          },
+          "authorSignals": [],
+          "openGraph": {}
+        }
+      },
+      {
+        "schemaVersion": "cadence-browser-assist-1",
+        "capturedAt": "2026-09-11T12:00:00Z",
+        "url": "https://example.com/services/example-1/",
+        "page": {
+          "title": "Example Service",
+          "metaDescription": "",
+          "canonical": "https://example.com/services/example-1/",
+          "headings": {
+            "h1": [],
+            "h2": [
+              "What we do"
+            ]
+          },
+          "structuredDataTypes": [],
+          "images": {
+            "total": 2,
+            "missingAlt": 1
+          },
+          "links": {
+            "internalPrimary": 2,
+            "externalPrimary": 0
+          },
+          "authorSignals": [],
+          "openGraph": {}
+        }
+      },
+      {
+        "schemaVersion": "cadence-browser-assist-1",
+        "capturedAt": "2026-09-11T12:00:00Z",
+        "url": "https://example.com/services/example-2/",
+        "page": {
+          "title": "Another Service",
+          "metaDescription": "",
+          "canonical": "https://example.com/services/example-2/",
+          "headings": {
+            "h1": [],
+            "h2": [
+              "Details"
+            ]
+          },
+          "structuredDataTypes": [],
+          "images": {
+            "total": 3,
+            "missingAlt": 0
+          },
+          "links": {
+            "internalPrimary": 1,
+            "externalPrimary": 0
+          },
+          "authorSignals": [],
+          "openGraph": {}
+        }
+      }
+    ],
+    "limitations": [
+      "Synthetic Browser Assist example. Rendered-page evidence only."
+    ]
   }
 };
 
@@ -12482,11 +12587,24 @@ const $=id=>document.getElementById(id);
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeHref=s=>{try{const u=new URL(s);return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password?u.href:null;}catch{return null;}};
 const link=(url,label)=>safeHref(url)?`<a href="${escape(safeHref(url))}" target="_blank" rel="noopener noreferrer">${escape(label||url)} &#8599;</a>`:escape(label||url);
+const displayPath=url=>{try{const u=new URL(url);return `${u.pathname||'/'}${u.search||''}`;}catch{return String(url||'');}};
+const placementLabel=value=>({'footer':'Footer','navigation':'Navigation','header-navigation':'Header navigation','header':'Header','sidebar':'Sidebar','main-content':'Main content','body':'Body / template'}[value]||String(value||'Unknown'));
+function renderQaItem(i){
+ const isLinkObservation=Boolean(i.sourceUrl&&(i.targetUrl||/link/i.test(i.issue||'')));
+ if(!isLinkObservation)return `<div class="qa-item"><strong>${escape(i.issue)} &middot; ${escape(i.level)}</strong><p>${escape(i.value)}</p>${i.url?link(i.url):''}</div>`;
+ const anchors=(i.anchorTexts||[]).filter(Boolean);const placements=[...new Set((i.placements||[]).filter(Boolean))];
+ const status=i.status===null||i.status===undefined?'Not confirmed':`HTTP ${i.status}`;
+ const targetLabel=Number(i.redirectCount||0)>0?'Redirected link':'Target URL';
+ const finalChanged=i.finalUrl&&i.targetUrl&&safeHref(i.finalUrl)!==safeHref(i.targetUrl);
+ return `<div class="qa-item qa-link-item"><strong>${escape(i.issue)} &middot; ${escape(i.level)}</strong><div class="qa-link-facts"><p><span>Status</span><b>${escape(status)}</b></p><p><span>${escape(targetLabel)}</span>${escape(displayPath(i.targetUrl||i.url))}</p>${finalChanged?`<p><span>Final destination</span>${escape(displayPath(i.finalUrl))}</p>`:''}<p><span>Anchor text</span>${escape(anchors.length?anchors.join(' / '):'(no text detected)')}</p><p><span>Found on</span>${escape(displayPath(i.sourceUrl))}</p><p><span>Found in</span>${escape(placements.length?placements.map(placementLabel).join(' / '):'Unknown')}</p></div>${link(i.sourceUrl,'Open source page')}</div>`;
+}
 let csrf='',activeJob=null,currentReport=null,reviews={},demoMode=false,pollToken=0,qaFilter='all';
 const offline=location.protocol==='file:' || window.CADENCE_OFFLINE_PREVIEW===true;
 const store=(key,value)=>{try{value===null?localStorage.removeItem(key):localStorage.setItem(key,value);}catch{}};
 const stored=key=>{try{return localStorage.getItem(key);}catch{return null;}};
 function notify(message,kind=''){ $('notice').textContent=message;$('notice').className=kind; }
+function browserAssistPanel(r){const count=r.browserAssist?.capturedPages||0;const weak=(r.status!=='completed')||Number(r.coverage?.sampleUsable||0)<Number(r.coverage?.samplePlanned||0);return `<section class="browser-assist ${weak?'recommended':''}"><div><p class="eyebrow">PROSPECT FALLBACK</p><h2>Browser Assist</h2><p>${weak?'Automated coverage is limited. Open representative public prospect pages in Chrome and capture the rendered search signals without retrying blocked server requests.':'Use this only when a prospect site blocks the hosted scanner or when you want to verify a rendered public page manually.'}</p><p class="hint">${count?`${count} browser capture(s) are attached to this audit. `:''}Browser captures do not verify server responses, robots enforcement, firewall behavior, Googlebot access or AI-crawler access.</p></div><div class="browser-assist-actions"><button id="import-browser-assist" class="quiet">Import Browser Assist captures</button><input id="browser-assist-files" type="file" accept="application/json,.json" multiple hidden><small>Capture 3-5 representative public pages: home, key services, one article, and a conversion/contact page.</small></div>${count?`<details><summary>Browser-captured pages (${count})</summary><div class="qa-items">${(r.browserAssist.pages||[]).map(c=>`<div class="qa-item"><strong>${escape(new URL(c.url).pathname||'/')}</strong><p>${escape(c.page.title||'No document title')} &middot; H1s: ${c.page.headings?.h1?.length||0} &middot; Schema types: ${(c.page.structuredDataTypes||[]).length}</p>${link(c.url,'Open captured page')}</div>`).join('')}</div></details>`:''}</section>`;}
+async function importBrowserAssist(files){if(!activeJob||demoMode){notify('Browser Assist captures can be added to a completed live V2 audit.','error');return;}const captures=[];for(const file of [...files].slice(0,10)){try{captures.push(JSON.parse(await file.text()));}catch{throw new Error(`${file.name} is not valid JSON.`);}}if(!captures.length)return;notify('Adding Browser Assist evidence…');const result=await api('/api/v2/jobs/'+activeJob.id+'/browser-assist',{method:'POST',body:{captures}});currentReport=result.report;reviews=result.reviews||{};renderReport();notify(`${captures.length} Browser Assist capture(s) added. Server-only and crawler-access checks remain separate.`,'success');}
 async function api(path,{method='GET',body}={}){
  const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),12000);
  try{const response=await fetch(path,{method,credentials:'same-origin',cache:'no-store',signal:ctrl.signal,headers:{'Accept':'application/json',...(method==='GET'?{}:{'Content-Type':'application/json','X-CSRF-Token':csrf,'X-App-Version':RELEASE})},...(body?{body:JSON.stringify(body)}:{})});
@@ -12509,14 +12627,15 @@ async function followJob(job){activeJob=job;demoMode=false;const token=++pollTok
 }
 function renderReport(){const r=currentReport;if(!r)return;const c=r.coverage||{};let host=r.finalUrl||r.requestedUrl;try{host=new URL(host).hostname;}catch{}
  const cards=(r.recommendations||[]).map((rec,i)=>opportunity(rec,i)).join('');
- $('report').innerHTML=`${demoMode?'<div class="demo-box"><strong>EXAMPLE REPORT / SYNTHETIC DATA.</strong> This shows the workflow only. It is not an audit of a real website.</div>':''}<div class="section-top report-heading"><div><p class="eyebrow">AUDIT WORKSPACE</p><div class="report-host">${escape(host)}</div><p class="hint">${escape(r.status)} &middot; ${escape(new Date(r.scannedAt).toLocaleString())} &middot; Sample-based assessment</p></div><div class="report-head-actions"><button id="open-brief" class="primary">Build sales brief</button><button id="open-technical" class="quiet">Technical detail</button></div></div><div class="coverage"><div><span>Usable page sample</span><strong>${c.sampleUsable||0} / ${c.sampleAttempted||0}</strong><small>Initial HTML inspection</small></div><div><span>Relationship pages</span><strong>${c.relationshipPages||0}</strong><small>Sampled link relationships</small></div><div><span>Browser render</span><strong>${c.renderRequested?(c.renderSucceeded?'Available':'Incomplete'):'Not requested'}</strong><small>Entry page only</small></div><div><span>Recommendations</span><strong>${r.recommendations?.length||0}</strong><small>Up to five; no required quota</small></div></div>${r.warnings?.length?'<div class="warning-box"><strong>Coverage gaps - these are not website findings.</strong>'+r.warnings.map(w=>`<p>${escape(w.component)}: ${escape(w.message)}</p>`).join('')+'</div>':''}${renderSearchAccess(r.searchAccess)}<div class="section-top sales-heading"><div><p class="eyebrow">FROM OBSERVATION TO SOLUTION</p><h2>Top recommendations</h2></div></div><p class="hint">Priority is provisional. No observation here establishes lost rankings, traffic, leads or revenue. Review the examples and intended page behavior first.</p>${cards||'<div class="empty-box"><h3>No supported recommendations in the completed checks.</h3><p class="hint">This is not a complete-site clearance. Check coverage, inspect the page-level observations and investigate any gaps rather than inventing a talking point.</p></div>'}<section class="technical" id="technical"><div class="section-top"><div><p class="eyebrow">FOR VERIFICATION, NOT A SALES SCORE</p><h2>On-page checks &amp; evidence</h2></div><button class="quiet" id="download-json">Export diagnostic JSON</button></div><p class="hint">${r.qa?.pagesChecked||0} pages checked. ${r.qa?.issueObservations||0} implementation observations; ${r.qa?.reviewObservations||0} review observations. A clear module means no flag within these checks, not an assurance of technical health.</p><div class="qa-toolbar" role="group" aria-label="Filter checks">${['all','issue','review','good'].map((v,i)=>`<button class="quiet ${qaFilter===v?'active':''}" data-filter="${v}">${['All','Implementation','Review','No flag'][i]}</button>`).join('')}</div><div id="qa-list"></div><div class="page-inspect"><h3>Inspect one sampled page</h3><label for="inspect-page" class="hint">Page-level check coverage</label><select id="inspect-page"><option value="">Choose a page</option>${(r.qa?.pages||[]).map((p,i)=>`<option value="${i}">${escape(p.url)}</option>`).join('')}</select><div id="page-modules" class="page-module-list"></div></div><details class="qa-module"><summary>Policy and scope limitations</summary><div class="qa-items">${(r.limitations||[]).map(t=>`<p class="hint">${escape(t)}</p>`).join('')}<p class="hint">Robots access means a directive allowed the checked URL, not verified access by that real crawler. GPTBot and ClaudeBot relate to training; they are not interchangeable with search-discovery crawlers.</p><p class="hint">See Search &amp; AI Access above for the policy matrix and provider-specific qualifications.</p></div></details></section>`;
+ $('report').innerHTML=`${demoMode?'<div class="demo-box"><strong>EXAMPLE REPORT / SYNTHETIC DATA.</strong> This shows the workflow only. It is not an audit of a real website.</div>':''}<div class="section-top report-heading"><div><p class="eyebrow">AUDIT WORKSPACE</p><div class="report-host">${escape(host)}</div><p class="hint">${escape(r.status)} &middot; ${escape(new Date(r.scannedAt).toLocaleString())} &middot; Sample-based assessment</p></div><div class="report-head-actions"><button id="open-brief" class="primary">Build sales brief</button><button id="open-technical" class="quiet">Technical detail</button></div></div><div class="coverage"><div><span>Usable page sample</span><strong>${c.sampleUsable||0} / ${c.samplePlanned??c.sampleAttempted??0}</strong><small>Initial HTML: ${c.sampleAttempted||0} attempted, ${c.sampleSkipped||0} skipped</small></div><div><span>Usable relationship pages</span><strong>${c.relationshipPages||0} / ${c.relationshipPlanned??c.relationshipPages??0}</strong><small>Usable HTML only; not every selected URL</small></div><div><span>Browser render</span><strong>${c.renderRequested?(c.renderSucceeded?'Available':'Incomplete'):'Not requested'}</strong><small>${c.entryAnalysisSource==='rendered-fallback'?'Entry-page fallback only; not the HTML sample':'Entry page only'}</small></div><div><span>Recommendations</span><strong>${r.recommendations?.length||0}</strong><small>Up to five; no required quota</small></div></div>${r.warnings?.length?'<div class="warning-box"><strong>Coverage gaps - these are not website findings.</strong>'+r.warnings.map(w=>`<p>${escape(w.component)}: ${escape(w.message)}</p>`).join('')+'</div>':''}${r.accessAdvice?'<div class="warning-box"><strong>'+escape(r.accessAdvice.title)+'</strong><p>'+escape(r.accessAdvice.message)+'</p>'+r.accessAdvice.actions.map(t=>'<p>'+escape(t)+'</p>').join('')+'</div>':''}${browserAssistPanel(r)}${renderSearchAccess(r.searchAccess)}<div class="section-top sales-heading"><div><p class="eyebrow">FROM OBSERVATION TO SOLUTION</p><h2>Top recommendations</h2></div></div><p class="hint">Priority is provisional. No observation here establishes lost rankings, traffic, leads or revenue. Review the examples and intended page behavior first.</p>${cards||'<div class="empty-box"><h3>No supported recommendations in the completed checks.</h3><p class="hint">This is not a complete-site clearance. Check coverage, inspect the page-level observations and investigate any gaps rather than inventing a talking point.</p></div>'}<section class="technical" id="technical"><div class="section-top"><div><p class="eyebrow">FOR VERIFICATION, NOT A SALES SCORE</p><h2>On-page checks &amp; evidence</h2></div><button class="quiet" id="download-json">Export diagnostic JSON</button></div><p class="hint">${r.qa?.pagesChecked||0} pages checked. ${r.qa?.issueObservations||0} implementation observations; ${r.qa?.reviewObservations||0} review observations. A clear module means no flag within these checks, not an assurance of technical health.</p><div class="qa-toolbar" role="group" aria-label="Filter checks">${['all','issue','review','good'].map((v,i)=>`<button class="quiet ${qaFilter===v?'active':''}" data-filter="${v}">${['All','Implementation','Review','No flag'][i]}</button>`).join('')}</div><div id="qa-list"></div><div class="page-inspect"><h3>Inspect one sampled page</h3><label for="inspect-page" class="hint">Page-level check coverage</label><select id="inspect-page"><option value="">Choose a page</option>${(r.qa?.pages||[]).map((p,i)=>`<option value="${i}">${escape(p.url)}</option>`).join('')}</select><div id="page-modules" class="page-module-list"></div></div><details class="qa-module"><summary>Policy and scope limitations</summary><div class="qa-items">${(r.limitations||[]).map(t=>`<p class="hint">${escape(t)}</p>`).join('')}<p class="hint">Robots access means a directive allowed the checked URL, not verified access by that real crawler. GPTBot and ClaudeBot relate to training; they are not interchangeable with search-discovery crawlers.</p><p class="hint">See Search &amp; AI Access above for the policy matrix and provider-specific qualifications.</p></div></details></section>`;
  $('report').hidden=false;renderQa();bindSearchAccess($('report'));$('open-brief').onclick=showBrief;$('open-technical').onclick=()=>$('technical').scrollIntoView({behavior:'smooth'});$('download-json').onclick=downloadJson;
  document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{qaFilter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('active',x===b));renderQa();});
  $('inspect-page').onchange=()=>{const p=r.qa?.pages?.[Number($('inspect-page').value)];$('page-modules').innerHTML=$('inspect-page').value===''?'':(p?.modules||[]).map(m=>`<p>${escape(m.label)}<b>${m.status==='good'?'No flag':escape(m.status)}</b></p>`).join('');};
  document.querySelectorAll('[data-review]').forEach(b=>b.onclick=()=>saveReview(b));
+ const importButton=$('import-browser-assist'),assistFiles=$('browser-assist-files');if(importButton&&assistFiles){importButton.onclick=()=>assistFiles.click();assistFiles.onchange=async()=>{try{await importBrowserAssist(assistFiles.files);}catch(e){notify(e.message,'error');}finally{assistFiles.value='';}};}
 }
-function opportunity(r,index){const decision=reviews[r.id]||{},state=decision.decision||'unreviewed';return `<article class="opportunity" data-rec="${escape(r.id)}"><div class="opp-head"><div class="opp-index">${index+1}</div><div><p class="eyebrow">${escape(r.theme)} / ${escape(r.scope)}</p><h3>${escape(r.title)}</h3><p class="meta-line">Priority: ${escape(r.priority)} &nbsp;|&nbsp; ${escape(r.confidence)}</p></div></div><div class="sales-grid"><div><h4>What we observed</h4><p>${escape(r.observation)}</p></div><div><h4>Why it matters</h4><p>${escape(r.why)}</p></div><div class="solution"><h4>How Cadence would address it</h4><ol>${r.solution.map(s=>`<li>${escape(s)}</li>`).join('')}</ol></div><div><h4>What success looks like</h4><p>${escape(r.success)}</p></div><div><h4>Effort to confirm</h4><p>${escape(r.effort)}</p></div><div class="talk"><h4>How to explain it</h4><p>${escape(r.talk)}</p></div></div><div class="qualification"><h4>Keep this qualification</h4><p>${escape(r.caveat)}</p></div><details class="evidence-details" data-detail="${escape(r.id)}"><summary>Technical evidence &amp; verification</summary><div class="evidence-content"><h4>Verify first</h4><p class="hint">${escape(r.verify)}</p><div class="evidence-list">${r.evidence.length?r.evidence.map(e=>`<div class="evidence-row"><strong>${escape(e.label)}</strong><div>${escape(e.value)}${e.url?link(e.url,'Open example page'):''}</div></div>`).join(''):'<p class="hint">No page-level examples were attached. Request the missing evidence before making a client-facing claim.</p>'}</div><p class="source-link">${link(r.source,'Methodology reference')}</p><p class="hint">Original observation: ${escape(r.originalFinding?.title||'')} (${escape(r.originalFinding?.confidence||'review')}). Confirm meaning and scope independently.</p></div></details><div class="review-bar"><label class="verify-label"><input type="checkbox" data-verified ${decision.verified?'checked':''}><span>I inspected the relevant examples and checked the interpretation. This does not change the underlying scanner confidence.</span></label><div class="review-actions"><button data-review="use" class="quiet ${state==='use'?'active':''}">Use in video</button><button data-review="investigate" class="quiet ${state==='investigate'?'active':''}">Needs investigation</button><button data-review="ignore" class="quiet ${state==='ignore'?'active':''}">Ignore</button><button data-review="unreviewed" class="quiet">Reset</button><span class="review-state">${escape(state)}</span></div><textarea class="auditor-note" maxlength="1500" placeholder="Your verification note (optional)" aria-label="Verification note">${escape(decision.note||'')}</textarea><p class="inline-error" role="status"></p></div></article>`;}
-function renderQa(){const modules=currentReport?.qa?.checks||[];$('qa-list').innerHTML=modules.filter(m=>qaFilter==='all'||m.status===qaFilter).map(m=>`<details class="qa-module"><summary><b><i class="status-dot ${escape(m.status)}"></i>${escape(m.label)}</b><span>${(m.items||[]).length} observations</span></summary><p class="qa-note">${escape(m.summary)} ${escape(m.note||'')}</p><div class="qa-items">${(m.items||[]).slice(0,60).map(i=>`<div class="qa-item"><strong>${escape(i.issue)} &middot; ${escape(i.level)}</strong><p>${escape(i.value)}</p>${i.url?link(i.url):''}</div>`).join('')}</div></details>`).join('')||'<p class="hint">No modules in this filter, or no usable pages were available.</p>';}
+function opportunity(r,index){const decision=reviews[r.id]||{},state=decision.decision||'unreviewed';return `<article class="opportunity" data-rec="${escape(r.id)}"><div class="opp-head"><div class="opp-index">${index+1}</div><div><p class="eyebrow">${escape(r.theme)}</p><h3>${escape(r.title)}</h3><p class="meta-line">Priority: ${escape(r.priority)}</p></div></div><div class="sales-grid"><div><h4>What we observed</h4><p>${escape(r.observation)}</p></div><div><h4>Why it matters for search visibility</h4><p>${escape(r.why)}</p></div><div class="solution"><h4>How Cadence would improve the search opportunity</h4><ol>${r.solution.map(s=>`<li>${escape(s)}</li>`).join('')}</ol></div><div><h4>How we verify the search result</h4><p>${escape(r.success)}</p>${r.userNote?`<p class="secondary-benefit"><strong>Secondary user benefit:</strong> ${escape(r.userNote.replace(/^Secondary benefit:\s*/i,''))}</p>`:''}</div><div><h4>Effort to confirm</h4><p>${escape(r.effort)}</p></div><div class="talk"><h4>How to explain it</h4><p>${escape(r.talk)}</p></div></div><div class="qualification"><h4>Expected search effect — supported vs. unproven</h4><p>${escape(r.searchEffect||r.caveat)}</p><p class="hint">${escape(r.caveat)}</p></div><details class="evidence-details" data-detail="${escape(r.id)}"><summary>Technical evidence &amp; verification</summary><div class="evidence-content"><h4>Verify first</h4><p class="hint">${escape(r.verify)}</p><div class="evidence-list">${r.evidence.length?r.evidence.map(e=>`<div class="evidence-row"><strong>${escape(e.label)}</strong><div>${escape(e.value)}${e.url?link(e.url,'Open example page'):''}</div></div>`).join(''):'<p class="hint">No page-level examples were attached. Request the missing evidence before making a client-facing claim.</p>'}</div><p class="source-link">${link(r.source,'Methodology reference')}</p><p class="hint">Original observation: ${escape(r.originalFinding?.title||'')} (${escape(r.originalFinding?.confidence||'review')}). Confirm meaning and scope independently.</p></div></details><div class="review-bar"><label class="verify-label"><input type="checkbox" data-verified ${decision.verified?'checked':''}><span>I inspected the relevant examples and checked the interpretation. This does not change the underlying scanner confidence.</span></label><div class="review-actions"><button data-review="use" class="quiet ${state==='use'?'active':''}">Use in video</button><button data-review="investigate" class="quiet ${state==='investigate'?'active':''}">Needs investigation</button><button data-review="ignore" class="quiet ${state==='ignore'?'active':''}">Ignore</button><button data-review="unreviewed" class="quiet">Reset</button><span class="review-state">${escape(state)}</span></div><textarea class="auditor-note" maxlength="1500" placeholder="Your verification note (optional)" aria-label="Verification note">${escape(decision.note||'')}</textarea><p class="inline-error" role="status"></p></div></article>`;}
+function renderQa(){const modules=currentReport?.qa?.checks||[];$('qa-list').innerHTML=modules.filter(m=>qaFilter==='all'||m.status===qaFilter).map(m=>`<details class="qa-module"><summary><b><i class="status-dot ${escape(m.status)}"></i>${escape(m.label)}</b><span>${(m.items||[]).length} observations</span></summary><p class="qa-note">${escape(m.summary)} ${escape(m.note||'')}</p><div class="qa-items">${(m.items||[]).slice(0,60).map(renderQaItem).join('')}</div></details>`).join('')||'<p class="hint">No modules in this filter, or no usable pages were available.</p>';}
 async function saveReview(button){const article=button.closest('[data-rec]'),id=article.dataset.rec,decision=button.dataset.review,verified=article.querySelector('[data-verified]').checked,note=article.querySelector('.auditor-note').value,error=article.querySelector('.inline-error');
  if(decision==='use'&&!verified){error.textContent='Inspect the examples and check the verification box before selecting this for the video.';return;}
  const saved={decision,verified,note};button.disabled=true;
@@ -12533,7 +12652,7 @@ $('cancel').onclick=async()=>{if(!activeJob)return;try{await api('/api/v2/jobs/'
 $('demo').onclick=showDemo;$('history-toggle').onclick=showHistory;$('history-close').onclick=()=>$('history').hidden=true;$('brief-close').onclick=()=>$('brief-dialog').close();
 $('copy-brief').onclick=async()=>{try{await navigator.clipboard.writeText($('brief-text').value);$('copy-status').textContent='Copied.';}catch{$('brief-text').focus();$('brief-text').select();$('copy-status').textContent='Select and copy the text with Command+C (or Control+C).';}};
 $('mode').onchange=()=>{$('size').disabled=$('mode').value==='page';};
-async function boot(){if(offline){$('run').disabled=true;showDemo();window.scrollTo(0,0);return;}try{const b=await api('/api/v2/bootstrap');csrf=b.csrf;if(b.release!==RELEASE){$('run').disabled=true;notify('This page and server are different releases. Refresh the page before scanning.','error');return;}const last=stored('cadence-v2-last-job');if(last){try{const d=await api('/api/v2/jobs/'+last);void followJob(d.job);}catch{store('cadence-v2-last-job',null);}}}catch(e){$('run').disabled=true;notify('The workspace could not connect to its server. '+e.message,'error');}}
+async function boot(){if(offline){$('run').disabled=true;showDemo();window.scrollTo(0,0);return;}try{const b=await api('/api/v2/bootstrap');csrf=b.csrf;if(b.scanLimits){const l=b.scanLimits;$('run').title=`Scan-start limits: ${l.perSession}/hour for this browser; ${l.global}/hour across the app. ${l.sessionRemaining} session starts currently remaining.`;}if(b.release!==RELEASE){$('run').disabled=true;notify('This page and server are different releases. Refresh the page before scanning.','error');return;}const last=stored('cadence-v2-last-job');if(last){try{const d=await api('/api/v2/jobs/'+last);void followJob(d.job);}catch{store('cadence-v2-last-job',null);}}}catch(e){$('run').disabled=true;notify('The workspace could not connect to its server. '+e.message,'error');}}
 void boot();
 
 </script>

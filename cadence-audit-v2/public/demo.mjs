@@ -1,6 +1,6 @@
 export const demoReport={
   "schemaVersion": 2,
-  "release": "2.0.0-rc.3",
+  "release": "2.0.0-rc.8",
   "requestedUrl": "https://example.com/",
   "finalUrl": "https://example.com/",
   "scannedAt": "2026-09-11T12:00:00Z",
@@ -10,34 +10,40 @@ export const demoReport={
   "coverage": {
     "sampleUsable": 14,
     "sampleAttempted": 14,
+    "samplePlanned": 14,
+    "sampleSkipped": 0,
+    "entryAnalysisSource": "initial-html",
     "relationshipPages": 24,
+    "relationshipPlanned": 24,
     "sitemapUrls": 36,
     "renderRequested": true,
     "renderSucceeded": true,
-    "renderedPageCount": 1
+    "renderedPageCount": 1,
+    "browserAssistPages": 3
   },
   "warnings": [],
   "recommendations": [
     {
       "id": "sample:h1",
       "playbook": "headings",
-      "title": "Give each page a clearly defined main heading",
-      "theme": "On-page",
+      "title": "Missing Header 1 Tags",
+      "theme": "On-Page SEO",
       "observation": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages.",
-      "why": "A visible title and a correctly marked main heading are not always the same thing. A clear heading structure helps readers, assistive technology and automated systems understand how the page is organized.",
+      "why": "Search visibility connection: Google uses prominent page titles and heading elements, including H1s, as inputs when it understands a page and generates the title link shown in search results. If an affected page does not clearly identify its primary service or topic in a main heading, the search opportunity is to make that relevance signal more explicit and consistent. The goal is not to add an H1 for a score; it is to make the page's intended search topic unmistakable.",
+      "searchEffect": "Supported: a clearer, more consistent page-topic signal and an additional documented input Google can use when generating title links. Not established: that the missing H1 caused a ranking loss, that adding one will improve rankings, or that it directly changes AI citations.",
       "solution": [
-        "Open representative affected pages and compare the visible title with the H1 in the initial and rendered HTML.",
-        "Check whether the pages share a CMS template or component. Where appropriate, output each descriptive page title as the main H1 and organize supporting sections beneath it.",
-        "Recheck the affected templates and sample pages after the change; avoid changing the design unnecessarily."
+        "Map each affected page to the service, product, location or topic it is intended to rank for. Compare the title tag, visible page title and H1 in both initial and rendered HTML so we know whether the observed gap is real.",
+        "Where the main topic is unclear or the template fails to output it as the primary heading, update the copy and/or CMS template so the page has one descriptive, search-relevant main heading aligned with the title tag and body content. Do not keyword-stuff or redesign the page simply to add a tag.",
+        "Re-crawl the affected pages and review the title link Google actually shows after recrawling. With client data, compare relevant query impressions, clicks and indexed-page behavior over time; treat those outcomes separately from the technical fix."
       ],
-      "success": "The affected pages expose an appropriate descriptive main heading and logical supporting sections in a follow-up inspection.",
-      "verify": "Open representative affected pages and compare the visible title with the H1 in the initial and rendered HTML.",
-      "caveat": "Missing or multiple H1 elements do not establish a ranking penalty. A common template is a hypothesis until it is inspected.",
-      "effort": "Template/content change plus QA; confirm after CMS inspection.",
+      "success": "The affected pages clearly state the service or topic they are intended to be found for, expose that topic in an appropriate main heading, and provide Google with a stronger, consistent source for page-topic and title-link interpretation. Any visibility change is measured after recrawling rather than assumed.",
+      "verify": "Map each affected page to the service, product, location or topic it is intended to rank for. Compare the title tag, visible page title and H1 in both initial and rendered HTML so we know whether the observed gap is real.",
+      "caveat": "A missing H1 by itself is not a ranking penalty and does not prove lost traffic. Google can use other prominent text and signals. The search case becomes stronger when the page's main topic is also vague, inconsistent, or poorly aligned with the query intent.",
+      "effort": "Search-intent/content review plus template QA; confirm after inspecting the CMS implementation.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages. The first step is to check how the page titles are built. Where the heading markup is missing or confusing, we would fix the appropriate template or page field and then recheck the affected pages together, rather than redesign them.",
-      "source": "https://www.w3.org/WAI/tutorials/page-structure/headings/",
+      "talk": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages. Fourteen of the sampled pages did not expose an H1 in the inspected HTML. We would first confirm what each page is supposed to rank for, then make sure that topic is clearly expressed in the page title, main heading and supporting copy. The search goal is stronger topic clarity and a cleaner title-link input for Google, not simply adding a tag to satisfy an audit.",
+      "source": "https://developers.google.com/search/docs/appearance/title-link",
       "evidence": [
         {
           "label": "Example count",
@@ -59,22 +65,23 @@ export const demoReport={
     {
       "id": "sample:links",
       "playbook": "links",
-      "title": "Connect useful content to the services it supports",
-      "theme": "Architecture",
+      "title": "Implement Internal Link Strategy",
+      "theme": "Internal Linking",
       "observation": "In this synthetic link sample, 3 of 9 articles link to a service or location page.",
-      "why": "Relevant contextual links give readers a useful next step and help crawlers discover related pages. A limited sample can identify pages to investigate, but it cannot prove sitewide orphaning or lost authority.",
+      "why": "Search connection: URL discovery and relevance context. Google follows crawlable internal links to discover pages, and descriptive anchor text helps it understand destinations. The opportunity is to connect related informational content to priority service pages where the topic genuinely fits.",
+      "searchEffect": "Supported: explicit crawlable routes and contextual anchor text to priority URLs. Not established: sitewide orphaning, lost link equity or ranking loss from this limited sample.",
       "solution": [
-        "Review the example articles and commercial pages for genuine topic and audience overlap.",
-        "Map useful article-to-service and related-service pathways. Add descriptive links where they help readers, not a forced link on every page.",
-        "Run a fuller link crawl and check that the intended pathways exist, use crawlable anchors and reach the correct destination."
+        "Identify priority service, product or location pages and inspect which related articles actually discuss those subjects. Validate the sampled links before assuming a gap exists sitewide.",
+        "Map topically relevant source pages to each destination. Add ordinary <a href> links with accurate descriptive anchors where useful context already exists; do not force every article to link to every service.",
+        "Verify the links and destination status in a fuller crawl. With client access, assess discovery/indexing and relevant query impressions for the destination pages over time."
       ],
-      "success": "Relevant informational pages connect naturally to appropriate services and supporting resources. A follow-up crawl confirms the pathways.",
-      "verify": "Review the example articles and commercial pages for genuine topic and audience overlap.",
+      "success": "The intended pages have confirmed crawlable links from relevant content, using descriptive anchor text. Subsequent indexing and search performance are measured separately.",
+      "verify": "Identify priority service, product or location pages and inspect which related articles actually discuss those subjects. Validate the sampled links before assuming a gap exists sitewide.",
       "caveat": "Counts refer only to inspected pages. Low inbound counts in a sample do not prove that a page is orphaned or that conversion performance is poor.",
       "effort": "Content mapping, editorial edits and link QA; scope depends on relevance.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "In this synthetic link sample, 3 of 9 articles link to a service or location page. We would review which articles naturally support which services, add helpful links at those points and verify the routes afterward. It is about giving useful content a clearer next step, not adding links just to satisfy a score.",
+      "talk": "In this synthetic link sample, 3 of 9 articles link to a service or location page. We would strengthen the links from relevant articles to the service pages you want found in search. That gives Google clear routes to those pages and useful context about their subjects. We would confirm the broader link picture first rather than call pages orphaned from a small sample.",
       "source": "https://developers.google.com/search/docs/crawling-indexing/links-crawlable",
       "evidence": [
         {
@@ -92,10 +99,11 @@ export const demoReport={
     {
       "id": "sample:sources",
       "playbook": "sources",
-      "title": "Make important factual claims easier to verify",
-      "theme": "Content trust",
+      "title": "Add Supporting Sources and Citations",
+      "theme": "Content Quality",
       "observation": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed.",
-      "why": "Readers need a way to check claims that depend on outside evidence. A source-link classifier is only a starting point: an outbound link is not necessarily a citation, and legitimate citations may be unlinked or missed.",
+      "why": "Search connection: an indirect content-quality review, not a technical ranking rule. Google's helpful-content guidance asks whether information has clear sourcing and demonstrates expertise. A source-link count cannot determine the accuracy or quality of an article.",
+      "searchEffect": "Supported: a lead for reviewing evidence in factual content. Not established: a citation-count ranking factor, that the articles have no references, or that adding outbound links earns AI citations.",
       "solution": [
         "Review the factual or research-heavy example articles and locate claims that actually depend on external evidence.",
         "Check any existing references, then cite the strongest relevant original or authoritative source where it helps the reader. Correct unsupported claims rather than merely adding links.",
@@ -107,7 +115,7 @@ export const demoReport={
       "effort": "Editorial and subject-matter review; varies with the claims.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed. We would review the factual articles for claims that need outside support, check the existing references and add or correct sources where they genuinely help the reader verify the information.",
+      "talk": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed. For factual articles targeting search, we would verify the claims and make their supporting evidence clear where needed. The aim is reliable content, not adding external links as a supposed ranking trick.",
       "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
       "evidence": [
         {
@@ -125,10 +133,11 @@ export const demoReport={
     {
       "id": "sample:search-access",
       "playbook": "ai",
-      "title": "Align AI crawler policy with your discovery goals",
-      "theme": "AI access",
+      "title": "Review Search & AI Crawler Access",
+      "theme": "Search & AI Access",
       "observation": "The inspected robots policies disallow at least one checked URL path for 2 search or robots-governed retrieval agents: OAI-SearchBot, Claude-SearchBot. Intent and actual provider access still need verification.",
       "why": "Search retrieval, model training and user-initiated fetching are different uses. The relevant crawler policy should reflect the owner's goals rather than a blanket instruction to allow every AI bot.",
+      "searchEffect": "Supported: the documented search crawler's published policy for the checked paths. Not established: actual provider requests, inclusion, citations or a ranking change. Training preferences are separate.",
       "solution": [
         "Confirm the client's policy for search discovery, user-requested access and model training separately.",
         "Review the exact robots group and any firewall controls for the affected crawler. Change only restrictions that conflict with the agreed policy.",
@@ -12286,6 +12295,97 @@ export const demoReport={
       "Meta/X-Robots-Tag, snippet controls, account-level settings and resource access can impose separate restrictions; this matrix evaluates robots.txt only.",
       "Unavailable, oversized, malformed or challenge responses stay unknown. Provider caches and undocumented fallback behavior can differ.",
       "The registry is versioned and manually reviewed, not automatically updated. Documentation gaps are marked per provider."
+    ]
+  },
+  "browserAssist": {
+    "capturedPages": 3,
+    "pages": [
+      {
+        "schemaVersion": "cadence-browser-assist-1",
+        "capturedAt": "2026-09-11T12:00:00Z",
+        "url": "https://example.com/",
+        "page": {
+          "title": "Example Home",
+          "metaDescription": "Example description",
+          "canonical": "https://example.com/",
+          "headings": {
+            "h1": [
+              "Example Home"
+            ],
+            "h2": []
+          },
+          "structuredDataTypes": [
+            "Organization"
+          ],
+          "images": {
+            "total": 4,
+            "missingAlt": 0
+          },
+          "links": {
+            "internalPrimary": 5,
+            "externalPrimary": 1
+          },
+          "authorSignals": [],
+          "openGraph": {}
+        }
+      },
+      {
+        "schemaVersion": "cadence-browser-assist-1",
+        "capturedAt": "2026-09-11T12:00:00Z",
+        "url": "https://example.com/services/example-1/",
+        "page": {
+          "title": "Example Service",
+          "metaDescription": "",
+          "canonical": "https://example.com/services/example-1/",
+          "headings": {
+            "h1": [],
+            "h2": [
+              "What we do"
+            ]
+          },
+          "structuredDataTypes": [],
+          "images": {
+            "total": 2,
+            "missingAlt": 1
+          },
+          "links": {
+            "internalPrimary": 2,
+            "externalPrimary": 0
+          },
+          "authorSignals": [],
+          "openGraph": {}
+        }
+      },
+      {
+        "schemaVersion": "cadence-browser-assist-1",
+        "capturedAt": "2026-09-11T12:00:00Z",
+        "url": "https://example.com/services/example-2/",
+        "page": {
+          "title": "Another Service",
+          "metaDescription": "",
+          "canonical": "https://example.com/services/example-2/",
+          "headings": {
+            "h1": [],
+            "h2": [
+              "Details"
+            ]
+          },
+          "structuredDataTypes": [],
+          "images": {
+            "total": 3,
+            "missingAlt": 0
+          },
+          "links": {
+            "internalPrimary": 1,
+            "externalPrimary": 0
+          },
+          "authorSignals": [],
+          "openGraph": {}
+        }
+      }
+    ],
+    "limitations": [
+      "Synthetic Browser Assist example. Rendered-page evidence only."
     ]
   }
 };

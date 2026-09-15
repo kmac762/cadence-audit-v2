@@ -9,6 +9,7 @@ import {createSiteSnapshot,disabledSiteSnapshot} from '../lib/site-snapshot.mjs'
 import {classifyUrlType} from '../lib/page-type.mjs';
 import {buildOnPageQa,validateInternalLinks} from '../lib/on-page-qa.mjs';
 import {context} from './context.mjs';
+import {getRequestPolicy} from './request-policy.mjs';
 import {makeReport} from './report.mjs';
 import {accessSampleUrls} from './search-access.mjs';
 
@@ -41,8 +42,8 @@ export async function runScan(input,options={},hooks={}) {
     if(!facts.contentAnalysis.usable)warning('Entry page',facts.access.message||`The scanner received HTTP ${page.status} or a non-HTML document. This is not proof that search crawlers are blocked.`);
     checkpoint();
     if(context().robotsAllowed && !context().robotsAllowed(facts.finalUrl)){warning('Redirect destination','The final origin disallows this path for the audit crawler. Further rendering and sampling were skipped.');facts.rendered={enabled:false,succeeded:false};return makeReport({facts,onPageQa:null,findings:[]},true);}
-    if(options.render!==false){phase='rendering';progress({stage:phase,message:'Comparing entry-page HTML with a controlled browser render'});facts.rendered=await (hooks.render||renderPage)(facts.finalUrl,facts.contentAnalysis.usable?facts.raw:null);if(!facts.rendered.succeeded)warning('Rendering',facts.rendered.error||'Browser rendering did not complete.');}
-    else facts.rendered={enabled:false,succeeded:false};
+    if(options.render!==false&&!([401,407,429].includes(facts.responseStatus))){phase='rendering';progress({stage:phase,message:'Comparing entry-page HTML with a controlled browser render'});facts.rendered=await (hooks.render||renderPage)(facts.finalUrl,facts.contentAnalysis.usable?facts.raw:null);if(!facts.rendered.succeeded)warning('Rendering',facts.rendered.error||'Browser rendering did not complete.');}
+    else {facts.rendered={enabled:options.render!==false,succeeded:false};if(options.render!==false)warning('Rendering','Browser rendering was skipped after an explicit authentication or rate-limit response from the target.');}
     if(!facts.contentAnalysis.usable && facts.rendered.succeeded)facts.contentAnalysis={usable:true,source:'rendered-fallback',html:facts.rendered.html};
     checkpoint();
     if(options.mode!=='page' && facts.contentAnalysis.usable){
@@ -52,12 +53,18 @@ export async function runScan(input,options={},hooks={}) {
       facts.siteSnapshot=await createSiteSnapshot(facts.finalUrl,facts.robots,{sampleSize:options.sampleSize||18,seedUrls:facts.contentAnalysis.html?.internalHrefs||[],onProgress:progress});
       const bad=facts.siteSnapshot.pages.filter(p=>!p.usable);
       if(bad.length)warning('Page sample',`${bad.length} of ${facts.siteSnapshot.pages.length} sampled pages could not be inspected as normal HTML.`);
+      const relBad=(facts.siteSnapshot.relationshipPages||[]).filter(p=>!p.usable);
+      if(relBad.length)warning('Link-mapping sample',`${relBad.length} of ${facts.siteSnapshot.relationshipPages.length} selected relationship URLs were not usable. They are excluded from link calculations.`);
       if(!facts.siteSnapshot.sitemapFound)warning('Discovery','No usable sitemap was found within the bounded discovery checks. The sample may use only links from the entry page.');
       checkpoint();
     }
     phase='bot-policy';progress({stage:phase,message:'Evaluating search, user-request and training policies across the URL sample'});await completePolicies();
     phase='links';progress({stage:phase,message:'Checking a bounded set of entry-page internal link targets'});
     const links=await validateInternalLinks(facts,{limit:options.mode==='page'?10:20});
+    const linkGaps=links.results.filter(r=>!r.status||r.accessRestricted);
+    if(linkGaps.length)warning('Link-target checks',`${linkGaps.length} link-target checks were skipped, denied or inconclusive. They are not confirmed broken links.`);
+    facts.requestPolicy=getRequestPolicy().summary();
+    if(facts.requestPolicy.pausedOrigins.length)warning('Scanner access','Further requests were stopped after repeated denials or a target rate limit. Do not infer search-crawler blocking or missing content from uninspected pages.');
     qa=buildOnPageQa(facts,links);
     facts.scanComplete=facts.scanWarnings.length===0;
     progress({stage:'recommendations',message:'Connecting observations to solutions and verification steps'});

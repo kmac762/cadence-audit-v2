@@ -3,6 +3,7 @@ import https from 'node:https';
 import zlib from 'node:zlib';
 import { normalizeHttpUrl, resolvePublicHost } from './network-safety.mjs';
 import { context, remainingMs } from '../v2/context.mjs';
+import {getRequestPolicy} from '../v2/request-policy.mjs';
 const LIMIT=3*1024*1024;
 export function createPinnedLookup(records) {
   return (_host,options,callback) => {
@@ -36,10 +37,12 @@ export async function safeFetch(input,accept='text/html,application/xhtml+xml',o
   for(let hop=0;hop<=5;hop++){
     remainingMs();current=normalizeHttpUrl(current.href);
     if(ctx.robotsAllowed && /^text\/html/.test(accept) && !ctx.robotsAllowed(current.href)) throw Object.assign(new Error('Skipped: robots.txt disallows this path for the audit crawler.'),{code:'ROBOTS_DISALLOWED'});
-    ctx.requestCount=(ctx.requestCount||0)+1;
-    if(ctx.requestCount>(ctx.maxRequests||150)) throw Object.assign(new Error('The scan request budget has been reached.'),{code:'REQUEST_BUDGET'});
-    // Test injection is available to internal callers only; no API parameter enables it.
-    const response=ctx.fixtureFetch ? await ctx.fixtureFetch(current,accept,options) : await requestOnce(current,await resolvePublicHost(current),accept,options);
+    const response=await getRequestPolicy(ctx).run(current.href,accept,async()=>{
+      ctx.requestCount=(ctx.requestCount||0)+1;
+      if(ctx.requestCount>(ctx.maxRequests||150)) throw Object.assign(new Error('The scan request budget has been reached.'),{code:'REQUEST_BUDGET'});
+      // Internal fixtures only; the API cannot select a transport or override headers.
+      return ctx.fixtureFetch ? await ctx.fixtureFetch(current,accept,options) : await requestOnce(current,await resolvePublicHost(current),accept,options);
+    });
     if([301,302,303,307,308].includes(response.status)&&response.headers.location){
       if(hop===5)throw new Error('Too many redirects.');redirects.push({url:current.href,status:response.status,location:response.headers.location});
       current=normalizeHttpUrl(new URL(response.headers.location,current).href);continue;

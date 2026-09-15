@@ -1,4 +1,5 @@
 import { safeFetch } from './safe-fetch.mjs';
+import {assessHttpAccess} from './access.mjs';
 
 function normalizeUrl(value) {
   try {
@@ -236,10 +237,23 @@ function canonicalCheck(pages) {
 function linkHealthCheck(linkHealth) {
   if (!linkHealth?.enabled) return { id:'internal-link-health', label:'Internal link health', category:'links', status:'good', issueCount:0, reviewCount:0, summary:'Internal-link target validation was not run for this scan.', note:'Link validation is limited to a bounded set of links on the audited page.', items:[] };
   const items = [];
+  const baseItem = (result) => ({
+    url:result.url,
+    targetUrl:result.url,
+    sourceUrl:linkHealth.sourceUrl || null,
+    finalUrl:result.finalUrl || result.url,
+    status:result.status ?? null,
+    redirectCount:result.redirectCount || 0,
+    anchorTexts:result.anchorTexts || [],
+    placements:result.placements || [],
+    linkOccurrences:result.linkOccurrences || [],
+    pageType:'linked URL'
+  });
   for (const result of linkHealth.results || []) {
-    if (result.error) items.push({ level:'review', issue:'Link target could not be validated', url:result.url, sourceUrl:linkHealth.sourceUrl || null, pageType:'linked URL', value:result.error });
-    else if (Number(result.status) >= 400) items.push({ level:'issue', issue:'Broken internal link target', url:result.url, sourceUrl:linkHealth.sourceUrl || null, pageType:'linked URL', value:`HTTP ${result.status}` });
-    else if ((result.redirectCount || 0) > 0) items.push({ level:'review', issue:'Internal link goes through redirect', url:result.url, sourceUrl:linkHealth.sourceUrl || null, pageType:'linked URL', value:`${result.redirectCount} redirect${result.redirectCount === 1 ? '' : 's'} -> ${result.finalUrl}` });
+    if (result.error) items.push({ level:'review', issue:'Link target could not be validated', ...baseItem(result), value:result.error });
+    else if (result.accessRestricted || [401,403,407,429].includes(Number(result.status))) items.push({level:'review',issue:'Scanner access denied - link validity unknown',...baseItem(result),value:`HTTP ${result.status}; do not classify this as a broken link without independent verification`});
+    else if (Number(result.status) >= 400) items.push({ level:'issue', issue:'Broken internal link target', ...baseItem(result), value:`HTTP ${result.status}` });
+    else if ((result.redirectCount || 0) > 0) items.push({ level:'review', issue:'Internal link goes through redirect', ...baseItem(result), value:`${result.redirectCount} redirect${result.redirectCount === 1 ? '' : 's'} -> ${result.finalUrl}` });
   }
   return check({ id:'internal-link-health', label:'Internal link targets', category:'links', items, goodSummary:`${linkHealth.checked} internal link target${linkHealth.checked === 1 ? '' : 's'} on the audited page returned without a broken or redirecting target.`, note:`Validation is capped at ${linkHealth.limit} internal URLs from the audited page and is not a full-site broken-link crawl.` });
 }
@@ -333,7 +347,7 @@ function metaPromotionFindings(pages, checks, linkHealth, templatePatterns = [])
   const opportunity = (finding) => findings.push({ findingType:'opportunity', scope:'site', ...finding });
   const issue = (finding) => findings.push({ findingType:'issue', scope:'page', ...finding });
 
-  const badLinks = (linkHealth?.results || []).filter((item) => !item.error && Number(item.status) >= 400);
+  const badLinks = (linkHealth?.results || []).filter((item) => !item.error && !item.accessRestricted && ![401,403,407,429].includes(Number(item.status)) && Number(item.status) >= 400);
   if (badLinks.length) {
     issue({
       id:'onpage-broken-internal-links', category:'internal-discovery', severity:'high', confidence:'confirmed', score:82,
@@ -412,6 +426,19 @@ export async function validateInternalLinks(facts, { limit = 20 } = {}) {
   const page = facts?.contentAnalysis?.html || facts?.raw || {};
   if (!facts?.contentAnalysis?.usable) return { enabled:false, limit, sourceUrl:facts?.finalUrl || null, checked:0, results:[] };
   const source = [...(page.primaryInternalHrefs || []), ...(page.internalHrefs || [])];
+  const occurrenceMap = new Map();
+  for (const occurrence of page.internalLinkOccurrences || page.internalLinkDetails || []) {
+    try {
+      const linked = new URL(occurrence.href, facts.finalUrl);
+      linked.hash = '';
+      const key = linked.toString();
+      if (!occurrenceMap.has(key)) occurrenceMap.set(key, []);
+      occurrenceMap.get(key).push({
+        anchor:String(occurrence.anchor || '').trim(),
+        placement:occurrence.placement || 'body'
+      });
+    } catch {}
+  }
   const seen = new Set();
   const urls = [];
   for (const value of source) {
@@ -425,6 +452,14 @@ export async function validateInternalLinks(facts, { limit = 20 } = {}) {
     seen.add(key);
     urls.push(key);
   }
+  const detailsFor = (url) => {
+    const occurrences = occurrenceMap.get(url) || [];
+    return {
+      linkOccurrences:occurrences,
+      anchorTexts:[...new Set(occurrences.map((item) => item.anchor).filter(Boolean))],
+      placements:[...new Set(occurrences.map((item) => item.placement).filter(Boolean))]
+    };
+  };
   const results = new Array(urls.length);
   let next = 0;
   const workers = Array.from({ length:Math.min(5, urls.length) }, async () => {
@@ -434,9 +469,10 @@ export async function validateInternalLinks(facts, { limit = 20 } = {}) {
       const url = urls[index];
       try {
         const response = await safeFetch(url, 'text/html,*/*;q=0.8', { requestProfile:'on-page link QA' });
-        results[index] = { url, status:response.status, finalUrl:response.finalUrl, redirectCount:response.redirects?.length || 0 };
+        const access=assessHttpAccess(response);
+        results[index] = { url, status:response.status, finalUrl:response.finalUrl, redirectCount:response.redirects?.length || 0,accessState:access.kind,accessRestricted:access.accessRestricted,requestAttempted:true,...detailsFor(url) };
       } catch (error) {
-        results[index] = { url, status:null, finalUrl:url, redirectCount:0, error:error instanceof Error ? error.message : 'Unable to validate link' };
+        results[index] = { url, status:null, finalUrl:url, redirectCount:0, requestAttempted:error.requestAttempted!==false&&!['ACCESS_PAUSED','ROBOTS_DISALLOWED'].includes(error.code), errorCode:error.code||'FETCH_ERROR', error:error instanceof Error ? error.message : 'Unable to validate link',...detailsFor(url) };
       }
     }
   });

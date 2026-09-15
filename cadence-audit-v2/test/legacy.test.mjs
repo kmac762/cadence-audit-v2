@@ -15,6 +15,17 @@ import { attachVerification, verificationForFinding } from '../src/lib/verificat
 import { appendReviewDecision, normalizeReviewPayload } from '../src/lib/review-log.mjs';
 import { createRateLimiter, createSessionToken, hostAllowed, parseCookies, passwordMatches, verifySessionToken } from '../src/lib/production-security.mjs';
 
+test('HTML analyzer records internal-link anchor text and page placement', () => {
+  const html = `<!doctype html><html><body><header><nav><a href="/about">About</a></nav></header><main><a href="/services">Search Services</a></main><footer><a href="/about">Company</a><a href="/logo-link"><img src="logo.png" alt="Company logo"></a></footer></body></html>`;
+  const result = analyzeHtml(html, 'https://example.com/');
+  const about = result.internalLinkOccurrences.filter((item) => item.href === 'https://example.com/about');
+  assert.equal(about.length, 2);
+  assert.deepEqual(about.map((item) => item.anchor), ['About','Company']);
+  assert.deepEqual(about.map((item) => item.placement), ['header-navigation','footer']);
+  assert.equal(result.internalLinkOccurrences.find((item) => item.href === 'https://example.com/services').placement, 'main-content');
+  assert.equal(result.internalLinkOccurrences.find((item) => item.href === 'https://example.com/logo-link').anchor, 'Company logo');
+});
+
 test('HTML analyzer extracts core signals', () => {
   const html = `<!doctype html><html lang="en"><head><title>Demo Page</title><meta name="robots" content="index,follow"><link rel="canonical" href="https://example.com/demo"><script type="application/ld+json">{"@type":"Service"}</script></head><body><h1>Technical Demo</h1><p>${'useful content '.repeat(40)}</p><a href="/about">About</a><a href="https://other.com/">Other</a></body></html>`;
   const result = analyzeHtml(html, 'https://example.com/demo');
@@ -578,6 +589,18 @@ test('On-Page QA separates routine review cues from confirmed issues', () => {
   assert.equal(meta.status, 'review');
   assert.equal(images.status, 'review');
   assert.ok(qa.findings.some((finding) => finding.id === 'onpage-broken-internal-links' && finding.confidence === 'confirmed'));
+});
+
+test('Internal-link QA keeps anchor, source page, placement, and redirect destination evidence', () => {
+  const raw = analyzeHtml('<html><body><footer><a href="/about">About us</a></footer></body></html>', 'https://example.com/source');
+  const facts = { requestedUrl:'https://example.com/source', finalUrl:'https://example.com/source', responseStatus:200, pageType:'other', contentAnalysis:{usable:true,html:raw}, raw, siteSnapshot:{enabled:false,pages:[]} };
+  const qa = buildOnPageQa(facts, {enabled:true,limit:20,checked:1,sourceUrl:'https://example.com/source',results:[{url:'https://example.com/about',status:200,finalUrl:'https://example.com/about/',redirectCount:1,anchorTexts:['About us'],placements:['footer'],linkOccurrences:[{anchor:'About us',placement:'footer'}]}]});
+  const item = qa.checks.find((checkItem) => checkItem.id === 'internal-link-health').items[0];
+  assert.equal(item.issue, 'Internal link goes through redirect');
+  assert.equal(item.sourceUrl, 'https://example.com/source');
+  assert.deepEqual(item.anchorTexts, ['About us']);
+  assert.deepEqual(item.placements, ['footer']);
+  assert.equal(item.finalUrl, 'https://example.com/about/');
 });
 
 test('On-Page QA can promote repeated missing meta descriptions without calling them a ranking error', () => {

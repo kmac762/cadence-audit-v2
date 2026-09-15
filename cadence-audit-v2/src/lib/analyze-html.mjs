@@ -129,16 +129,40 @@ function normalizeHost(hostname) {
   return String(hostname || '').toLowerCase().replace(/^www\./, '');
 }
 
+function linkAnchorLabel(tag, innerHtml) {
+  const visible = textOnly(innerHtml).slice(0, 180);
+  if (visible) return visible;
+  const aria = getAttr(tag, 'aria-label');
+  if (aria) return aria.slice(0, 180);
+  const title = getAttr(tag, 'title');
+  if (title) return title.slice(0, 180);
+  const imageTag = String(innerHtml || '').match(/<img\b[^>]*>/i)?.[0] || '';
+  const alt = imageTag ? getAttr(imageTag, 'alt') : null;
+  return alt ? alt.slice(0, 180) : '';
+}
+
+function linkPlacementAt(html, index) {
+  const before = String(html || '').slice(0, Math.max(0, index)).toLowerCase();
+  const inside = (tag) => before.lastIndexOf(`<${tag}`) > before.lastIndexOf(`</${tag}`);
+  if (inside('footer')) return 'footer';
+  if (inside('nav')) return inside('header') ? 'header-navigation' : 'navigation';
+  if (inside('header')) return 'header';
+  if (inside('aside')) return 'sidebar';
+  if (inside('main') || inside('article')) return 'main-content';
+  return 'body';
+}
+
 function analyzeLinks(regionHtml, baseUrl) {
   const base = new URL(baseUrl);
   const internal = new Map();
   const external = new Map();
+  const internalOccurrences = [];
   let emptyHrefLinks = 0;
 
   for (const match of regionHtml.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a\s*>/gi)) {
     const tag = `<a${match[1]}>`;
     const href = getAttr(tag, 'href');
-    const anchor = textOnly(match[2]).slice(0, 180);
+    const anchor = linkAnchorLabel(tag, match[2]);
     if (!href || href === '#' || href.toLowerCase().startsWith('javascript:')) { emptyHrefLinks++; continue; }
     try {
       const linked = new URL(href, base);
@@ -147,6 +171,7 @@ function analyzeLinks(regionHtml, baseUrl) {
       const key = linked.toString();
       if (normalizeHost(linked.hostname) === normalizeHost(base.hostname)) {
         if (!internal.has(key)) internal.set(key, anchor);
+        internalOccurrences.push({ href:key, anchor, placement:linkPlacementAt(regionHtml, match.index || 0) });
       } else if (!external.has(key)) external.set(key, anchor);
     } catch {}
   }
@@ -158,6 +183,7 @@ function analyzeLinks(regionHtml, baseUrl) {
     internalHrefs: [...internal.keys()],
     externalHrefs: [...external.keys()],
     internalLinkDetails: [...internal.entries()].map(([href, anchor]) => ({ href, anchor })),
+    internalLinkOccurrences: internalOccurrences,
     externalLinkDetails: [...external.entries()].map(([href, anchor]) => ({ href, anchor }))
   };
 }
@@ -503,6 +529,8 @@ export function analyzeHtml(html, baseUrl) {
     externalLinks: allLinks.externalLinks,
     emptyHrefLinks: allLinks.emptyHrefLinks,
     internalHrefs: allLinks.internalHrefs,
+    internalLinkDetails: allLinks.internalLinkDetails,
+    internalLinkOccurrences: allLinks.internalLinkOccurrences,
     primaryInternalLinks: primaryLinks.internalLinks,
     primaryExternalLinks: primaryLinks.externalLinks,
     primaryExternalHrefs: primaryLinks.externalHrefs,

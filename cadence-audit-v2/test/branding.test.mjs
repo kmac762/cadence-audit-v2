@@ -82,3 +82,12 @@ test('Search-access module is served as JavaScript and preserves noindex protect
   assert.match(await res.text(),/export function renderSearchAccess/);
  } finally {app.server.closeAllConnections();await app.close();await fs.rm(dir,{recursive:true,force:true});}
 });
+
+
+test('link QA UI opens the source page and explains anchor/location context', async () => {
+  const app = await fs.readFile(new URL('../public/app.js', import.meta.url), 'utf8');
+  assert.match(app, /Open source page/);
+  assert.match(app, /Anchor text/);
+  assert.match(app, /Found in/);
+  assert.match(app, /Final destination/);
+});

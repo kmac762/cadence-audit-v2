@@ -1,6 +1,6 @@
 # Cadence Search Audit Workspace V2
 
-**2.0.0-rc.3 | Separate staging candidate, not a production replacement**
+**2.0.0-rc.8 | Separate staging candidate, not a production replacement**
 
 The change is not another visual patch. This package contains one matched server,
 scanner adapter, recommendation library, browser interface and release manifest.
@@ -36,9 +36,10 @@ See docs/SEARCH-AI-ACCESS.md for the registry, interpretation and limits.
 
 Each top recommendation has: what was observed, why it matters, Cadence's proposed
 steps, what success looks like, implementation-effort context, a spoken explanation,
-limitations, source guidance, evidence and a human review decision. The sample and
-confidence remain explicit. There is no claim of lost revenue, a ranking penalty,
-or guaranteed AI inclusion from a missing heading or schema type.
+limitations, source guidance, evidence and a human review decision. The technical sample and confidence context are retained inside verification details,
+but the visible finding header is intentionally short and direct for training. There is
+no claim of lost revenue, a ranking penalty, or guaranteed AI inclusion from a missing
+heading or schema type.
 
 The web request no longer waits for a full crawl. It creates a job with HTTP 202.
 The browser polls job status; one child worker performs the scan. A failed worker
@@ -114,3 +115,35 @@ test and deploy as one release.
 
 Read docs/TESTING.md for precisely what was and was not tested, and
 DEPLOYMENT.md for acceptance checks and the no-production-change boundary.
+
+
+
+## rc.7 direct training headers
+
+rc.7 keeps the rc.6 scanner, Browser Assist, Search & AI Access checks, rate limits,
+403 handling, search-first explanations and branding unchanged. Finding cards now
+use direct labels such as **Missing Header 1 Tags**, **Multiple Header 1 Tags**,
+**Implement Internal Link Strategy**, and **Add Supporting Sources and Citations**.
+The category line is simplified (for example, **On-Page SEO** or **Internal Linking**),
+and the card header no longer displays sample scope or scanner-confidence language.
+Those qualifications remain available in the technical evidence and verification
+sections so the training view stays simple without removing the audit guardrails.
+See `docs/RC7-CHANGES.md`.
+
+
+## rc.6 search-first recommendation language
+
+rc.6 keeps the rc.5 scanner, Browser Assist, Search & AI Access checks, rate limits, 403 handling, and branding unchanged. Recommendation cards now lead with the specific search visibility connection, the Cadence search solution, the supported vs. unproven search effect, and a search-focused success check. General usability/accessibility value is secondary. Saved non-Browser-Assist reports are refreshed with the current reviewed playbook language when opened, without changing their underlying observations or evidence. See `docs/RC6-CHANGES.md`.
+
+## rc.5 update
+See docs/RC4-CHANGES.md and UPDATE-RC4.html. Defaults remain six scan starts per browser session and twelve across the app per hour. SCAN_LIMIT_PER_SESSION and SCAN_LIMIT_GLOBAL are optional overrides in rc.4. They are in-memory fixed windows and do not control a target website's firewall. Styles and logo assets are unchanged.
+
+
+## rc.5 Browser Assist
+
+For prospect sites that block the hosted scanner, rc.5 adds an optional Chrome Browser Assist workflow. Open a public page, click the extension, save the capture, and import it into the matching completed V2 audit. Browser evidence is rendered-page evidence only and does not verify initial HTML, firewall behavior, robots enforcement, or real search/AI crawler access. See `docs/RC5-CHANGES.md` and `browser-assist-extension/README.html`.
+
+
+## rc.8 redirected inlink context
+
+rc.8 keeps the rc.7 direct training headers and adds source-first evidence for internal links that redirect or fail validation. Link QA now retains detected anchor text, the source page, and a simple placement label such as Footer, Header navigation, Main content, Navigation, or Sidebar. The technical view opens the source page where the link was found instead of making the final destination the primary action. Placement is inferred from standard HTML containers and may show Body / template or Unknown when a page does not use semantic containers.

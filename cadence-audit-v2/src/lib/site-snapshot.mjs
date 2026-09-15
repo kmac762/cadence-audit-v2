@@ -83,7 +83,7 @@ function uniqueEntries(entries) {
 async function fetchSitemap(url) {
   try {
     const result = await safeFetch(url, 'application/xml,text/xml,text/plain,*/*;q=0.5', { requestProfile:'sitemap fetch' });
-    if (result.status < 200 || result.status >= 300 || !/<(?:urlset|sitemapindex)\b/i.test(result.body)) return { url, ok:false, status:result.status, locs:[], index:false, error:`HTTP ${result.status}` };
+    if (result.status < 200 || result.status >= 300 || assessHttpAccess(result).accessRestricted || !/<(?:urlset|sitemapindex)\b/i.test(result.body)) return { url, ok:false, status:result.status, locs:[], index:false, error:`HTTP ${result.status}` };
     return { url:result.finalUrl, ok:true, status:result.status, locs:xmlLocs(result.body), index:isSitemapIndex(result.body), error:null };
   } catch (error) {
     return { url, ok:false, status:null, locs:[], index:false, error:error instanceof Error ? error.message : 'Fetch failed' };
@@ -256,7 +256,7 @@ export function makeSiteFindings(snapshot) {
   const inSitemap = new Set(snapshot.sitemapPageUrls.map((u) => normalizeComparableUrl(u)).filter(Boolean));
   const targetKey = normalizeComparableUrl(snapshot.targetUrl);
   const otherPages = pages.filter((p) => normalizeComparableUrl(p.requestedUrl) !== targetKey && normalizeComparableUrl(p.finalUrl) !== targetKey);
-  const badStatus = otherPages.filter((p) => p.status && (p.status < 200 || p.status >= 400));
+  const badStatus = otherPages.filter((p) => p.status && !p.accessInterference && !['access-denied','challenge','target-rate-limit'].includes(p.accessState) && ![401,403,407,429].includes(Number(p.status)) && (p.status < 200 || p.status >= 400));
   const sitemapNoindex = otherPages.filter((p) => p.noindex && inSitemap.has(normalizeComparableUrl(p.requestedUrl)));
   const canonicalElsewhere = pages.filter((p) => p.canonical && normalizeComparableUrl(p.canonical, p.finalUrl) !== normalizeComparableUrl(p.finalUrl));
   const missingTitle = pages.filter((p) => p.usable && !p.title);
@@ -560,7 +560,7 @@ async function scanSnapshotEntry(entry) {
     const page = await safeFetch(url);
     const raw = analyzeHtml(page.body, page.finalUrl);
     const access = assessHttpAccess({ status:page.status, headers:page.headers, body:page.body, rawAnalysis:raw });
-    const usable = access.pageContentUsable;
+    const usable = access.pageContentUsable && /^(?:text\/html|application\/xhtml\+xml)/i.test(page.headers['content-type']||'text/html');
     const structuredDataTypes = usable ? (raw.structuredDataTypes || raw.jsonLdTypes || []) : [];
     const pageType = classifyUrlType(page.finalUrl, entry.sourceSitemap, structuredDataTypes);
     return {
@@ -569,6 +569,9 @@ async function scanSnapshotEntry(entry) {
       sourceSitemap:entry.sourceSitemap || null,
       pageType,
       status:page.status,
+      requestAttempted:true, reusedWithinScan:!!page.reusedWithinScan,
+      accessState:access.kind, accessSignals:access.signals, error:usable?null:access.message,
+      requestReference:page.headers['cf-ray']||page.headers['x-request-id']||null,
       usable,
       redirectCount:page.redirects.length,
       redirects:page.redirects,
@@ -643,7 +646,7 @@ async function scanSnapshotEntry(entry) {
       accessInterference:access.likelyInterference
     };
   } catch (error) {
-    return { requestedUrl:url, finalUrl:url, sourceSitemap:entry.sourceSitemap || null, pageType:entry.pageType || classifyUrlType(url, entry.sourceSitemap), status:null, usable:false, error:error instanceof Error ? error.message : 'Scan failed' };
+    return { requestedUrl:url, finalUrl:url, sourceSitemap:entry.sourceSitemap || null, pageType:entry.pageType || classifyUrlType(url, entry.sourceSitemap), status:null, usable:false, requestAttempted:error.requestAttempted!==false&&!['ROBOTS_DISALLOWED','ACCESS_PAUSED','REQUEST_BUDGET'].includes(error.code), errorCode:error.code||'FETCH_ERROR', accessState:error.code==='ACCESS_PAUSED'?'skipped-after-denials':error.code==='ROBOTS_DISALLOWED'?'robots-disallowed':'fetch-error', error:error instanceof Error ? error.message : 'Scan failed' };
   }
 }
 
@@ -695,6 +698,7 @@ export async function createSiteSnapshot(targetUrl, robots, { sampleSize = DEFAU
     sampleComposition,
     templateProfiles:buildTemplateProfiles(pages),
     pages,
+    relationshipPages,
     relationshipGraph
   };
   snapshot.findings = [...makeSiteFindings(snapshot), ...makeRelationshipFindings(relationshipGraph)].sort((a,b) => b.score - a.score);

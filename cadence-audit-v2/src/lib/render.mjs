@@ -7,6 +7,7 @@ import { analyzeHtml } from './analyze-html.mjs';
 import { normalizeHttpUrl, resolvePublicHost } from './network-safety.mjs';
 import { startEgressProxy } from '../v2/egress.mjs';
 import { context } from '../v2/context.mjs';
+import {assessHttpAccess} from './access.mjs';
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36';
 
@@ -305,6 +306,7 @@ function installRequestGuard(cdp) {
   const hostChecks = new Map();
   let blockedCount = 0;
   const validate = async (url) => {
+    if(context().robotsAllowed && /^https?:/i.test(String(url||'')) && !context().robotsAllowed(url))return {allowed:false,reason:'robots-disallowed'};
     if (/^(about:|data:|blob:)/i.test(String(url || ''))) return { allowed:true, reason:'local-browser-resource' };
     let parsed;
     try { parsed = new URL(url); } catch { return { allowed:false, reason:'invalid-url' }; }
@@ -357,6 +359,9 @@ async function renderViaCdp(executable, profileDir, targetUrl, rawAnalysis, fixt
     await cdp.send('Page.enable');
     await cdp.send('Runtime.enable');
     await cdp.send('Network.enable');
+    let documentResponse=null;
+    const mainFrame=(await cdp.send('Page.getFrameTree'))?.frameTree?.frame?.id;
+    cdp.on('Network.responseReceived',p=>{if(p.type==='Document'&&p.frameId===mainFrame)documentResponse=p.response;});
     await cdp.send('Network.setUserAgentOverride', { userAgent: USER_AGENT });
     const requestGuard = installRequestGuard(cdp);
     await cdp.send('Fetch.enable', { patterns:[{ urlPattern:'*', requestStage:'Request' }] });
@@ -390,7 +395,8 @@ async function renderViaCdp(executable, profileDir, targetUrl, rawAnalysis, fixt
     if (!html) throw new Error('Chrome completed navigation but returned no rendered HTML.');
 
     const analysis = analyzeHtml(html, actualUrl);
-    const quality = assessRenderQuality(rawAnalysis, analysis);
+    const access=assessHttpAccess({status:documentResponse?.status??200,headers:documentResponse?.headers||{},body:html,rawAnalysis:analysis});
+    const quality = access.pageContentUsable?assessRenderQuality(rawAnalysis, analysis):{usable:false,code:'browser-access-refused',reason:access.message};
     if (!quality.usable) {
       return {
         succeeded: false,

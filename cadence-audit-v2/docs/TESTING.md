@@ -1,63 +1,36 @@
-# Test report - 2.0.0-rc.3 (Search & AI Access)
+# Validation report - 2.0.0-rc.4
 
-Executed locally on 11 September 2026. This report does not certify a Render
-production deployment, a full external website scan, or the cause of the V1 502.
+Executed in this workspace on 11 September 2026. This is not a certification of
+Render behavior or access to any protected customer/prospect website.
 
-## Automated results
+- 136 Node automated tests passed, 0 failed, 0 skipped.
+- The preceding 113 tests are retained; 23 new tests cover search-specific copy,
+  200 challenge documents, non-challenge CDN pages, per-origin sequencing/cache,
+  a three-denial stop, target 429 behavior, skipped/usable coverage, partial-sample
+  recommendation suppression, 403 link classification, default limits/overrides,
+  reservation rollback, 429 API details, and the copied brief.
+- Includes a real local Chromium controlled-hydration fixture, not a live-site scan.
+- Seven controlled browser checks passed for the offline example: report rendering,
+  revised search wording, qualifications, unreviewed/selected brief, verification
+  gate, policy-panel presence, and mobile overflow/JavaScript errors.
+- Full original-versus-rc.4 byte comparisons confirm unchanged styles.css,
+  brand.css, brand-logo.svg, favicon.svg and Dockerfile.
+- The finished archive was extracted into a new folder and the full tests and
+  release-manifest validation repeated. See packaged-test-results.txt.
 
-- `npm test`: **113 passed, 0 failed, 0 skipped**.
-- Existing 78 tests retained, plus 35 new policy/registry/module-route checks.
-- Includes a controlled real Chromium hydration fixture. Other site responses in
-  scan tests are deterministic fixtures, not claims about real client websites.
-- Existing coverage includes scanner behavior, jobs, queue bounds, crash/timeout
-  handling, browser ownership, CSRF/version guards, partial results, review/brief
-  behavior, SSRF/egress guards, contrast pairs, static assets and release integrity.
-- New checks cover 24 registry entries, purpose distinctions, training-only exclusions,
-  user-fetch exceptions, provider documentation gaps, Apple/Amazon fallback behavior,
-  per-origin/path policy, missing/unknown/challenged responses, encoding, merging,
-  wildcard rules, exact line evidence, safe UI escaping, bounded URL scopes and a
-  one-policy-fetch-per-origin integration check.
-- `npm run check`: every shipped src/shared/public file matches the manifest.
-- Public/shared/server module syntax checks passed.
-- Full tests and manifest were repeated from a fresh extraction of the final ZIP.
-  See packaged-test-results.txt for that second run.
+## Limits of this validation
 
-## Controlled browser interaction checks: 18 passed
+The attempted external fetch of https://example.com/ could not complete because
+DNS resolution timed out in this environment. All website responses in pipeline
+tests were controlled fixtures. Docker is unavailable here; no Render deployment
+or genuine customer-site crawl was executed. Controlled tests do not establish
+that bot-protection systems will allow the app or resolve the prior V1 502.
 
-The self-contained offline preview was loaded into Chromium with Playwright
-set_content. Normal local URL navigation is unavailable under this environment's
-browser policy. The Node tests independently exercise real local HTTP/API routes;
-we do not claim a full browser-to-live-website scan.
+## Staging acceptance
 
-Checks include all 24 policy entries, six quick cards, genuine-access qualifications,
-synthetic-data labels, white transparent logo display, purpose and review-only
-filters, all 14 example URL paths, exact rule/line/date evidence, user-fetcher caveats,
-verification gate, selected solution-led brief and no document overflow at 360,
-390 and 768 pixels. No JavaScript exceptions occurred during these interactions.
-
-Desktop header, policy overview, expanded rule evidence and mobile layouts were
-visually inspected. Raw results are in ui-test-results.json. All example counts,
-URLs, HTTP results and policies are synthetic and visibly labeled.
-
-## Documentation review
-
-Primary provider documentation and RFC 9309 informed the registry/parser. Current
-Meta provider content was unavailable and the ByteDance provider page yielded no
-readable content. Those entries remain unverified syntax-only checks, visibly marked
-and excluded from sales recommendations. See SEARCH-AI-ACCESS.md and SOURCES.md.
-
-## Remaining staging acceptance
-
-- No external prospect website scan or genuine provider crawler request was run here.
-- No Docker image build, Render deployment or hosting resource test was run here.
-- Check page-only, Quick and Balanced scans on the separate staging service.
-- Inspect a known robots disallow and a selective Allow, including a non-root path.
-- Confirm an intentional GPTBot/ClaudeBot-only restriction is informational.
-- Confirm no available policy yields Unknown, not an actual-access assurance.
-- Verify login-free browser ownership, review choices, brief, cancel and restart.
-- Inspect server logs/resource metrics if the formerly failing URL fails again.
-- Do not move the production domain until these checks pass and users approve.
-
-This is not a security audit or accessibility certification. Selected contrast and
-network-boundary checks do not cover every possible state or adversarial site. The
-original production HTTP 502 root cause remains unconfirmed.
+Deploy the complete release together into the existing V2 staging repository and
+service. Re-run one previously accessible website first, then one previously denied
+website. Confirm sample counts, warnings, policy evidence, review decisions and
+copied search-focused brief. A denied site remaining denied is expected when its
+administrator has not authorized the hosted scanner; it must not generate invented
+missing-headings, missing-schema or broken-link claims from that denial.

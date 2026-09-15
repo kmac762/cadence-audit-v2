@@ -45,3 +45,18 @@ ByteDance URLs are recorded as unavailable, not claimed as verified documentatio
 - https://zhanzhang.toutiao.com/docs/intro/26899
 - https://www.rfc-editor.org/rfc/rfc9309.html
 - https://developers.google.com/crawling/docs/robots-txt/robots-txt-spec
+
+
+## rc.4 verified documentation (2026-09-11)
+
+- https://render.com/docs/outbound-ip-addresses (shared regional ranges; Connect > Outbound; dedicated options).
+- https://developers.cloudflare.com/cloudflare-challenges/challenge-types/challenge-pages/detect-response/ (cf-mitigated challenge header).
+- https://developers.cloudflare.com/support/troubleshooting/http-status-codes/4xx-client-error/error-403/ (403 has several causes).
+- https://developers.google.com/search/docs/appearance/title-link (main visual title and H1 as sources, no guaranteed supplied title).
+- https://developers.google.com/search/docs/appearance/snippet (description or page text; no fixed cutoff).
+- https://developers.google.com/search/docs/crawling-indexing/links-crawlable (crawlable links and anchor context).
+- https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data (meaning and supported search features).
+- https://developers.google.com/search/docs/appearance/google-images (image context and alt text).
+- https://developers.google.com/search/docs/appearance/structured-data/article (author identity).
+- https://developers.google.com/search/docs/fundamentals/creating-helpful-content (sourcing and quality, not a citation quota).
+- https://developers.google.com/search/docs/appearance/ai-features (no special technical requirements beyond Search eligibility).
