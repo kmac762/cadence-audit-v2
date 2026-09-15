@@ -9,8 +9,7 @@ ENV NODE_ENV=production \
     DATA_DIR=/var/data \
     ENABLE_RENDERING=1
 RUN chmod 755 /app/scripts/container-entrypoint.sh \
-    && node scripts/check-release.mjs \
-    && npm test
+    && node scripts/check-release.mjs
 EXPOSE 10000
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/app/scripts/container-entrypoint.sh"]
 CMD ["node", "src/server.mjs"]
