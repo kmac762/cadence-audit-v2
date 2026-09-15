@@ -1,6 +1,6 @@
 # Cadence Search Audit Workspace V2
 
-**2.0.0-rc.8 | Separate staging candidate, not a production replacement**
+**2.0.0-rc.13 | Separate staging candidate, not a production replacement**
 
 The change is not another visual patch. This package contains one matched server,
 scanner adapter, recommendation library, browser interface and release manifest.
@@ -11,6 +11,30 @@ Open **START-HERE.html** for the browser-only installation steps. Open
 **docs/V2-preview.html** for an interactive, offline, synthetic example. The preview
 cannot crawl a website; it shows the sales wording and review workflow without a
 server or an API key.
+
+
+## rc.12: established audit-tool UX + visible Content Freshness
+
+- Restores visual parity with the existing Cadence URL Audit Assistant: white masthead, spectrum rule, dark canvas, editorial serif hierarchy, signal/orbit motif, and dark evidence cards.
+- Content Freshness is always represented in the report rather than disappearing when zero articles were inspected.
+- Site-sample scans reserve a bounded freshness sample of up to eight sitemap-discovered article URLs, reusing pages already fetched wherever possible.
+- A zero-article result is explicitly labeled as incomplete coverage, never as proof that the blog is current.
+
+
+## rc.10: Content Freshness
+
+- Adds bounded blog/article freshness review using age plus additional staleness signals.
+- Age alone is never treated as a defect or proof of traffic decay.
+- Browser Assist can contribute rendered-page freshness signals when the hosted scanner is blocked.
+
+## rc.9: Broken links and page paths
+
+- Adds a bounded **Broken links & page paths** panel across internal destinations found in the inspected sample.
+- Separates confirmed 4xx/5xx errors, redirects/chains, redirect loops, soft-404 review cues, and unverified blocked requests.
+- Access-denied responses (401/403/407/429/challenges) are **not** classified as broken.
+- Broken paths can become a search-first sales recommendation with a plain-language client explanation.
+- Browser Assist now checks up to 12 same-origin internal destinations from each deliberately captured public page using the user's browser. Those checks are clearly labeled browser evidence and do not verify Googlebot or AI-crawler access.
+- This remains a bounded prospect audit, not a complete-site broken-link crawler.
 
 ## New: Search & AI Access
 
@@ -36,10 +60,9 @@ See docs/SEARCH-AI-ACCESS.md for the registry, interpretation and limits.
 
 Each top recommendation has: what was observed, why it matters, Cadence's proposed
 steps, what success looks like, implementation-effort context, a spoken explanation,
-limitations, source guidance, evidence and a human review decision. The technical sample and confidence context are retained inside verification details,
-but the visible finding header is intentionally short and direct for training. There is
-no claim of lost revenue, a ranking penalty, or guaranteed AI inclusion from a missing
-heading or schema type.
+limitations, source guidance, evidence and a human review decision. The sample and
+confidence remain explicit. There is no claim of lost revenue, a ranking penalty,
+or guaranteed AI inclusion from a missing heading or schema type.
 
 The web request no longer waits for a full crawl. It creates a job with HTTP 202.
 The browser polls job status; one child worker performs the scan. A failed worker
@@ -87,11 +110,11 @@ sensitive client information in notes. See docs/SECURITY.md.
 
 ## Branding
 
-The supplied Cadence Search logo is displayed in **white on transparency**, without
-a white panel. Its original embedded pixels and geometry are preserved; CSS applies
-brightness(0) invert(1) to the complete mark. The favicon keeps the original multicolor
-ring. The interface remains navy with purple/cyan/green accents and system fonts.
-No generated replacement wordmark or font file is included.
+The supplied Cadence Search logo keeps its original embedded pixels and geometry.
+rc.12 displays the original dark/multicolor lockup on a white navigation bar, while the
+hero and footer use deep navy with restrained purple/cyan/green accents. The working
+canvas and report cards are light for easier long-form review. System fonts are used;
+no generated replacement wordmark or font file is included.
 
 This is a complete matched release, not a patch. Use this archive instead of the
 earlier V2 archive. The folder remains `cadence-audit-v2`; do not upload isolated
@@ -118,19 +141,6 @@ DEPLOYMENT.md for acceptance checks and the no-production-change boundary.
 
 
 
-## rc.7 direct training headers
-
-rc.7 keeps the rc.6 scanner, Browser Assist, Search & AI Access checks, rate limits,
-403 handling, search-first explanations and branding unchanged. Finding cards now
-use direct labels such as **Missing Header 1 Tags**, **Multiple Header 1 Tags**,
-**Implement Internal Link Strategy**, and **Add Supporting Sources and Citations**.
-The category line is simplified (for example, **On-Page SEO** or **Internal Linking**),
-and the card header no longer displays sample scope or scanner-confidence language.
-Those qualifications remain available in the technical evidence and verification
-sections so the training view stays simple without removing the audit guardrails.
-See `docs/RC7-CHANGES.md`.
-
-
 ## rc.6 search-first recommendation language
 
 rc.6 keeps the rc.5 scanner, Browser Assist, Search & AI Access checks, rate limits, 403 handling, and branding unchanged. Recommendation cards now lead with the specific search visibility connection, the Cadence search solution, the supported vs. unproven search effect, and a search-focused success check. General usability/accessibility value is secondary. Saved non-Browser-Assist reports are refreshed with the current reviewed playbook language when opened, without changing their underlying observations or evidence. See `docs/RC6-CHANGES.md`.
@@ -144,6 +154,6 @@ See docs/RC4-CHANGES.md and UPDATE-RC4.html. Defaults remain six scan starts per
 For prospect sites that block the hosted scanner, rc.5 adds an optional Chrome Browser Assist workflow. Open a public page, click the extension, save the capture, and import it into the matching completed V2 audit. Browser evidence is rendered-page evidence only and does not verify initial HTML, firewall behavior, robots enforcement, or real search/AI crawler access. See `docs/RC5-CHANGES.md` and `browser-assist-extension/README.html`.
 
 
-## rc.8 redirected inlink context
+## rc.8 plain-language client explanations
 
-rc.8 keeps the rc.7 direct training headers and adds source-first evidence for internal links that redirect or fail validation. Link QA now retains detected anchor text, the source page, and a simple placement label such as Footer, Header navigation, Main content, Navigation, or Sidebar. The technical view opens the source page where the link was found instead of making the final destination the primary action. Placement is inferred from standard HTML containers and may show Body / template or Unknown when a page does not use semantic containers.
+rc.8 keeps the rc.7 search + AI relevance model, Browser Assist, crawler-policy checks, 403 handling, rate limits, branding, and scan behavior unchanged. It separates evidence from the client-facing explanation: sample counts and scanner details stay under **What we observed**, while **Simple client explanation** describes the meaning in plain language. Saved recommendations and Browser Assist recommendations refresh to the current explanation when opened. See `docs/RC8-CHANGES.md`.

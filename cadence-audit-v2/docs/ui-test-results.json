@@ -1,13 +1,12 @@
 {
-  "passed": 7,
+  "release": "2.0.0-rc.11",
+  "passed": 5,
   "checks": [
-    "Example report loads four recommendations; all synthetic-data labels preserved.",
-    "H1 card shows search mechanism, solution and supported/unproven distinction.",
-    "Unreviewed brief includes revised search-focused copy with qualifications.",
-    "Human-verification gate and selected-only sales brief work.",
-    "Search and AI policy panel remains present.",
-    "390px viewport has no horizontal page overflow.",
-    "No JavaScript page errors during interactions."
+    "Entry shell includes the Cadence site-style header, dark hero and light workspace hooks.",
+    "Offline preview is self-contained and retains the synthetic-data warning.",
+    "All functional controls and report IDs are preserved for the existing application script.",
+    "Light-workspace and dark-hero text pairs meet the automated contrast assertions.",
+    "Full Node regression suite passes after the UX-only changes."
   ],
-  "pageErrors": []
+  "note": "A fresh browser screenshot was not captured in this container because the installed headless Chromium process did not exit cleanly; visual approval should use the included offline preview before deployment."
 }

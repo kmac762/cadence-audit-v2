@@ -1,40 +1,33 @@
-# Cadence Search V2 - white logo presentation (2.0.0-rc.3)
+# Cadence Search V2 branding - rc.11
 
 ## Asset treatment
 
-The exact original transparent PNG supplied by the user is still embedded in
-public/brand-logo.svg. The SVG viewBox trims exterior transparent margins only.
-No image-generation output, recreation, substitute font or changed geometry is used.
+The exact original transparent PNG supplied by the user remains embedded in
+`public/brand-logo.svg`. The SVG viewBox trims exterior transparent margins only.
+No image-generation output, substitute font, recreated wordmark or changed geometry
+is used.
 
-The requested white version is achieved by a CSS brightness(0) invert(1) filter on
-.brand-logo. The original alpha channel is preserved. The lockup has no background,
-border or shadow, so it sits directly on the navy header. The complete mark, including
-the ring, is white. The favicon retains the original multicolor ring.
+rc.11 removes the prior white inversion treatment in the primary navigation so the
+original dark/multicolor Cadence Search lockup sits on a white header, matching the
+Cadence website/original audit-tool hierarchy. The favicon retains the multicolor ring.
 
-Source PNG SHA-256 (embedded bytes unchanged):
-0bce27f3361ac27ba10ff098e33c06841af0bc99e737873095c2e58c0c564003
+## UX direction
+
+The interface now uses a mixed light/dark system rather than an all-dark dashboard:
+
+- white navigation and original Cadence Search lockup
+- deep-navy hero with restrained orbital/ring detail
+- purple/cyan/green brand accents used for hierarchy rather than decoration
+- light audit controls and report cards for long-form readability
+- a dark Browser Assist panel and dark footer for visual rhythm
+- system fonts only; no font files are distributed
 
 ## UI palette
 
-Interface colors interpret the supplied AIO artwork; this is not a formal brand
-specification. They are centralized in public/brand.css.
+Reusable values remain centralized in `public/brand.css`. The main working canvas is
+`#f4f5f7`, white cards are `#ffffff`, primary text is `#10182c`, muted text is
+`#5a687b`, and the hero is `#07152f`. Purple, cyan, green and pink accents are used
+selectively.
 
-| Role | Color |
-|---|---|
-| Main navy | #040b20 |
-| Cards | #0c1730 |
-| Raised surfaces | #13223f |
-| Main copy | #f5f7ff |
-| Supporting copy | #b8c6df |
-| Interactive cyan | #15dce8 |
-| Purple accent | #7135ff |
-| Readable purple text | #b29aff |
-| Green accent | #35e878 |
-| Pink accent | #ff1459 |
-
-Warnings use amber; unknown/advisory policies remain neutral. Large decorative
-rings are not added. System fonts are used without distributing any font files.
-
-The release includes the Search & AI Access feature as well as the logo presentation;
-see change-scope.json for the actual code changes. Install as a complete staging
-release, never as individual V1 front-end patches.
+This is a visual/UX change only. Scan behavior, deterministic evidence, Browser Assist,
+Search & AI Access, Site Health and Content Freshness remain part of the matched release.

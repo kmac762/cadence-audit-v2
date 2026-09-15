@@ -1,20 +1,16 @@
-# V2 rc.7 - Direct training headers
+# RC7 - Search + AI Relevance
 
-## Goal
-Make each recommendation immediately understandable during training and video-audit preparation without weakening the underlying verification safeguards.
+This release keeps the rc.6 search-first recommendation model and adds a separate AI-search relevance layer.
 
-## Changed
-- Finding titles are short, direct issue/action labels rather than explanatory headlines.
-- Heading findings distinguish **Missing Header 1 Tags** from **Multiple Header 1 Tags** when the inspected issue is known.
-- Internal-link recommendations use **Implement Internal Link Strategy**.
-- Source-quality recommendations use **Add Supporting Sources and Citations**.
-- Other recommendation families use similarly direct labels for title tags, meta descriptions, indexing, structured data, image alt text, hreflang, JavaScript rendering, and recurring on-page issues.
-- The small category label is simplified to terms such as **On-Page SEO**, **Internal Linking**, **Content Quality**, and **Structured Data**.
-- The visible card header now shows only category, finding title, and priority. It no longer appends **Inspected sample** or scanner-confidence language beside the priority.
-- Browser Assist recommendations use the same direct naming convention.
-- Saved non-Browser-Assist reports are refreshed with the current direct title/category language when reopened, while preserving their observations, evidence, IDs, and review decisions.
+- Search visibility remains the primary explanation.
+- Each playbook can now expose an AI relevance level, an evidence-based AI explanation, a supported-vs-unproven AI effect, and a methodology source.
+- Google AI Overviews / AI Mode are tied to documented Search eligibility and foundational SEO practices rather than invented AEO rules.
+- Provider access restrictions remain separated from training controls and from unverified citation claims.
+- Browser Assist recommendations inherit the same AI relevance framework.
+- The sales brief now includes AI relevance only where the playbook supports a defensible connection.
+- User/accessibility benefits remain secondary.
 
-## Unchanged guardrails
-- Evidence, sample scope, original scanner confidence, caveats, supported-vs-unproven search effects, and human verification controls remain available in the body or technical details.
-- The scanner still does not infer ranking loss, traffic loss, revenue loss, or real crawler access from a single observation.
-- Search & AI Access, request pacing, Browser Assist boundaries, and scan limits are unchanged.
+No scanner depth, rate limits, Browser Assist behavior, crawler registry, bot-protection handling, branding, or Render configuration changed.
+
+- The prospect-facing talk track now includes a short AI angle where the connection is defensible, instead of leaving AI context only in technical details.
+- Solution and verification headings stay neutral so weak AI connections are not overstated.
