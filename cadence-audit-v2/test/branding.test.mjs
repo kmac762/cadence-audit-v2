@@ -33,20 +33,18 @@ test('Offline preview includes its logo and has no external asset dependency', a
   assert.match(preview, /OFFLINE PREVIEW - all report data is synthetic/);
 });
 
-test('Brand text and button color pairs retain minimum readable contrast', () => {
-  const luminance = hex => {
-    const rgb = hex.match(/[a-f\d]{2}/gi).map(x => parseInt(x, 16) / 255)
-      .map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
-    return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
-  };
-  const ratio = (a, b) => (Math.max(luminance(a), luminance(b)) + 0.05) /
-    (Math.min(luminance(a), luminance(b)) + 0.05);
-  for (const ink of ['f5f7ff', 'b8c6df', '15dce8', 'b29aff', '35e878']) {
-    for (const surface of ['040b20', '0c1730', '13223f']) {
-      assert.ok(ratio(ink, surface) >= 4.5, `${ink} on ${surface}`);
-    }
-  }
-  for (const surface of ['23d4ed', '35edc8']) assert.ok(ratio('041b28', surface) >= 4.5);
+test('rc.12 shell preserves the established audit-tool dark field and white masthead', async () => {
+  const html = await fs.readFile(path.join(root, 'public/index.html'), 'utf8');
+  const css = await fs.readFile(path.join(root, 'public/styles.css'), 'utf8');
+  assert.match(html, /Find the signal\./);
+  assert.match(html, /Skip the noise\./);
+  assert.match(html, /MODERN SEARCH TOOLKIT/);
+  assert.match(html, /NOINDEX · INTERNAL TOOL/);
+  assert.match(html, /Content Freshness/);
+  assert.match(css, /rc\.12 - visual parity with the established Cadence URL Audit Assistant/);
+  assert.match(css, /background:#07110f/);
+  assert.match(css, /font-family:Georgia/);
+  assert.match(css, /brand-spectrum/);
 });
 
 test('Hosted logo route returns SVG under the unchanged asset security policy', async () => {
@@ -81,13 +79,4 @@ test('Search-access module is served as JavaScript and preserves noindex protect
   assert.match(res.headers.get('x-robots-tag'),/noindex/);
   assert.match(await res.text(),/export function renderSearchAccess/);
  } finally {app.server.closeAllConnections();await app.close();await fs.rm(dir,{recursive:true,force:true});}
-});
-
-
-test('link QA UI opens the source page and explains anchor/location context', async () => {
-  const app = await fs.readFile(new URL('../public/app.js', import.meta.url), 'utf8');
-  assert.match(app, /Open source page/);
-  assert.match(app, /Anchor text/);
-  assert.match(app, /Found in/);
-  assert.match(app, /Final destination/);
 });

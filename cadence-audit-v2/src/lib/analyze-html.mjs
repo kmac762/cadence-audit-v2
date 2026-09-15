@@ -65,8 +65,14 @@ function inspectStructuredData(value, output) {
   }
 
   if (Object.prototype.hasOwnProperty.call(value, 'mainEntity') || Object.prototype.hasOwnProperty.call(value, 'mainEntityOfPage')) output.hasMainEntityProperty = true;
-  if (Object.prototype.hasOwnProperty.call(value, 'datePublished')) output.hasDatePublished = true;
-  if (Object.prototype.hasOwnProperty.call(value, 'dateModified')) output.hasDateModified = true;
+  if (Object.prototype.hasOwnProperty.call(value, 'datePublished')) {
+    output.hasDatePublished = true;
+    collectDateValues(value.datePublished, output.datePublishedValues);
+  }
+  if (Object.prototype.hasOwnProperty.call(value, 'dateModified')) {
+    output.hasDateModified = true;
+    collectDateValues(value.dateModified, output.dateModifiedValues);
+  }
 
   const types = Array.isArray(type) ? type : (typeof type === 'string' ? [type] : []);
   if (types.some((entry) => /^(?:Organization|LocalBusiness|MedicalBusiness|MedicalClinic|Physician)$/i.test(String(entry)))) {
@@ -93,6 +99,39 @@ function inspectStructuredData(value, output) {
   }
 
   for (const nested of Object.values(value)) inspectStructuredData(nested, output);
+}
+
+
+function collectDateValues(value, target) {
+  if (!target) return;
+  if (Array.isArray(value)) { for (const item of value) collectDateValues(item, target); return; }
+  if (value && typeof value === 'object') {
+    for (const key of ['@value','value','date']) if (value[key] != null) collectDateValues(value[key], target);
+    return;
+  }
+  if (typeof value === 'string' || typeof value === 'number') {
+    const text=String(value).trim();
+    if (text) target.add(text.slice(0,120));
+  }
+}
+
+function yearReferences(value) {
+  const years=[];
+  const now=new Date().getUTCFullYear()+1;
+  for (const m of String(value||'').matchAll(/\b(20\d{2})\b/g)) {
+    const year=Number(m[1]);
+    if (year>=2000 && year<=now) years.push(year);
+  }
+  return years;
+}
+
+function visibleDateValues(html) {
+  const out=[];
+  for (const tag of String(html||'').match(/<time\b[^>]*>/gi)||[]) {
+    const value=getAttr(tag,'datetime');
+    if (value && !out.includes(value)) out.push(value.slice(0,120));
+  }
+  return out.slice(0,12);
 }
 
 function innerBody(clean) {
@@ -384,6 +423,8 @@ export function analyzeHtml(html, baseUrl) {
   let metaDescription = null;
   let metaDescriptionCount = 0;
   let metaAuthor = null;
+  let metaPublishedTime = null;
+  let metaModifiedTime = null;
   let viewport = null;
   let charset = null;
   const openGraph = { title:null, description:null, image:null };
@@ -407,6 +448,9 @@ export function analyzeHtml(html, baseUrl) {
       metaRobots.push(...content.toLowerCase().split(/[,;]/).map((x) => x.trim()).filter(Boolean));
     }
     if (property === 'article:author' && !metaAuthor) metaAuthor = content || null;
+    const itemprop=(getAttr(tag,'itemprop')||'').toLowerCase();
+    if (!metaPublishedTime && content && (property === 'article:published_time' || name === 'datepublished' || itemprop === 'datepublished')) metaPublishedTime = content;
+    if (!metaModifiedTime && content && (property === 'article:modified_time' || name === 'datemodified' || itemprop === 'datemodified')) metaModifiedTime = content;
     const directCharset = getAttr(tag, 'charset');
     if (directCharset && !charset) charset = directCharset;
     if (name === 'charset' && content && !charset) charset = content;
@@ -447,6 +491,8 @@ export function analyzeHtml(html, baseUrl) {
     hasMainEntityProperty:false,
     hasDatePublished:false,
     hasDateModified:false,
+    datePublishedValues:new Set(),
+    dateModifiedValues:new Set(),
     organizationCount:0,
     organizationHasName:false,
     organizationHasUrl:false,
@@ -492,6 +538,12 @@ export function analyzeHtml(html, baseUrl) {
   const primaryHeadingLevelJumps = headingLevelJumps(primaryHeadings);
   const primarySourceLikeExternalLinkDetails = classifySourceLikeLinks(primaryLinks.externalLinkDetails);
   const detectedAuthorProfileLinks = authorProfileLinks(primary.html, baseUrl);
+  const primaryText=textOnly(primary.html);
+  const primaryYears=yearReferences(primaryText);
+  const titleYears=yearReferences(title);
+  const metaDescriptionYears=yearReferences(metaDescription);
+  const sourceLinkYears=[...new Set(primarySourceLikeExternalLinkDetails.flatMap((item)=>yearReferences(`${item?.href||''} ${item?.anchor||''}`)))].sort((a,b)=>a-b);
+  const timeValues=visibleDateValues(clean);
 
   return {
     title,
@@ -506,6 +558,14 @@ export function analyzeHtml(html, baseUrl) {
     openGraph,
     twitter,
     metaAuthor,
+    metaPublishedTime,
+    metaModifiedTime,
+    visibleDateValues:timeValues,
+    titleYearReferences:[...new Set(titleYears)].sort((a,b)=>a-b),
+    metaDescriptionYearReferences:[...new Set(metaDescriptionYears)].sort((a,b)=>a-b),
+    primaryYearReferences:[...new Set(primaryYears)].sort((a,b)=>a-b),
+    primaryYearReferenceCount:primaryYears.length,
+    sourceLinkYearReferences:sourceLinkYears,
     metaRobots,
     canonical,
     h1s,
@@ -552,6 +612,8 @@ export function analyzeHtml(html, baseUrl) {
     structuredDataHasMainEntity: structuredSignals.hasMainEntityProperty,
     structuredDataHasDatePublished: structuredSignals.hasDatePublished,
     structuredDataHasDateModified: structuredSignals.hasDateModified,
+    structuredDataDatePublishedValues:[...structuredSignals.datePublishedValues],
+    structuredDataDateModifiedValues:[...structuredSignals.dateModifiedValues],
     organizationEntityCount: structuredSignals.organizationCount,
     organizationEntityHasName: structuredSignals.organizationHasName,
     organizationEntityHasUrl: structuredSignals.organizationHasUrl,

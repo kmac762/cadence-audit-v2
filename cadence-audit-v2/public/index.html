@@ -3,27 +3,45 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
-<title>Cadence Search | Sales Audit Workspace V2</title>
-<link rel="icon" href="/assets/favicon.svg?v=2.0.0-rc.8" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/brand.css?v=2.0.0-rc.8">
-<link rel="stylesheet" href="/assets/styles.css?v=2.0.0-rc.8">
-<script type="module" src="/assets/app.js?v=2.0.0-rc.8"></script>
+<title>Cadence Search | URL Audit Assistant V2</title>
+<link rel="icon" href="/assets/favicon.svg?v=2.0.0-rc.13" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/brand.css?v=2.0.0-rc.13">
+<link rel="stylesheet" href="/assets/styles.css?v=2.0.0-rc.13">
+<script type="module" src="/assets/app.js?v=2.0.0-rc.13"></script>
 </head>
 <body>
-<header class="masthead"><a href="/" class="wordmark brand-lockup" aria-label="Cadence Search home"><img class="brand-logo" src="/assets/brand-logo.svg?v=2.0.0-rc.8" width="1352" height="382" alt="Cadence Search"></a><div class="masthead-right"><span class="release-tag">V2 <span id="release">TEST RELEASE</span></span><button class="quiet" id="history-toggle">Recent scans</button></div></header>
+<header class="site-header">
+  <div class="masthead">
+    <a href="/" class="wordmark brand-lockup" aria-label="Cadence Search home"><img class="brand-logo" src="/assets/brand-logo.svg?v=2.0.0-rc.13" width="1352" height="382" alt="Cadence Search"></a>
+    <div class="masthead-right"><span class="toolkit-label">MODERN SEARCH TOOLKIT</span><span class="release-tag">Audit Assistant · <span id="release">TEST RELEASE</span></span><button class="header-action" id="history-toggle">Recent scans</button></div>
+  </div>
+</header>
 <main>
-<div class="test-notice">Separate test workspace. Do not replace the production app until real scans and the sales brief have been checked.</div>
-<section class="intro"><div><p class="eyebrow">SEARCH INTELLIGENCE. PRACTICAL SOLUTIONS.</p><h1>Better audits.<br><span>Clearer solutions.</span></h1><p class="intro-text">Find the opportunity. Explain why it matters. Show the client a practical path forward.</p></div><div class="intro-aside"><span class="tiny-label">THE WORKFLOW</span><p><b>01</b> Inspect a bounded sample</p><p><b>02</b> Verify the evidence</p><p><b>03</b> Build a solution-led brief</p></div></section>
-<section class="scan-card" aria-labelledby="scan-title"><div class="section-top"><div><p class="eyebrow">START HERE</p><h2 id="scan-title">What should we audit?</h2></div><span class="tag">Search + AI discovery + On-page</span></div>
-<form id="scan-form"><label for="url">Website or page URL</label><div class="url-row"><input id="url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="https://your-prospect.com" required maxlength="2048"><button type="submit" id="run" class="primary">Start audit <span aria-hidden="true">&rarr;</span></button></div><div class="scan-options"><label class="option-label">Scope<select id="mode"><option value="snapshot">Page + site sample</option><option value="page">Entry page only</option></select></label><label class="option-label">Sample size<select id="size"><option value="12">Quick: 12 / 24 pages</option><option value="18" selected>Balanced: 18 / 36 pages</option><option value="24">Broader: 24 / 48 pages</option></select></label><label class="render-option"><input type="checkbox" id="render" checked> Compare entry page in a browser</label></div><p class="hint">First count: HTML inspection sample. Second count: a larger link-mapping sample. Only the entry page is browser-rendered.</p></form>
-<div class="scan-footer"><button type="button" id="demo" class="text-button">Explore an example report</button><span>No AI key required. No AI-generated findings.</span></div><div id="notice" role="status" aria-live="polite"></div>
-<section id="progress" hidden aria-live="polite"><div class="section-top"><div><p class="eyebrow">SCAN IN PROGRESS</p><h3 id="stage">Preparing the worker</h3></div><button id="cancel" class="quiet">Cancel scan</button></div><div class="progress-track"><span></span></div><p id="progress-detail" class="hint"></p><p class="hint" id="job-reference"></p></section>
+<section class="hero-band" aria-labelledby="hero-title">
+  <div class="intro">
+    <div class="intro-copy">
+      <p class="eyebrow hero-kicker"><span></span>URL AUDIT ASSISTANT</p>
+      <h1 id="hero-title">Find the signal.<br>Skip the noise.</h1>
+      <p class="intro-text">Scan one URL or sample the site to surface defensible technical, on-page, architecture, content, and AI visibility opportunities — then verify the evidence and turn the strongest few into a recording brief.</p>
+      <div class="hero-pills"><span><i class="pink"></i>Search + Technical</span><span><i class="purple"></i>LLM + AI Visibility</span><span><i class="cyan"></i>On-Page + Architecture</span><span><i class="green"></i>Content Freshness</span></div>
+    </div>
+    <div class="signal-visual" aria-hidden="true"><div class="signal-orbit orbit-a"></div><div class="signal-orbit orbit-b"></div><div class="signal-orbit orbit-c"></div><img src="/assets/favicon.svg?v=2.0.0-rc.13" alt=""></div>
+  </div>
 </section>
-<aside id="history" hidden><div class="section-top"><h2>Recent scans in this browser</h2><button id="history-close" class="quiet">Close</button></div><p class="hint">Recent records are kept for up to 24 hours, with a 20-record service limit. Availability across restarts requires a persistent disk. Another browser cannot list this session's scans.</p><div id="history-list"></div></aside>
-<section id="report" hidden></section>
-<section class="privacy-note"><strong>No password is configured.</strong> Anyone who knows this address can initiate a scan. Noindex does not make the service private. Anonymous browser sessions separate scan records; rate limits limit use, not access.</section>
+<div class="workspace-shell">
+  <div class="test-notice">Separate V2 test workspace. Production remains unchanged until this release is approved.</div>
+  <section class="scan-card" aria-labelledby="scan-title">
+    <div class="section-top"><div><p class="eyebrow">START A SCAN</p><h2 id="scan-title">What should we audit?</h2></div><span class="tag">NOINDEX · INTERNAL TOOL</span></div>
+    <form id="scan-form"><label for="url">URL TO AUDIT</label><div class="url-row"><input id="url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="https://your-prospect.com" required maxlength="2048"><button type="submit" id="run" class="primary">Run audit <span aria-hidden="true">→</span></button></div><div class="scan-options"><label class="option-label"><span>SCOPE</span><select id="mode"><option value="snapshot">Page + site sample</option><option value="page">Entry page only</option></select><small>Use the site sample for broken paths, article freshness, architecture, and broader patterns.</small></label><label class="option-label"><span>SITE SAMPLE DEPTH</span><select id="size"><option value="12">Quick · 12 / 24 pages</option><option value="18" selected>Balanced · 18 / 36 pages</option><option value="24">Broader · 24 / 48 pages</option></select><small>The freshness module may inspect a small extra article sample when the sitemap exposes blog URLs.</small></label><label class="render-option"><input type="checkbox" id="render" checked><span><b>Compare the entry page in a browser</b><small>Useful for JavaScript-rendered content. Only the entry page is browser-rendered.</small></span></label></div></form>
+    <div class="scan-footer"><button type="button" id="demo" class="text-button">Explore an example report</button><span>No AI key required. Findings remain evidence-led.</span></div><div id="notice" role="status" aria-live="polite"></div>
+    <section id="progress" hidden aria-live="polite"><div class="section-top"><div><p class="eyebrow">SCAN IN PROGRESS</p><h3 id="stage">Preparing the worker</h3></div><button id="cancel" class="quiet">Cancel scan</button></div><div class="progress-track"><span></span></div><p id="progress-detail" class="hint"></p><p class="hint" id="job-reference"></p></section>
+  </section>
+  <aside id="history" hidden><div class="section-top"><h2>Recent scans in this browser</h2><button id="history-close" class="quiet">Close</button></div><p class="hint">Recent records are kept for up to 24 hours, with a 20-record service limit. Availability across restarts requires a persistent disk. Another browser cannot list this session's scans.</p><div id="history-list"></div></aside>
+  <section id="report" hidden></section>
+  <section class="privacy-note"><strong>No password is configured.</strong> Anyone who knows this address can initiate a scan. Noindex does not make the service private. Anonymous browser sessions separate scan records; rate limits limit use, not access.</section>
+</div>
 </main>
-<footer><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 / search-focused candidate rc.8</span></footer>
+<footer class="site-footer"><div class="footer-inner"><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 · rc.12</span></div></footer>
 <dialog id="brief-dialog"><div class="section-top"><div><p class="eyebrow">RECORDING PREP</p><h2>Your sales brief</h2></div><button class="quiet" id="brief-close">Close</button></div><p class="hint">Selected recommendations are included only after you confirm reviewing the examples. Unreviewed suggestions are labeled.</p><textarea id="brief-text" readonly aria-label="Recording brief"></textarea><div class="dialog-actions"><button id="copy-brief" class="primary">Copy brief</button><span id="copy-status" role="status"></span></div></dialog>
 <noscript>This workspace requires JavaScript. Enable it to start or inspect a scan.</noscript>
 </body></html>

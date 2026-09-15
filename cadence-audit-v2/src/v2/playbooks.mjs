@@ -17,6 +17,23 @@ export const PLAYBOOKS={
     "source": "https://developers.google.com/search/docs/appearance/title-link",
     "searchEffect": "Supported: a clearer, more consistent page-topic signal and an additional documented input Google can use when generating title links. Not established: that the missing H1 caused a ranking loss, that adding one will improve rankings, or that it directly changes AI citations."
   },
+  "freshness": {
+    "title": "Refresh Outdated Content",
+    "theme": "Content Freshness",
+    "why": "Search visibility connection: older content can continue to perform well when it is still accurate and useful. The opportunity appears when an article also shows signs that facts, examples, sources, terminology or search intent may have moved on. This check uses multiple freshness signals together and never treats age alone as a problem.",
+    "steps": [
+      "Open the highest-signal articles and compare the page against current search intent, current facts and the results now competing for the topic.",
+      "Update only information that has genuinely changed: statistics, examples, terminology, sources, internal links and obsolete recommendations. Preserve useful history and the existing URL where the page still serves the same intent.",
+      "Publish a meaningful modification date only after a substantive update, re-crawl the page and monitor query visibility or Search Console performance when client data is available."
+    ],
+    "success": "The reviewed article is accurate for the current topic, uses current evidence where needed, keeps useful historical value, and clearly reflects any meaningful revision. Search performance is measured after recrawling rather than assumed.",
+    "caveat": "An old publication date is not a ranking problem by itself. This scanner cannot prove content decay without historical search-performance data, and old year references may be intentionally historical.",
+    "userNote": "Secondary benefit: current examples and references can also make the article more useful to readers, but the recommendation is surfaced because the page may be losing topical or factual relevance for search.",
+    "effort": "Editorial review, source verification and targeted updates; scope depends on how much of the article has actually changed.",
+    "talk": "Some existing articles show signs that the information may be getting dated. We’d refresh the facts, examples and sources that have changed so the page stays relevant for current search without rewriting content that is still useful.",
+    "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+    "searchEffect": "Supported: a structured prompt to review whether existing content remains accurate, useful and aligned with current search intent. Not established: traffic decay, a freshness bonus, or a ranking gain from changing a date."
+  },
   "titles": {
     "title": "Improve Page Title Tags",
     "theme": "Title Tags",
@@ -68,7 +85,7 @@ export const PLAYBOOKS={
   "broken": {
     "title": "Fix Broken Internal Links",
     "theme": "Technical SEO",
-    "why": "Search connection: crawl paths and access to indexable content. When Google itself encounters persistent error responses it cannot process the intended destination normally. This tool's failed request must first be verified, because our scanner may be blocked while Google is allowed.",
+    "why": "Search connection: internal links help search engines discover and revisit important pages. When a real internal destination returns an error, the intended page cannot be reached through that path. Scanner blocks are kept separate and are never called broken links without a real error response.",
     "steps": [
       "Open each source and destination and repeat the request to rule out a temporary block or outage.",
       "Correct the source link, restore the intended page, or implement a relevant redirect when the old page has genuinely moved.",
@@ -77,7 +94,7 @@ export const PLAYBOOKS={
     "success": "The reviewed links reach the intended usable page without an unnecessary chain or confirmed error response.",
     "caveat": "An error observed from the audit server is not proof that every visitor or search crawler sees the same response.",
     "effort": "Link/content/server change; depends on why the destination fails.",
-    "talk": "We would verify whether the destination is genuinely unavailable, rather than just refusing our scanner. Then we would restore the page or correct the link and recheck the crawl path. Only verified errors should drive a search recommendation.",
+    "talk": "Some links lead to pages that no longer work. We’d fix the link, restore the page, or redirect it to the right replacement so search engines and AI systems do not hit avoidable dead ends.",
     "source": "https://developers.google.com/search/docs/crawling-indexing/http-network-errors",
     "searchEffect": "Supported after verification: removing an error or unnecessary hop from a real internal crawl path. Not established: that Google saw the same error or that this caused a ranking loss."
   },
@@ -131,7 +148,7 @@ export const PLAYBOOKS={
   },
   "rendering": {
     "title": "Verify JavaScript Content for Search",
-    "theme": "JavaScript SEO",
+    "theme": "Technical SEO",
     "why": "Search connection: whether the main content and links are available for crawling and indexing. Google can render JavaScript, but failed rendering can leave important content unavailable. Raw-versus-rendered counts are a signal to inspect actual sections, not proof of search loss.",
     "steps": [
       "Compare the actual primary text and links in both versions and identify the specific sections that changed.",
@@ -179,7 +196,7 @@ export const PLAYBOOKS={
   },
   "authors": {
     "title": "Strengthen Author Profiles and Attribution",
-    "theme": "Author Signals",
+    "theme": "Content Quality",
     "why": "Search connection: explicit authorship and entity identification. Google recommends identifying article authors clearly and providing a URL that identifies the author. This helps disambiguate the person behind an article; it is not a shortcut to expertise or rankings.",
     "steps": [
       "Inspect visible bylines, profile links and structured-data author references on the example articles.",
@@ -243,7 +260,7 @@ export const PLAYBOOKS={
   },
   "content": {
     "title": "Improve Search-Focused Content",
-    "theme": "Content Relevance",
+    "theme": "Content Quality",
     "why": "Search connection: relevance to the queries the page should answer. Clear, specific textual content gives search systems information to match to those queries. Word count, paragraph length or heading count alone cannot establish relevance or search quality.",
     "steps": [
       "Review the affected pages against their purpose and audience questions.",
@@ -275,8 +292,32 @@ export const PLAYBOOKS={
   }
 };
 
-// Keep sales/training headers direct. Nuance and evidence stay in the body and
-// technical verification sections instead of the headline.
+// Plain-language client explanations. Evidence and sample counts stay in the
+// observation/evidence sections; these lines explain the meaning without
+// making the salesperson repeat scanner language.
+const CLIENT_EXPLANATIONS={
+  headings:"Each page should make its main topic obvious. We’d make sure the primary service or subject is clearly stated in the main heading so search engines have a cleaner understanding of what the page is about.",
+  titles:"The page title helps search engines and searchers understand what a result is about before the click. We’d make each important page specific and easy to distinguish so it has a clearer search identity.",
+  metadata:"The description is the page’s short sales message in search. We’d make it clear, specific and relevant so the result does a better job of explaining why someone should click.",
+  links:"Internal links help search engines find important pages and understand how the site’s topics connect. We’d make sure useful content naturally points to the services and pages the business most wants discovered.",
+  broken:"Some links lead to pages that no longer work. We’d fix the link, restore the page, or redirect it to the right replacement so search engines and AI systems do not hit avoidable dead ends.",
+  indexing:"If a page is meant to show up in search, its technical settings should all support that goal. We’d remove any accidental instructions that tell search engines not to crawl, index or prefer that page.",
+  access:"This means our scanner could not reach the page reliably. It does not automatically mean Google or AI search tools are blocked, so we’d treat it as a coverage limitation until real crawler access is verified.",
+  ai:"AI search tools use different crawlers and policies for search access, user requests and model training. We’d make sure the site allows the discovery access the business wants without changing training preferences unnecessarily.",
+  rendering:"Search engines need to be able to process the content that matters. We’d check whether important text or links depend too heavily on JavaScript and simplify that delivery only if it creates a real visibility risk.",
+  schema:"Structured data gives machines a clearer label for what a page represents. We’d use it where it accurately describes the business, service, product or author and where it supports a real search feature.",
+  sources:"For factual or research-heavy content, strong sources make important claims easier to verify. We’d strengthen the evidence behind the content where it matters, not add links just to check an SEO box.",
+  authors:"Clear authorship connects expert content to a real person and their expertise. We’d make that relationship easy to understand when it strengthens trust in the subject.",
+  images:"Search engines use image descriptions and surrounding content to understand meaningful visuals. We’d improve that context for images that actually support the page’s topic, product or service.",
+  international:"Search engines need clear signals about which language or regional page belongs to which audience. We’d make those relationships consistent so the right version is easier to surface.",
+  social:"This mainly affects how a page looks when it is shared, not whether it ranks. We’d improve it when social sharing matters, but it would not be a primary search recommendation.",
+  content:"Search visibility improves when a page clearly answers the questions people are actually searching for. We’d strengthen missing or unclear information so the page is more useful and more relevant without adding filler.",
+  template:"When the same issue appears across many pages, the most efficient fix is usually at the template or CMS level. We’d correct the source once and then verify the affected page types."
+};
+for(const [key,talk] of Object.entries(CLIENT_EXPLANATIONS))if(PLAYBOOKS[key])PLAYBOOKS[key].talk=talk;
+
+
+// Training-first finding labels: keep the headline direct and leave nuance in evidence.
 export function recommendationTitle(f,key){
  const raw=[f?.qaIssue,f?.originalFinding?.title,f?.title,f?.id].filter(Boolean).join(' ').toLowerCase();
  if(key==='headings'){
@@ -315,22 +356,62 @@ export function recommendationTitle(f,key){
  }
  if(key==='ai')return 'Review Search & AI Crawler Access';
  if(key==='rendering')return 'Verify JavaScript Content for Search';
- if(key==='schema'){
-  if(/breadcrumb/.test(raw))return 'Fix Breadcrumb Structured Data';
-  return 'Improve Structured Data Coverage';
- }
+ if(key==='schema')return /breadcrumb/.test(raw)?'Fix Breadcrumb Structured Data':'Improve Structured Data Coverage';
  if(key==='sources')return 'Add Supporting Sources and Citations';
  if(key==='authors')return 'Strengthen Author Profiles and Attribution';
- if(key==='images'){
-  if(/missing.*alt/.test(raw))return 'Add Missing Image Alt Text';
-  return 'Improve Image Alt Text';
- }
+ if(key==='images')return /missing.*alt/.test(raw)?'Add Missing Image Alt Text':'Improve Image Alt Text';
  if(key==='international')return 'Fix Hreflang Issues';
  if(key==='social')return 'Fix Social Metadata';
+ if(key==='freshness')return 'Refresh Outdated Content';
  if(key==='template')return 'Fix Recurring On-Page Issues';
  if(key==='access')return 'Verify Scanner Access';
  return PLAYBOOKS[key]?.title||'Review Search Opportunity';
 }
+
+export const AI_RELEVANCE={
+  headings:{level:'Supporting',why:'Google says its generative AI search features build on core Search systems and that standard SEO remains relevant. Clear page organization and descriptive headings can make the main topic and supporting sections easier to interpret, but there is no documented H1-specific AI citation factor.',effect:'Supported: stronger topic clarity in content that may be retrieved for AI-assisted search, especially in Google AI experiences that use the Search index. Not established: that adding an H1 earns an AI citation or improves visibility in ChatGPT, Claude or Perplexity.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'For AI-assisted discovery, this supports clearer topic and section interpretation, but we would not sell an H1 by itself as an AI citation tactic.'},
+  titles:{level:'Supporting',why:'Google AI features draw from the Search index, so clear page identification and strong title signals remain part of the same foundation. Other AI search systems may also use page titles during retrieval, but provider-specific weighting is not documented.',effect:'Supported: clearer page identity within the same search foundation used by Google generative AI features. Not established: a direct title-to-citation effect in any AI answer engine.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'For AI search, this is supporting page-identification context rather than a direct citation lever.'},
+  metadata:{level:'Limited',why:'Meta descriptions primarily influence traditional search snippet messaging. Google does not require special descriptions or AI-specific markup for AI Overviews or AI Mode, so this is usually a secondary AI consideration rather than a core AI visibility lever.',effect:'Supported: better conventional search snippet input. Not established: a direct AI retrieval, ranking or citation benefit from adding or rewriting a meta description.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'The AI angle here is limited; meta descriptions are mainly about conventional search-result messaging, not an AI visibility lever.'},
+  links:{level:'Supporting',why:'Google specifically recommends making important content easy to find through internal links for visibility in AI features as well as Search. Clear crawlable pathways can help discovery of the pages that AI-assisted search may later retrieve.',effect:'Supported: stronger discovery pathways within the site and alignment with Google AI-feature guidance. Not established: that a particular internal link causes an AI citation or that other AI providers use the same internal-link signals.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'The AI angle is discoverability: Google specifically recommends internal links as part of the foundation for its AI features, while other providers may use different retrieval systems.'},
+  broken:{level:'Direct when verified',why:'AI search systems still need retrievable source pages. If a provider genuinely receives a persistent error for a page, that page cannot be used normally in live retrieval. Our scanner error is not proof that the provider sees the same response.',effect:'Supported after provider-side verification: restoring access to a source page that was genuinely unavailable. Not established from our server response alone: that Google AI, ChatGPT, Claude or Perplexity were blocked.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'If an AI search provider genuinely receives the same error, that source may be unavailable for retrieval; we would verify provider access separately before making that claim.'},
+  indexing:{level:'Direct for Google AI Search',why:'Google states that a page must be indexed and eligible to appear in Search with a snippet before it can be shown as a supporting link in AI Overviews or AI Mode. This makes unintended indexing exclusions directly relevant to Google AI visibility.',effect:'Supported: correcting an unintended indexing conflict can restore eligibility for Google Search and its generative AI features. Not established: actual inclusion in an AI response, or equivalent behavior across other AI providers.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'For Google AI Overviews and AI Mode, index and snippet eligibility are prerequisites, so an unintended indexing block can directly limit eligibility there.'},
+  access:{level:'Diagnostic',why:'A denial to the Cadence scanner does not tell us whether an AI search crawler is blocked. AI visibility should only be discussed when the relevant provider policy or verified crawler access is actually known.',effect:'Supported: an audit coverage limitation. Not established: any search or AI visibility loss.',source:'https://developers.google.com/search/docs/crawling-indexing/verifying-googlebot',talk:'We would not make an AI visibility claim from our scanner being blocked; we need the provider policy or verified crawler evidence first.'},
+  ai:{level:'Direct policy signal',why:'Search crawlers used by AI products are a direct access layer. A documented robots restriction that applies to the provider search crawler can conflict with a goal of being discoverable in that AI search experience. Training crawlers are separate and should not be treated as search visibility controls.',effect:'Supported: the published crawler policy for the checked paths. Not established: actual crawling, retrieval, inclusion, citations or ranking in an AI response.',source:'https://developers.openai.com/api/docs/bots',talk:'This is one of the more direct AI checks: if the documented AI search crawler is intentionally blocked on pages the prospect wants discovered, we would flag the policy conflict while keeping training controls separate.'},
+  rendering:{level:'Supporting',why:'Google generative AI features rely on the same technical foundation as Search, including crawlable and processable page content. JavaScript-dependent content can still be usable, but rendering complexity is worth reviewing when important text or links are absent from initial HTML.',effect:'Supported: a technical dependency that can affect how content is processed. Not established: failure by Google or by other AI search providers unless their actual retrieval is verified.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'AI search systems need usable page content, but rendering behavior differs by provider, so we would verify the actual retrieval path before calling it an AI visibility problem.'},
+  schema:{level:'Supporting',why:'Accurate structured data can make explicit page and entity information easier for machines to interpret, but Google explicitly says no special schema is required for its generative AI features. Schema should describe real visible content, not be added as an AI optimization shortcut.',effect:'Supported: clearer machine-readable page and entity context. Not established: a direct AI ranking or citation boost, or any special schema requirement for AI Overviews or AI Mode.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'Structured data can make entities and page meaning more explicit, but Google says there is no special AI schema requirement, so this is supporting context rather than an AI shortcut.'},
+  sources:{level:'Supporting',why:'AI answers commonly surface supporting links, so factual content benefits from being verifiable and well supported. Google also emphasizes unique, reliable, non-commodity content for generative AI search. That does not create a simple citation-count ranking factor.',effect:'Supported: stronger editorial verifiability and differentiated source quality. Not established: that adding outbound citations earns AI citations or improves ranking in an answer engine.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'The AI relevance is verifiability and differentiated source quality, not adding citations simply to chase an answer-engine citation.'},
+  authors:{level:'Supporting',why:'Clear authorship and entity relationships can make expertise and responsibility easier to interpret, which is useful context for trust-sensitive content. No major provider documents an author-profile link as a direct AI citation or ranking requirement.',effect:'Supported: clearer identity and entity context around expert content. Not established: automatic authority, AI citation preference or ranking gain from an author profile alone.',source:'https://developers.google.com/search/docs/fundamentals/creating-helpful-content',talk:'Clear authorship can strengthen identity and expertise context for AI-assisted discovery, but it is not a documented direct citation signal.'},
+  images:{level:'Supporting',why:'Google says relevant high-quality images and video can create additional opportunities to appear in generative AI search experiences. Accurate image context therefore has AI-search relevance when the visual content is meaningful to the topic.',effect:'Supported: better image context and alignment with Google generative AI guidance for useful visual content. Not established: that alt text alone causes an image or page to appear in an AI response.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'Google says useful images and video can create additional opportunities in generative AI search, so meaningful visual content has a real AI-discovery angle beyond classic image search.'},
+  international:{level:'Supporting',why:'AI-assisted search still needs the right localized page to be discoverable and understandable. Correct language and regional relationships can help Search select the intended version, which can also matter when Google AI features draw from that index.',effect:'Supported after full validation: clearer localized page relationships. Not established: a direct AI visibility gain or equivalent behavior across every AI search provider.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'The AI relevance is making sure the correct localized page can enter the Search foundation that Google AI features use; it is not a separate AI ranking tactic.'},
+  social:{level:'Limited',why:'Open Graph metadata is mainly a sharing-preview control. It is not a documented requirement for Google generative AI visibility and should not be sold as an AI optimization.',effect:'Supported: better social preview consistency. Not established: AI search visibility or citation impact.',source:'https://developers.google.com/search/docs/appearance/ai-features',talk:'There is very little defensible AI-search angle here; Open Graph is mainly a sharing-preview control.'},
+  content:{level:'Strong supporting relevance',why:'Google now explicitly recommends unique, useful, non-commodity content for generative AI search and notes that AI features may use query fan-out to retrieve supporting pages across related subtopics. This makes depth, originality and clear topical coverage relevant to both classic and AI-assisted discovery.',effect:'Supported: alignment with documented Google generative AI guidance around unique, useful content and broader query coverage. Not established: guaranteed inclusion, a specific AI citation, or provider-wide behavior outside Google.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'This has strong AI-search relevance when the content is genuinely unique and useful: Google specifically emphasizes non-commodity content and broader subtopic retrieval in generative AI search.'},
+  freshness:{level:'Supporting',why:'AI-assisted search benefits from content that is accurate, current and easy to verify when the topic changes over time. Fresh facts and sources can improve retrieval quality, but there is no universal AI freshness bonus and old content can remain useful.',effect:'Supported: better factual currency and source verifiability when an article genuinely needs updating. Not established: guaranteed AI citations, a freshness ranking boost or a requirement to continually change publication dates.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'For AI search, current facts and sources make changing topics easier to retrieve and verify, but an old publish date by itself is not a problem.'},
+  template:{level:'Depends on the underlying issue',why:'AI relevance follows the actual repeated problem. Indexing and crawler-access issues can be directly important; titles, headings, content and schema are generally supporting signals. A recurring template pattern is not itself an AI ranking factor.',effect:'Supported only after the repeated issue is identified and tied to a documented search or AI mechanism. Not established: AI visibility impact from repetition alone.',source:'https://developers.google.com/search/docs/fundamentals/ai-optimization-guide',talk:'The AI angle depends on the actual repeated issue. Access and indexing can be direct; content, headings and schema are usually supporting context rather than standalone AI ranking factors.'}
+};
+
+
+const CLIENT_AI_EXPLANATIONS={
+  headings:"For AI search, clearer headings can make the page’s topic and sections easier to interpret. They support understanding, but they are not a direct AI citation trigger.",
+  titles:"For AI-assisted search, a clear title helps identify what the page is about. It supports discovery, but it does not directly earn citations.",
+  metadata:"The AI connection here is small. Meta descriptions are mainly about traditional search-result messaging.",
+  links:"For AI search, strong internal links can make important pages easier to discover and connect to related topics. They support retrieval, but they do not guarantee a citation.",
+  broken:"If an AI search system truly receives the same error, it may not be able to use that page. We’d verify provider access before making that claim.",
+  indexing:"For Google’s AI search features, a page generally needs to be eligible for Google Search first. An accidental indexing block can therefore limit AI-search eligibility too.",
+  access:"Our scanner being blocked does not prove AI search is blocked. We’d need provider-specific policy or verified crawler evidence before saying that.",
+  ai:"This is a direct AI-access check. We’re making sure the search crawlers the business wants can reach public content while keeping training controls separate.",
+  rendering:"AI search systems still need usable page content. If important information only appears after complex rendering, we’d verify that it can still be retrieved reliably.",
+  schema:"Structured data can make entities and page meaning clearer to machines. It can support AI understanding, but it is not an AI-ranking shortcut.",
+  sources:"For AI discovery, clear sourcing can make factual content easier to verify and trust. Adding citations alone does not guarantee that an AI system will cite the page.",
+  authors:"Clear authorship can make expertise and responsibility easier to understand. It supports trust context, but it is not a direct AI-ranking signal.",
+  images:"Useful images can create additional discovery opportunities, including in AI-assisted search. Good image context helps, but alt text alone does not create AI visibility.",
+  international:"AI-assisted search still needs the correct language or regional page. Clear localization helps the right version enter the same search foundation.",
+  social:"There is very little AI-search impact here. Open Graph is mainly about social sharing.",
+  content:"This is one of the stronger AI-search opportunities. Original, useful content with clear topical depth gives AI-assisted search more valuable material to retrieve and reference.",
+  freshness:"For AI search, current facts and sources make changing topics easier to retrieve and verify. An old publish date by itself is not a problem.",
+  template:"The AI impact depends on the underlying issue. Access and indexing can be direct; headings, content and schema are usually supporting context."
+};
+for(const [key,talk] of Object.entries(CLIENT_AI_EXPLANATIONS))if(AI_RELEVANCE[key])AI_RELEVANCE[key].talk=talk;
+
 
 export function playbookKey(f){const s=[f.id,f.category,f.title].join(' ').toLowerCase();
  if(/automated-access|http-status|access-block/.test(s))return 'access';
@@ -347,6 +428,7 @@ export function playbookKey(f){const s=[f.id,f.category,f.title].join(' ').toLow
  if(/title/.test(s))return 'titles';
  if(/image|alt.text/.test(s))return 'images';
  if(/schema|jsonld|structured-data|breadcrumb/.test(s))return 'schema';
+ if(/freshness|stale|outdated|content-age|content-decay|refresh-candidate/.test(s))return 'freshness';
  if(/link|content-pathways|discovery/.test(s))return 'links';
  if(/onpage-systemic|on-page/.test(s))return 'template';
  return 'content';}

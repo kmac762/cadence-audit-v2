@@ -238,16 +238,10 @@ function linkHealthCheck(linkHealth) {
   if (!linkHealth?.enabled) return { id:'internal-link-health', label:'Internal link health', category:'links', status:'good', issueCount:0, reviewCount:0, summary:'Internal-link target validation was not run for this scan.', note:'Link validation is limited to a bounded set of links on the audited page.', items:[] };
   const items = [];
   const baseItem = (result) => ({
-    url:result.url,
-    targetUrl:result.url,
-    sourceUrl:linkHealth.sourceUrl || null,
-    finalUrl:result.finalUrl || result.url,
-    status:result.status ?? null,
-    redirectCount:result.redirectCount || 0,
-    anchorTexts:result.anchorTexts || [],
-    placements:result.placements || [],
-    linkOccurrences:result.linkOccurrences || [],
-    pageType:'linked URL'
+    url:result.url,targetUrl:result.url,sourceUrl:linkHealth.sourceUrl || null,
+    finalUrl:result.finalUrl || result.url,status:result.status ?? null,
+    redirectCount:result.redirectCount || 0,anchorTexts:result.anchorTexts || [],
+    placements:result.placements || [],linkOccurrences:result.linkOccurrences || [],pageType:'linked URL'
   });
   for (const result of linkHealth.results || []) {
     if (result.error) items.push({ level:'review', issue:'Link target could not be validated', ...baseItem(result), value:result.error });
@@ -429,14 +423,10 @@ export async function validateInternalLinks(facts, { limit = 20 } = {}) {
   const occurrenceMap = new Map();
   for (const occurrence of page.internalLinkOccurrences || page.internalLinkDetails || []) {
     try {
-      const linked = new URL(occurrence.href, facts.finalUrl);
-      linked.hash = '';
+      const linked = new URL(occurrence.href, facts.finalUrl); linked.hash = '';
       const key = linked.toString();
       if (!occurrenceMap.has(key)) occurrenceMap.set(key, []);
-      occurrenceMap.get(key).push({
-        anchor:String(occurrence.anchor || '').trim(),
-        placement:occurrence.placement || 'body'
-      });
+      occurrenceMap.get(key).push({anchor:String(occurrence.anchor || '').trim(),placement:occurrence.placement || 'body'});
     } catch {}
   }
   const seen = new Set();
@@ -454,11 +444,7 @@ export async function validateInternalLinks(facts, { limit = 20 } = {}) {
   }
   const detailsFor = (url) => {
     const occurrences = occurrenceMap.get(url) || [];
-    return {
-      linkOccurrences:occurrences,
-      anchorTexts:[...new Set(occurrences.map((item) => item.anchor).filter(Boolean))],
-      placements:[...new Set(occurrences.map((item) => item.placement).filter(Boolean))]
-    };
+    return {linkOccurrences:occurrences,anchorTexts:[...new Set(occurrences.map((item) => item.anchor).filter(Boolean))],placements:[...new Set(occurrences.map((item) => item.placement).filter(Boolean))]};
   };
   const results = new Array(urls.length);
   let next = 0;

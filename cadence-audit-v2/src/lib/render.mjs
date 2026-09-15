@@ -487,10 +487,17 @@ export async function renderPage(targetUrl, rawAnalysis = null) {
 }
 
 // Test-only entry point for a controlled HTML document. The HTTP API never accepts HTML.
+async function removeDirAfterChrome(dir){
+  for(let i=0;i<4;i++){
+    try{await fsp.rm(dir,{recursive:true,force:true,maxRetries:2,retryDelay:40});return;}
+    catch(error){if(i===3)throw error;await sleep(50*(i+1));}
+  }
+}
+
 export async function renderControlledHtml(html) {
   const executable=findChromium();
   if(!executable) throw new Error('Chromium is not installed.');
   const profile=await fsp.mkdtemp(path.join(os.tmpdir(),'cadence-render-fixture-'));
   try { return await renderViaCdp(executable,profile,'about:blank',null,html); }
-  finally { await fsp.rm(profile,{recursive:true,force:true}); }
+  finally { await removeDirAfterChrome(profile); }
 }

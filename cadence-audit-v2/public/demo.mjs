@@ -1,6 +1,6 @@
 export const demoReport={
   "schemaVersion": 2,
-  "release": "2.0.0-rc.8",
+  "release": "2.0.0-rc.13",
   "requestedUrl": "https://example.com/",
   "finalUrl": "https://example.com/",
   "scannedAt": "2026-09-11T12:00:00Z",
@@ -19,6 +19,8 @@ export const demoReport={
     "renderRequested": true,
     "renderSucceeded": true,
     "renderedPageCount": 1,
+    "contentFreshnessArticles": 8,
+    "contentFreshnessCandidates": 3,
     "browserAssistPages": 3
   },
   "warnings": [],
@@ -26,11 +28,16 @@ export const demoReport={
     {
       "id": "sample:h1",
       "playbook": "headings",
-      "title": "Missing Header 1 Tags",
+      "title": "Header 1 Tag Issues",
       "theme": "On-Page SEO",
       "observation": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages.",
       "why": "Search visibility connection: Google uses prominent page titles and heading elements, including H1s, as inputs when it understands a page and generates the title link shown in search results. If an affected page does not clearly identify its primary service or topic in a main heading, the search opportunity is to make that relevance signal more explicit and consistent. The goal is not to add an H1 for a score; it is to make the page's intended search topic unmistakable.",
       "searchEffect": "Supported: a clearer, more consistent page-topic signal and an additional documented input Google can use when generating title links. Not established: that the missing H1 caused a ranking loss, that adding one will improve rankings, or that it directly changes AI citations.",
+      "aiLevel": "Supporting",
+      "aiWhy": "Google says its generative AI search features build on core Search systems and that standard SEO remains relevant. Clear page organization and descriptive headings can make the main topic and supporting sections easier to interpret, but there is no documented H1-specific AI citation factor.",
+      "aiEffect": "Supported: stronger topic clarity in content that may be retrieved for AI-assisted search, especially in Google AI experiences that use the Search index. Not established: that adding an H1 earns an AI citation or improves visibility in ChatGPT, Claude or Perplexity.",
+      "aiSource": "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide",
+      "aiTalk": "For AI search, clearer headings can make the page’s topic and sections easier to interpret. They support understanding, but they are not a direct AI citation trigger.",
       "solution": [
         "Map each affected page to the service, product, location or topic it is intended to rank for. Compare the title tag, visible page title and H1 in both initial and rendered HTML so we know whether the observed gap is real.",
         "Where the main topic is unclear or the template fails to output it as the primary heading, update the copy and/or CMS template so the page has one descriptive, search-relevant main heading aligned with the title tag and body content. Do not keyword-stuff or redesign the page simply to add a tag.",
@@ -42,7 +49,7 @@ export const demoReport={
       "effort": "Search-intent/content review plus template QA; confirm after inspecting the CMS implementation.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "The main heading element (H1) was not detected in the inspected HTML for 14 of 14 example pages. Fourteen of the sampled pages did not expose an H1 in the inspected HTML. We would first confirm what each page is supposed to rank for, then make sure that topic is clearly expressed in the page title, main heading and supporting copy. The search goal is stronger topic clarity and a cleaner title-link input for Google, not simply adding a tag to satisfy an audit.",
+      "talk": "Each page should make its main topic obvious. We’d make sure the primary service or subject is clearly stated in the main heading so search engines have a cleaner understanding of what the page is about.",
       "source": "https://developers.google.com/search/docs/appearance/title-link",
       "evidence": [
         {
@@ -70,6 +77,11 @@ export const demoReport={
       "observation": "In this synthetic link sample, 3 of 9 articles link to a service or location page.",
       "why": "Search connection: URL discovery and relevance context. Google follows crawlable internal links to discover pages, and descriptive anchor text helps it understand destinations. The opportunity is to connect related informational content to priority service pages where the topic genuinely fits.",
       "searchEffect": "Supported: explicit crawlable routes and contextual anchor text to priority URLs. Not established: sitewide orphaning, lost link equity or ranking loss from this limited sample.",
+      "aiLevel": "Supporting",
+      "aiWhy": "Google specifically recommends making important content easy to find through internal links for visibility in AI features as well as Search. Clear crawlable pathways can help discovery of the pages that AI-assisted search may later retrieve.",
+      "aiEffect": "Supported: stronger discovery pathways within the site and alignment with Google AI-feature guidance. Not established: that a particular internal link causes an AI citation or that other AI providers use the same internal-link signals.",
+      "aiSource": "https://developers.google.com/search/docs/appearance/ai-features",
+      "aiTalk": "For AI search, strong internal links can make important pages easier to discover and connect to related topics. They support retrieval, but they do not guarantee a citation.",
       "solution": [
         "Identify priority service, product or location pages and inspect which related articles actually discuss those subjects. Validate the sampled links before assuming a gap exists sitewide.",
         "Map topically relevant source pages to each destination. Add ordinary <a href> links with accurate descriptive anchors where useful context already exists; do not force every article to link to every service.",
@@ -81,7 +93,7 @@ export const demoReport={
       "effort": "Content mapping, editorial edits and link QA; scope depends on relevance.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "In this synthetic link sample, 3 of 9 articles link to a service or location page. We would strengthen the links from relevant articles to the service pages you want found in search. That gives Google clear routes to those pages and useful context about their subjects. We would confirm the broader link picture first rather than call pages orphaned from a small sample.",
+      "talk": "Internal links help search engines find important pages and understand how the site’s topics connect. We’d make sure useful content naturally points to the services and pages the business most wants discovered.",
       "source": "https://developers.google.com/search/docs/crawling-indexing/links-crawlable",
       "evidence": [
         {
@@ -104,6 +116,11 @@ export const demoReport={
       "observation": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed.",
       "why": "Search connection: an indirect content-quality review, not a technical ranking rule. Google's helpful-content guidance asks whether information has clear sourcing and demonstrates expertise. A source-link count cannot determine the accuracy or quality of an article.",
       "searchEffect": "Supported: a lead for reviewing evidence in factual content. Not established: a citation-count ranking factor, that the articles have no references, or that adding outbound links earns AI citations.",
+      "aiLevel": "Supporting",
+      "aiWhy": "AI answers commonly surface supporting links, so factual content benefits from being verifiable and well supported. Google also emphasizes unique, reliable, non-commodity content for generative AI search. That does not create a simple citation-count ranking factor.",
+      "aiEffect": "Supported: stronger editorial verifiability and differentiated source quality. Not established: that adding outbound citations earns AI citations or improves ranking in an answer engine.",
+      "aiSource": "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide",
+      "aiTalk": "For AI discovery, clear sourcing can make factual content easier to verify and trust. Adding citations alone does not guarantee that an AI system will cite the page.",
       "solution": [
         "Review the factual or research-heavy example articles and locate claims that actually depend on external evidence.",
         "Check any existing references, then cite the strongest relevant original or authoritative source where it helps the reader. Correct unsupported claims rather than merely adding links.",
@@ -115,7 +132,7 @@ export const demoReport={
       "effort": "Editorial and subject-matter review; varies with the claims.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "In this synthetic sample, the classifier did not recognize supporting-source links in 5 articles. Unlinked references were not assessed. For factual articles targeting search, we would verify the claims and make their supporting evidence clear where needed. The aim is reliable content, not adding external links as a supposed ranking trick.",
+      "talk": "For factual or research-heavy content, strong sources make important claims easier to verify. We’d strengthen the evidence behind the content where it matters, not add links just to check an SEO box.",
       "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
       "evidence": [
         {
@@ -138,6 +155,11 @@ export const demoReport={
       "observation": "The inspected robots policies disallow at least one checked URL path for 2 search or robots-governed retrieval agents: OAI-SearchBot, Claude-SearchBot. Intent and actual provider access still need verification.",
       "why": "Search retrieval, model training and user-initiated fetching are different uses. The relevant crawler policy should reflect the owner's goals rather than a blanket instruction to allow every AI bot.",
       "searchEffect": "Supported: the documented search crawler's published policy for the checked paths. Not established: actual provider requests, inclusion, citations or a ranking change. Training preferences are separate.",
+      "aiLevel": "Direct policy signal",
+      "aiWhy": "Search crawlers used by AI products are a direct access layer. A documented robots restriction that applies to the provider search crawler can conflict with a goal of being discoverable in that AI search experience. Training crawlers are separate and should not be treated as search visibility controls.",
+      "aiEffect": "Supported: the published crawler policy for the checked paths. Not established: actual crawling, retrieval, inclusion, citations or ranking in an AI response.",
+      "aiSource": "https://developers.openai.com/api/docs/bots",
+      "aiTalk": "This is a direct AI-access check. We’re making sure the search crawlers the business wants can reach public content while keeping training controls separate.",
       "solution": [
         "Confirm the client's policy for search discovery, user-requested access and model training separately.",
         "Review the exact robots group and any firewall controls for the affected crawler. Change only restrictions that conflict with the agreed policy.",
@@ -149,7 +171,7 @@ export const demoReport={
       "effort": "Policy/configuration review plus access testing.",
       "priority": "Planned review",
       "confidence": "Observed in sample output; interpretation needs review",
-      "talk": "The inspected robots policies disallow at least one checked URL path for 2 search or robots-governed retrieval agents: OAI-SearchBot, Claude-SearchBot. Intent and actual provider access still need verification. We would separate AI search access from model-training access, confirm your policy and adjust only the controls that conflict with it. The goal is intentional access, not opening the site to every bot.",
+      "talk": "AI search tools use different crawlers and policies for search access, user requests and model training. We’d make sure the site allows the discovery access the business wants without changing training preferences unnecessarily.",
       "source": "https://developers.openai.com/api/docs/bots",
       "evidence": [
         {
@@ -293,6 +315,49 @@ export const demoReport={
     "Only the entry URL is browser-rendered in real scans.",
     "A limited sample cannot prove sitewide orphaning or lost revenue."
   ],
+  "contentFreshness": {
+    "enabled": true,
+    "checkedAt": "2026-09-11T12:00:00Z",
+    "articlesReviewed": 8,
+    "counts": {
+      "likelyCurrent": 5,
+      "worthRefreshing": 2,
+      "strongRefreshCandidates": 1,
+      "refreshCandidates": 3,
+      "consolidationCandidates": 1
+    },
+    "candidates": [
+      {
+        "url": "https://example.com/blog/guide-2022/",
+        "title": "Example Guide for 2022",
+        "published": "2022-05-12T00:00:00.000Z",
+        "modified": null,
+        "reasons": [
+          "page title references 2022",
+          "older year references appear in primary content",
+          "no newer structured modification date was detected"
+        ],
+        "level": "strong"
+      }
+    ],
+    "consolidationCandidates": [
+      {
+        "urlA": "https://example.com/blog/example-guide/",
+        "titleA": "Example Search Guide",
+        "urlB": "https://example.com/blog/example-search-tips/",
+        "titleB": "Example Search Tips Guide",
+        "similarity": 0.6,
+        "shared": [
+          "example",
+          "search",
+          "guide"
+        ]
+      }
+    ],
+    "limitations": [
+      "Synthetic freshness example. Age alone is never a finding."
+    ]
+  },
   "searchAccess": {
     "registryVersion": "2026-09-11.1",
     "registryReviewedAt": "2026-09-11",

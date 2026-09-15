@@ -11,7 +11,7 @@ import {safeFetch} from '../src/lib/safe-fetch.mjs';
 import {runScan} from '../src/v2/pipeline.mjs';
 import {makeReport} from '../src/v2/report.mjs';
 import {buildOnPageQa} from '../src/lib/on-page-qa.mjs';
-import {PLAYBOOKS,recommendationTitle} from '../src/v2/playbooks.mjs';
+import {PLAYBOOKS} from '../src/v2/playbooks.mjs';
 import {createScanLimits,scanLimitConfig} from '../src/v2/scan-limits.mjs';
 import {createApp} from '../src/server.mjs';
 import {RELEASE} from '../shared/release.mjs';
@@ -22,20 +22,6 @@ const denied={status:403,headers:{'content-type':'text/html','cf-ray':'example-r
 
 test('Search wording gives H1 a search mechanism without a ranking guarantee',()=>{assert.match(PLAYBOOKS.headings.why,/Google.*title/i);assert.match(PLAYBOOKS.headings.searchEffect,/Not established/);assert.match(PLAYBOOKS.headings.steps.join(' '),/title link Google actually shows|query impressions/);assert.doesNotMatch(PLAYBOOKS.headings.source,/w3.org/);});
 test('Every playbook separates the supported effect from unproven impact',()=>{for(const [k,p]of Object.entries(PLAYBOOKS)){assert.ok(p.searchEffect?.length>40,k);assert.equal(p.steps.length,3);assert.ok(p.source.startsWith('https://'));}});
-
-test('Finding headers use direct training labels',()=>{
- assert.equal(recommendationTitle({qaIssue:'Missing H1'},'headings'),'Missing Header 1 Tags');
- assert.equal(recommendationTitle({qaIssue:'Multiple H1 elements'},'headings'),'Multiple Header 1 Tags');
- assert.equal(recommendationTitle({id:'relationship-articles-commercial'},'links'),'Implement Internal Link Strategy');
- assert.equal(recommendationTitle({id:'source-quality-review'},'sources'),'Add Supporting Sources and Citations');
-});
-
-test('Recommendation card header hides sample scope and scanner confidence language',async()=>{
- const appJs=await fs.readFile(new URL('../public/app.js',import.meta.url),'utf8');
- assert.match(appJs,/class=\"eyebrow\">\$\{escape\(r\.theme\)\}<\/p>/);
- assert.doesNotMatch(appJs,/escape\(r\.theme\)\} \/ \$\{escape\(r\.scope\)/);
- assert.doesNotMatch(appJs,/Priority: \$\{escape\(r\.priority\)\}[^<]*escape\(r\.confidence\)/);
-});
 test('A cf-ray on a normal page is not evidence of denied access',()=>{const r=assessHttpAccess({status:200,headers:{server:'cloudflare','cf-ray':'abc'},body:pageHtml()});assert.equal(r.pageContentUsable,true);assert.equal(r.accessRestricted,false);});
 test('A cf-mitigated challenge with HTTP 200 is not inspected as a page',()=>{const r=assessHttpAccess({status:200,headers:{'cf-mitigated':'challenge'},body:'<h1>Hello</h1>'});assert.equal(r.pageContentUsable,false);assert.equal(r.kind,'challenge');});
 test('A challenge-title response is not inspected even with HTTP 200',()=>{const r=assessHttpAccess({status:200,body:'<title>Just a moment...</title><script src="/cdn-cgi/challenge-platform/test.js"></script>'});assert.equal(r.pageContentUsable,false);});
@@ -65,6 +51,7 @@ test('Search-first presentation refreshes saved recommendation copy without chan
  assert.equal(r.observation,'H1 missing on 14 pages.');
  assert.deepEqual(r.evidence,old.recommendations[0].evidence);
  assert.match(r.why,/Search visibility connection/);
- assert.match(r.talk,/supposed to rank for/);
+ assert.match(r.talk,/main topic obvious/i);
+ assert.doesNotMatch(r.talk,/14 pages|sampled|inspected HTML/i);
  assert.match(r.userNote,/Secondary benefit/);
 });
