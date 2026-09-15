@@ -1,3 +1,3 @@
-export const RELEASE='2.0.0-rc.14';
+export const RELEASE='2.0.0-rc.15';
 export const API_VERSION=2;
 export const REVIEW_VALUES=['unreviewed','use','investigate','ignore'];
