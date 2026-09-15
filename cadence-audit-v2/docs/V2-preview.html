@@ -236,12 +236,12 @@ input[type=text]::placeholder{color:#78857f}input:focus,select:focus,textarea:fo
   <section class="privacy-note"><strong>No password is configured.</strong> Anyone who knows this address can initiate a scan. Noindex does not make the service private. Anonymous browser sessions separate scan records; rate limits limit use, not access.</section>
 </div>
 </main>
-<footer class="site-footer"><div class="footer-inner"><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 · rc.12</span></div></footer>
+<footer class="site-footer"><div class="footer-inner"><span>CADENCE SEARCH</span><span>Evidence first. Useful solutions. No manufactured certainty.</span><span>V2 · rc.14</span></div></footer>
 <dialog id="brief-dialog"><div class="section-top"><div><p class="eyebrow">RECORDING PREP</p><h2>Your sales brief</h2></div><button class="quiet" id="brief-close">Close</button></div><p class="hint">Selected recommendations are included only after you confirm reviewing the examples. Unreviewed suggestions are labeled.</p><textarea id="brief-text" readonly aria-label="Recording brief"></textarea><div class="dialog-actions"><button id="copy-brief" class="primary">Copy brief</button><span id="copy-status" role="status"></span></div></dialog>
 <noscript>This workspace requires JavaScript. Enable it to start or inspect a scan.</noscript>
 <script type="module">
 window.CADENCE_OFFLINE_PREVIEW=true;
-const RELEASE='2.0.0-rc.13';
+const RELEASE='2.0.0-rc.14';
 const API_VERSION=2;
 const REVIEW_VALUES=['unreviewed','use','investigate','ignore'];
 
@@ -262,7 +262,7 @@ function recordingBrief(report,reviews={}){
 
 const demoReport={
   "schemaVersion": 2,
-  "release": "2.0.0-rc.13",
+  "release": "2.0.0-rc.14",
   "requestedUrl": "https://example.com/",
   "finalUrl": "https://example.com/",
   "scannedAt": "2026-09-11T12:00:00Z",

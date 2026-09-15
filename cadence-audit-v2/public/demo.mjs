@@ -1,6 +1,6 @@
 export const demoReport={
   "schemaVersion": 2,
-  "release": "2.0.0-rc.13",
+  "release": "2.0.0-rc.14",
   "requestedUrl": "https://example.com/",
   "finalUrl": "https://example.com/",
   "scannedAt": "2026-09-11T12:00:00Z",
